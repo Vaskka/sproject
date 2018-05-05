@@ -50,13 +50,12 @@ bool CModel::load(const std::string& vPath)
 {
 	Assimp::Importer LocImporter;
 	const aiScene* pScene = LocImporter.ReadFile(vPath, aiProcess_Triangulate | aiProcess_FlipUVs);
-
 	if (!pScene || pScene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !pScene->mRootNode)
 	{
 		std::cout << "ERROR::ASSIMP:: " << LocImporter.GetErrorString() << std::endl;
 		return false;
 	}
-
+	std::cout << pScene->mNumMaterials << std::endl;
 	m_Directory = vPath.substr(0, vPath.find_last_of('/'));
 	__processNode(pScene->mRootNode, pScene);
 
@@ -133,12 +132,11 @@ CMesh CModel::__processMesh(const aiMesh* vMesh, const aiScene* vScene)
 	if (vMesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* pMaterial = vScene->mMaterials[vMesh->mMaterialIndex];
-
-		std::vector<STexture> DiffuseMaps = __loadMaterialTextures(pMaterial, aiTextureType_DIFFUSE, "uTextureDiffuse");
+		for (int i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+			std::cout << pMaterial->GetTextureCount(aiTextureType(i));
+		std::cout << std::endl;
+		std::vector<STexture> DiffuseMaps = __loadMaterialTextures(pMaterial, aiTextureType_DIFFUSE, "uTextureAlbedo");
 		Textures.insert(Textures.end(), DiffuseMaps.begin(), DiffuseMaps.end());
-
-		std::vector<STexture> SpecularMaps = __loadMaterialTextures(pMaterial, aiTextureType_SPECULAR, "uTextureSpecular");
-		Textures.insert(Textures.end(), SpecularMaps.begin(), SpecularMaps.end());
 	}
 
 	return CMesh(Vertices, Indices, Textures);

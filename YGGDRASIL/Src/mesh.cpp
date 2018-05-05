@@ -29,20 +29,14 @@ void CMesh::draw(GLuint vShaderProgram)
 		std::string Number;
 		std::string Name = m_Textures[i].Type;
 		SStream << Name;
-		if (Name == "uTextureDiffuse")
+		if (Name == "uTextureAlbedo")
 		{
 			SStream << DiffuseNr++;
-		}
-		else if (Name == "uTextureSpecular")
-		{
-			SStream << SpecularNr++;
 		}
 		glUniform1i(glGetUniformLocation(vShaderProgram, SStream.str().c_str()), i);
 
 		glBindTexture(GL_TEXTURE_2D, m_Textures[i].Id);
 	}
-
-	glUniform1f(glGetUniformLocation(vShaderProgram, "uMaterialShinness"), 4.0f);
 
 	glBindVertexArray(m_VAO);
 	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, nullptr);

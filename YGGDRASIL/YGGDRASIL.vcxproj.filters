@@ -7,39 +7,43 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{eee22477-82c2-48a2-803c-df99b20e42a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OpenGL">
-      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\YGGRendering">
       <UniqueIdentifier>{df24c691-3a92-438c-ab18-92f535027e60}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\fragPerpixelShading.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="res\shaders\vertPerpixelShading.glsl">
-      <Filter>Shader Files</Filter>
-    </None>
+    <Filter Include="Source Files\OpenGLComponent">
+      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{405295d8-f1ca-4381-b001-567a11b1bc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\PBR">
+      <UniqueIdentifier>{32463702-716a-4309-a0e5-ffcbd8d5ee02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\IBL">
+      <UniqueIdentifier>{3d84903b-9632-4500-8291-ad97132a8378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\Skybox">
+      <UniqueIdentifier>{02d03334-6099-4dcb-940e-8c0ecb6c198d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\camera.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClCompile>
     <ClCompile Include="Src\mesh.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClCompile>
     <ClCompile Include="Src\model.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClCompile>
     <ClCompile Include="Src\shader.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClCompile>
     <ClCompile Include="Src\technique.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClCompile>
     <ClCompile Include="Src\yggTechnique.cpp">
       <Filter>Source Files\YGGRendering</Filter>
@@ -47,22 +51,28 @@
     <ClCompile Include="Src\yggRendering.cpp">
       <Filter>Source Files\YGGRendering</Filter>
     </ClCompile>
+    <ClCompile Include="Src\textureUtil.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\renderUtil.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\camera.h">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClInclude>
     <ClInclude Include="Src\mesh.h">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClInclude>
     <ClInclude Include="Src\model.h">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClInclude>
     <ClInclude Include="Src\shader.h">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClInclude>
     <ClInclude Include="Src\technique.h">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\OpenGLComponent</Filter>
     </ClInclude>
     <ClInclude Include="Src\yggTechnique.h">
       <Filter>Source Files\YGGRendering</Filter>
@@ -70,5 +80,43 @@
     <ClInclude Include="Src\yggRendering.h">
       <Filter>Source Files\YGGRendering</Filter>
     </ClInclude>
+    <ClInclude Include="Src\textureUtil.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\renderUtil.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Res\shaders\PBRShading_VS.glsl">
+      <Filter>Shader Files\PBR</Filter>
+    </None>
+    <None Include="Res\shaders\ForwardPBRShading_FS.glsl">
+      <Filter>Shader Files\PBR</Filter>
+    </None>
+    <None Include="Res\shaders\Cubemap_VS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\BRDF_VS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\BRDF_FS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\EquirectangularToCubemap_FS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\IrradianceConvolution_FS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\Prefilter_FS.glsl">
+      <Filter>Shader Files\IBL</Filter>
+    </None>
+    <None Include="Res\shaders\Skybox_FS.glsl">
+      <Filter>Shader Files\Skybox</Filter>
+    </None>
+    <None Include="Res\shaders\Skybox_VS.glsl">
+      <Filter>Shader Files\Skybox</Filter>
+    </None>
   </ItemGroup>
 </Project>
