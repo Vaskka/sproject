@@ -7,16 +7,14 @@
 
 namespace
 {
-	int SCR_WIDTH = 1600;
-	int SCR_HEIGHT = 900;
+	int SCR_WIDTH = 1920;
+	int SCR_HEIGHT = 1080;
 	bool g_Keys[1024];
 	bool g_Buttons[3];
 	CCamera g_Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	const std::string EVN_MAP_PATH = "res/textures/UnderTheSea4k.hdr";
-	//const std::string GEOMERY_MODEL_PATH = "res/objects/miku/Appearance Miku.fbx";
-	const std::string GEOMERY_MODEL_PATH = "res/objects/test.fbx";
-	//const std::string GEOMERY_MODEL_PATH = "res/objects/nanosuit/nanosuit.obj";
+	const std::string GEOMERY_MODEL_PATH = "res/objects/miku/miku_snow/miku.obj";
 	const std::string CUBE_MODEL_PATH = "res/objects/cube.obj";
 	const unsigned int EVN_MAP_SIZE = 1024;
 	const unsigned int IRRADIANCE_MAP_SIZE = 128;
@@ -157,8 +155,6 @@ void CYGGRendering::__initMatrixs()
 	m_CaptureViews[3] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 	m_CaptureViews[4] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 	m_CaptureViews[5] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
-
-	m_ProjectionMatrix = glm::perspective(g_Camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 }
 
 //*********************************************************************************
@@ -318,6 +314,7 @@ void CYGGRendering::__geometryPass()
 	glm::mat4 ModelMatrix;
 	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -1.5f, 0.0f));
 	ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.02f, 0.02f, 0.02f));
+	m_ProjectionMatrix = glm::perspective(g_Camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 	m_pTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
 	m_pTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);

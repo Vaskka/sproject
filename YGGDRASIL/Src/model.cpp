@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
+#include <assimp/version.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -55,7 +56,10 @@ bool CModel::load(const std::string& vPath)
 		std::cout << "ERROR::ASSIMP:: " << LocImporter.GetErrorString() << std::endl;
 		return false;
 	}
+#ifdef _DEBUG
 	std::cout << pScene->mNumMaterials << std::endl;
+#endif
+
 	m_Directory = vPath.substr(0, vPath.find_last_of('/'));
 	__processNode(pScene->mRootNode, pScene);
 
@@ -93,6 +97,7 @@ CMesh CModel::__processMesh(const aiMesh* vMesh, const aiScene* vScene)
 	std::vector<SVertex> Vertices;
 	std::vector<GLuint> Indices;
 	std::vector<STexture> Textures;
+	SMaterial Material;
 
 	for (GLuint i = 0; i < vMesh->mNumVertices; ++i)
 	{
@@ -132,14 +137,23 @@ CMesh CModel::__processMesh(const aiMesh* vMesh, const aiScene* vScene)
 	if (vMesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* pMaterial = vScene->mMaterials[vMesh->mMaterialIndex];
-		for (int i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
-			std::cout << pMaterial->GetTextureCount(aiTextureType(i));
+#ifdef _DEBUG
+		//for (int i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+		//	std::cout << pMaterial->GetTextureCount(aiTextureType(i));
+#endif
 		std::cout << std::endl;
 		std::vector<STexture> DiffuseMaps = __loadMaterialTextures(pMaterial, aiTextureType_DIFFUSE, "uTextureAlbedo");
 		Textures.insert(Textures.end(), DiffuseMaps.begin(), DiffuseMaps.end());
+
+		aiColor3D AmbientColor;
+		pMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, AmbientColor);
+		Material.Amibent = { AmbientColor.r, AmbientColor.g, AmbientColor.b };
+		aiColor3D DiffuseColor;
+		pMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, DiffuseColor);
+		Material.Diffuse = { DiffuseColor.r, DiffuseColor.g, DiffuseColor.b };
 	}
 
-	return CMesh(Vertices, Indices, Textures);
+	return CMesh(Vertices, Indices, Textures, Material);
 }
 
 //*********************************************************************************

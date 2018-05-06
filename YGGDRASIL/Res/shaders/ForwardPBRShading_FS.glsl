@@ -1,6 +1,8 @@
 #version 430 core
 
-uniform sampler2D uTextureAlbedo0;
+uniform sampler2D uTextureAlbedo1;
+uniform vec3 uMaterialAmbient;
+uniform vec3 uMaterialDiffuse;
 
 uniform sampler2D uBrdfIntegrationMap;
 uniform samplerCube uIrradianceMap;
@@ -30,8 +32,7 @@ vec3 shadingWithUnrealModelForParallelLight(vec3 vAlbedo, float vMetallic, float
 
 void main()
 {
-	vec3 Albedo = pow(texture(uTextureAlbedo0, _TexCoord).xyz, vec3(GAMMA));
-
+	vec3 Albedo = pow(texture(uTextureAlbedo1, _TexCoord).xyz, vec3(GAMMA));
 	float Metallic = 0.1;
 	float Roughness = 0.2;
 
@@ -42,6 +43,8 @@ void main()
 	vec3 LoWithIBL = shadingWithUnrealModelForImageBasedLight(Albedo, Roughness, Metallic, NormalW, ViewDirW);
 	vec3 LoWithParallelLight = shadingWithUnrealModelForParallelLight(Albedo, Metallic, Roughness, NormalW, uLightColor, ViewDirW, LightDirW);
 	vec3 Lo = (LoWithIBL/* + LoWithParallelLight*/);
+
+	Lo += uMaterialAmbient;
 
 	vec3 MappedColor = vec3(1.0) - exp(-Lo * EXPOSURE);
 	MappedColor = pow(MappedColor, vec3(1.0 / GAMMA));

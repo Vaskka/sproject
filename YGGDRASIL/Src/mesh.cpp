@@ -5,7 +5,7 @@
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 
-CMesh::CMesh(std::vector<SVertex> vVertices, std::vector<GLuint> vIndices, std::vector<STexture> vTextures) :m_Vertices(vVertices), m_Indices(vIndices), m_Textures(vTextures), m_VAO(0), m_VBO(0), m_EBO(0)
+CMesh::CMesh(std::vector<SVertex> vVertices, std::vector<GLuint> vIndices, std::vector<STexture> vTextures, const SMaterial& vMaterial) :m_Vertices(vVertices), m_Indices(vIndices), m_Textures(vTextures), m_Material(vMaterial), m_VAO(0), m_VBO(0), m_EBO(0)
 {
 	__setupMesh();
 }
@@ -20,13 +20,11 @@ CMesh::~CMesh()
 void CMesh::draw(GLuint vShaderProgram)
 {
 	GLuint DiffuseNr = 1;
-	GLuint SpecularNr = 1;
 	for (GLuint i = 0; i < m_Textures.size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
 
 		std::stringstream SStream;
-		std::string Number;
 		std::string Name = m_Textures[i].Type;
 		SStream << Name;
 		if (Name == "uTextureAlbedo")
@@ -37,6 +35,8 @@ void CMesh::draw(GLuint vShaderProgram)
 
 		glBindTexture(GL_TEXTURE_2D, m_Textures[i].Id);
 	}
+	glUniform3f(glGetUniformLocation(vShaderProgram, "uMaterialAmbient"), m_Material.Amibent.r, m_Material.Amibent.g, m_Material.Amibent.b);
+	glUniform3f(glGetUniformLocation(vShaderProgram, "uMaterialDiffuse"), m_Material.Diffuse.r, m_Material.Diffuse.g, m_Material.Diffuse.b);
 
 	glBindVertexArray(m_VAO);
 	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, nullptr);
