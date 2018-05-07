@@ -42,5 +42,20 @@ bool CYGGTechnique::initTechniqueV()
 	pGeometryPass->addShader("res/shaders/ForwardPBRShading_FS.glsl", FRAGMENT_SHADER);
 	addShader("GeometryPass", pGeometryPass);
 
+	auto pTemporalAAPass = new CShader;
+	pTemporalAAPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);
+	pTemporalAAPass->addShader("res/shaders/TemporalAntialiasing_FS.glsl", FRAGMENT_SHADER);
+	addShader("TemporalAntiAliasingPass", pTemporalAAPass);
+
+	auto pHistoryTextureCopyPass = new CShader;
+	pHistoryTextureCopyPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);
+	pHistoryTextureCopyPass->addShader("res/shaders/TextureCopy_FS.glsl", FRAGMENT_SHADER);
+	addShader("HistoryTextureCopyPass", pHistoryTextureCopyPass);
+
+	auto pPostprocessPass = new CShader;
+	pPostprocessPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);
+	pPostprocessPass->addShader("res/shaders/PostProcess_FS.glsl", FRAGMENT_SHADER);
+	addShader("PostprocessPass", pPostprocessPass);
+
 	return true;
 }

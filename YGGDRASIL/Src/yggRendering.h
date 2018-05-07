@@ -8,6 +8,7 @@
 class CCamera;
 class CModel;
 class CYGGTechnique;
+class CTemporalAntialiasing;
 
 class CYGGRendering
 {
@@ -25,6 +26,7 @@ private:
 	void __initTextures();
 	void __initBuffers();
 	void __initMatrixs();
+	void __initTemporalAntialiasing();
 
 	void __equirectangular2CubemapPass();
 	void __createIrradianceCubemapPass();
@@ -32,8 +34,11 @@ private:
 	void __createPrefilterCubeMapPass();
 	void __envmapPass();
 	void __geometryPass();
-	void __doMovement();
+	void __temporalAAPass();
+	void __copyHistoryTexturePass();
+	void __postProcessPass();
 
+	void __handleKeyEvent();
 	void __destory();
 
 	static void __keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, int vAction, int vMode);
@@ -42,16 +47,21 @@ private:
 	static void __scrollCallback(GLFWwindow* vWindow, double vXOffset, double vYOffset);
 
 private:
-	GLFWwindow*		m_pWindow;
-	CModel*			m_pModel;
-	CModel*			m_pEvnCube;
-	CYGGTechnique*	m_pTechnique;
+	GLFWwindow *m_pWindow;
+	CModel *m_pModel;
+	CModel *m_pEvnCube;
+	CYGGTechnique *m_pRenderingTechnique;
+	CTemporalAntialiasing *m_pTemporalAntialiasingComp;
 
 	GLuint m_CaptureFBO;
 	GLuint m_CaptureRBO;
 
 	GLuint m_EnvironmentTex;
 	GLuint m_BRDFIntegrationTex;
+	GLuint m_CurrentSceneTex;
+	GLuint m_FinalSceneTex;
+	GLuint m_HistorySceneTex;
+	GLuint m_MotionVectorTex;
 	GLuint m_EnvCubemap;
 	GLuint m_IrradianceMap;
 	GLuint m_PrefilterMap;
@@ -62,4 +72,6 @@ private:
 
 	GLfloat m_DeltaTime = 0.0f;
 	GLfloat m_LastFrame = 0.0f;
+
+	bool m_IsUsingTAA;
 };
