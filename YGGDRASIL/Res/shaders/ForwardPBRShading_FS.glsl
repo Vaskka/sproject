@@ -13,10 +13,6 @@ uniform vec3 uLightDirectionW = vec3(0, 0, -1);
 uniform vec3 uLightColor = vec3(5.0, 5.0, 5.0);
 uniform float uIBLIntensity = 1.0f;
 
-uniform vec2 uHistorySampleLocation;
-uniform vec2 uCurrentSampleLocation;
-uniform vec2 uWindowSize;
-
 in vec3 _PositionW;
 in vec3 _NormalW;
 in vec2 _TexCoord;
@@ -39,8 +35,7 @@ vec3 shadingWithUnrealModelForImageBasedLight(vec3 vAlbedo, float vRoughness, fl
 vec3 shadingWithUnrealModelForParallelLight(vec3 vAlbedo, float vMetallic, float vRoughness, vec3 vNormalW, vec3 vLightColor, vec3 vViewDirW, vec3 vLightDirW);
 
 vec3 getNDCCoord(vec4 vPositionP);
-vec2 calculateSampleOffsetInNDCSpace(vec2 vSampleLocation, vec2 vTextureSize);
-vec2 calculateMotionVector(vec4 vHistoryPositionP, vec4 vCurrentPositionP, vec2 vHistorySampleLocation, vec2 vCurrentSampleLocation, vec2 vWindowSize);
+vec2 calculateMotionVector(vec4 vHistoryPositionP, vec4 vCurrentPositionP);
 
 void main()
 {
@@ -60,8 +55,8 @@ void main()
 
 	_outFragColor = vec4(Lo, 1.0);
 
-	vec2 MotionVector = calculateMotionVector(_HistoryPositionP, _CurrentPositionP, uHistorySampleLocation, uCurrentSampleLocation, uWindowSize);
-	_outMotionVector = vec2(0.0, 1.0);
+	vec2 MotionVector = calculateMotionVector(_HistoryPositionP, _CurrentPositionP);
+	_outMotionVector = MotionVector;
 }
 
 vec3 shadingWithUnrealModelForImageBasedLight(vec3 vAlbedo, float vRoughness, float vMetallic, vec3 vNormalW, vec3 vViewDirW)
@@ -164,22 +159,11 @@ vec3 getNDCCoord(vec4 vPositionP)
 	return PositionNDC;
 }
 
-vec2 calculateSampleOffsetInNDCSpace(vec2 vSampleLocation, vec2 vTextureSize)
-{
-	vec2 SampleOffset = vSampleLocation * vec2(2.0f) - vec2(1.0);
-	return SampleOffset / vTextureSize;
-}
-
-vec2 calculateMotionVector(vec4 vHistoryPositionP, vec4 vCurrentPositionP, vec2 vHistorySampleLocation, vec2 vCurrentSampleLocation, vec2 vWindowSize)
+vec2 calculateMotionVector(vec4 vHistoryPositionP, vec4 vCurrentPositionP)
 {
 	vec2 HistoryPosNDC = getNDCCoord(vHistoryPositionP).xy;
 	vec2 CurrentPosNDC = getNDCCoord(vCurrentPositionP).xy;
-	//vec2 HistorySampleOffsetInNDC = calculateSampleOffsetInNDCSpace(vHistorySampleLocation, vWindowSize);
-	//vec2 CurrentSampleOffsetInNDC = calculateSampleOffsetInNDCSpace(vCurrentSampleLocation, vWindowSize);
 
-	//HistoryPosNDC -= HistorySampleOffsetInNDC;
-	//CurrentPosNDC -= CurrentSampleOffsetInNDC;
-	//return CurrentSampleOffsetInNDC * vec2(1000.0);
-	vec2 MotionVector = (HistoryPosNDC - CurrentPosNDC); // * vec2(0.5, 0.5); // *vec2(0.5, 0.5);
-	return MotionVector; // *vec2(1000.0);
+	vec2 MotionVector = (HistoryPosNDC - CurrentPosNDC);
+	return MotionVector;
 }

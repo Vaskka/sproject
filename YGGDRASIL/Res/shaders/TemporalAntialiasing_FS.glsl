@@ -27,8 +27,6 @@ void main()
 		FinalColor = CurrentColor;
 
 	_outFragColor = vec4(FinalColor, 1.0);
-	//vec2 TexCoords = vec2(gl_FragCoord.x / uScreenSize.x, gl_FragCoord.y / uScreenSize.y);
-	//_outFragColor = texture(uCurrentSceneTexture, TexCoords);
 }
 
 vec3 minVec3(vec3 vLhs, vec3 vRhs)
