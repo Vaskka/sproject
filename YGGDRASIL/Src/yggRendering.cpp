@@ -16,8 +16,8 @@ namespace
 	CCamera g_Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	const std::string EVN_MAP_PATH = "res/textures/UnderTheSea4k.hdr";
-	const std::string GEOMERY_MODEL_PATH = "res/objects/nanosuit/nanosuit.obj";
-	//const std::string GEOMERY_MODEL_PATH = "res/objects/miku/miku_snow/miku.obj";
+	//const std::string GEOMERY_MODEL_PATH = "res/objects/emeishan/emeishan.obj";
+	const std::string GEOMERY_MODEL_PATH = "res/objects/miku/miku_snow/miku.obj";
 	const std::string CUBE_MODEL_PATH = "res/objects/cube.obj";
 	const unsigned int EVN_MAP_SIZE = 1024;
 	const unsigned int IRRADIANCE_MAP_SIZE = 128;
@@ -168,6 +168,8 @@ void CYGGRendering::__initMatrixs()
 	m_CaptureViews[3] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 	m_CaptureViews[4] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 	m_CaptureViews[5] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+
+	m_ProjectionMatrix = glm::perspective(g_Camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, CAMERA_NEAR, CAMERA_FAR);
 }
 
 //*********************************************************************************
@@ -175,9 +177,6 @@ void CYGGRendering::__initMatrixs()
 void CYGGRendering::__initTemporalAntialiasing()
 {
 	auto pSampleGenerator = new CHaltonSampleGenerator(2, 8);
-
-	float ProjectionMatrix[16];
-	float ViewMatrix[16];
 
 	m_pTemporalAntialiasingComp = new CTemporalAntialiasing(pSampleGenerator, m_ProjectionMatrix, g_Camera.getViewMatrix(), SCR_WIDTH, SCR_HEIGHT);
 }
@@ -356,7 +355,6 @@ void CYGGRendering::__geometryPass()
 	glm::mat4 ModelMatrix;
 	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -1.5f, 0.0f));
 	ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.02f, 0.02f, 0.02f));
-	m_ProjectionMatrix = glm::perspective(g_Camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, CAMERA_NEAR, CAMERA_FAR);
 	m_pRenderingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
 	m_pRenderingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
 	m_pRenderingTechnique->updateStandShaderUniform("uModelMatrix", ModelMatrix);
@@ -367,11 +365,14 @@ void CYGGRendering::__geometryPass()
 
 	//update uniforms for TAA
 	m_pTemporalAntialiasingComp->update(m_ProjectionMatrix, g_Camera.getViewMatrix());
+	m_pTemporalAntialiasingComp->update(m_ProjectionMatrix, g_Camera.getViewMatrix());
 	auto undoOffset = [](glm::mat4& vDest, const glm::mat4& vSrc) {
 		vDest = vSrc;
 		vDest[2][0] = 0.0f;
 		vDest[2][1] = 0.0f;
 	};
+	m_ProjectionMatrix = m_pTemporalAntialiasingComp->getCurrentCameraInfo().ProjectionMatrix;
+
 	SCameraMatrixInfo& CurrentCameraMatrixInfo = m_pTemporalAntialiasingComp->getCurrentCameraInfo();
 	SCameraMatrixInfo& HistoryCameraMatrixInfo = m_pTemporalAntialiasingComp->getLastCameraInfo();
 	glm::mat4 HistoryProjectionMatrix;
@@ -392,6 +393,8 @@ void CYGGRendering::__geometryPass()
 	m_pModel->draw(m_pRenderingTechnique->getProgramID("GeometryPass"));
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
+	glDrawBuffers(1, Attachments);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	m_pRenderingTechnique->disableShader();
@@ -406,6 +409,7 @@ void CYGGRendering::__temporalAAPass()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FinalSceneTex, 0);
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_pRenderingTechnique->enableShader("TemporalAntiAliasingPass");
 	m_pRenderingTechnique->updateStandShaderUniform("uCurrentSceneTexture", 0);

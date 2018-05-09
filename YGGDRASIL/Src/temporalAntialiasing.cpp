@@ -100,6 +100,6 @@ void CTemporalAntialiasing::__modifyCurrentProjectionMatrix()
 {
 	//m_CurrentCameraInfo.ProjectionMatrix[2 * 4] = (m_CurrentSample.first * 2.0f - 1.0f) / static_cast<float>(m_WindowWidth);
 	//m_CurrentCameraInfo.ProjectionMatrix[2 * 4 + 1] = (m_CurrentSample.second * 2.0f - 1.0f) / static_cast<float>(m_WindowHeight);
-	m_CurrentCameraInfo.ProjectionMatrix[2][0] = -(m_CurrentSample.first * 2.0f - 1.0f) / static_cast<float>(m_WindowWidth);
-	m_CurrentCameraInfo.ProjectionMatrix[2][1] = -(m_CurrentSample.second * -2.0f + 1.0f) / static_cast<float>(m_WindowHeight);
+	m_CurrentCameraInfo.ProjectionMatrix[2][0] = (m_CurrentSample.first * 2.0f - 1.0f) / static_cast<float>(m_WindowWidth);
+	m_CurrentCameraInfo.ProjectionMatrix[2][1] = (m_CurrentSample.second * 2.0f - 1.0f) / static_cast<float>(m_WindowHeight);
 }
