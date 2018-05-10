@@ -3,6 +3,7 @@
 #include <utility>
 #include <glm/glm.hpp>
 #include "sampleGenerator.h"
+#include "technique.h"
 
 struct SCameraMatrixInfo
 {
@@ -15,10 +16,13 @@ public:
 	void setViewMatrix(const glm::mat4& vViewMatrix) { ViewMatrix = vViewMatrix; };
 };
 
-class CTemporalAntialiasing
+class CTAATechnique : public CTechnique
 {
 public:
-	CTemporalAntialiasing(CSampleGenerator* vSampleGenerator, const glm::mat4& vProjectionMatrix, glm::mat4& vViewMatrix, unsigned int vWindowWidth, unsigned int vWindowHeight);
+	CTAATechnique(CSampleGenerator* vSampleGenerator, const glm::mat4& vProjectionMatrix, const glm::mat4& vViewMatrix, unsigned int vWindowWidth, unsigned int vWindowHeight);
+
+	virtual void initTechniqueV() override;
+
 	void setLastSample(const CSample& vLastSample);
 	void setCurrentSample(const CSample& vCurrentSample);
 	void setLastCameraInfo(const SCameraMatrixInfo& vCameraInfo);
@@ -29,10 +33,11 @@ public:
 	SCameraMatrixInfo& getCurrentCameraInfo();
 	CSample getSample() const;
 	void update(const glm::mat4& vCurrentProjectionMatrix, const glm::mat4& vCurrentViewMatrix);
+	void undoProjectionOffset(glm::mat4& vDest, const glm::mat4& vSrc) const;
 
 private:
 	void __modifyCurrentProjectionMatrix();
-
+	
 private:
 	CSampleGenerator *m_pSampleGenerator;
 	SCameraMatrixInfo m_LastCameraInfo;

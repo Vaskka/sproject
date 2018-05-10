@@ -1,36 +1,27 @@
 #include "yggRendering.h"
+#include "scene.h"
 #include "model.h"
 #include "camera.h"
-#include "yggTechnique.h"
+#include "yggShadingTechnique.h"
 #include "textureUtil.h"
 #include "renderUtil.h"
 #include "haltonSampleGenerator.h"
-#include "temporalAntialiasing.h"
+#include "temporalAATechnique.h"
+#include "constants.h"
+
+using namespace Constant;
 
 namespace
 {
-	int SCR_WIDTH = 1920;
-	int SCR_HEIGHT = 1080;
 	bool g_Keys[1024];
 	bool g_Buttons[3];
-	CCamera g_Camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
-	const std::string EVN_MAP_PATH = "res/textures/UnderTheSea4k.hdr";
-	//const std::string GEOMERY_MODEL_PATH = "res/objects/emeishan/emeishan.obj";
-	const std::string GEOMERY_MODEL_PATH = "res/objects/miku/miku_snow/miku.obj";
-	const std::string CUBE_MODEL_PATH = "res/objects/cube.obj";
-	const unsigned int EVN_MAP_SIZE = 1024;
-	const unsigned int IRRADIANCE_MAP_SIZE = 128;
-	const unsigned int PREFILTERED_MAP_SIZE = 1024;
-	const unsigned int BRDF_INT_MAP_SIZE = 1024;
-	const unsigned int PREFILTER_MAX_MIP_LEVELS = 6;
-
-	const float CAMERA_NEAR = 0.001f;
-	const float CAMERA_FAR = 100.0f;
 }
 
-CYGGRendering::CYGGRendering() : m_pWindow(nullptr), m_pModel(nullptr), m_pRenderingTechnique(nullptr), m_pEvnCube(nullptr), m_pTemporalAntialiasingComp(nullptr), m_IsUsingTAA(true)
+CScene* CYGGRendering::m_pScene = nullptr;
+
+CYGGRendering::CYGGRendering() : m_pShadingTechnique(nullptr), m_pTAATechnique(nullptr), m_IsUsingTAA(true)
 {
+
 }
 
 CYGGRendering::~CYGGRendering()
@@ -40,90 +31,81 @@ CYGGRendering::~CYGGRendering()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRendering::init()
+void CYGGRendering::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight)
 {
-	__initGLFW("YGGDRASIL");
-	__initShaders();
-	__initModels();
+	COpenGLRendering::initV(vWindowTitle, vWindowWidth, vWindowHeight);
+
+	__initScene();
+	__initTechniques();
 	__initTextures();
 	__initMatrixs();
 	__initBuffers();
-	__initTemporalAntialiasing();
 
 	__equirectangular2CubemapPass();
 	__createIrradianceCubemapPass();
 	__createBRDFIntegrationTexPass();
 	__createPrefilterCubeMapPass();
-}
-
-//*********************************************************************************
-//FUNCTION:
-void CYGGRendering::draw()
-{
-	while (!glfwWindowShouldClose(m_pWindow))
-	{
-		GLfloat CurrentFrame = glfwGetTime();
-		m_DeltaTime = CurrentFrame - m_LastFrame;
-		m_LastFrame = CurrentFrame;
-
-		glfwPollEvents();
-		__handleKeyEvent();
-
-		__geometryPass();
-		__envmapPass();
-		__temporalAAPass();
-		__copyHistoryTexturePass();
-		__postProcessPass();
-
-		glfwSwapBuffers(m_pWindow);
-	}
-	glfwTerminate();
-}
-
-//*********************************************************************************
-//FUNCTION:
-void CYGGRendering::__initGLFW(const std::string& vWindowTitle)
-{
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-
-	m_pWindow = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, vWindowTitle.c_str(), nullptr, nullptr);
-	_ASSERTE(m_pWindow);
-	glfwMakeContextCurrent(m_pWindow);
 
 	glfwSetKeyCallback(m_pWindow, __keyCallback);
 	glfwSetCursorPosCallback(m_pWindow, __cursorPosCallback);
 	glfwSetMouseButtonCallback(m_pWindow, __mouseButtonCallback);
 	glfwSetScrollCallback(m_pWindow, __scrollCallback);
-	glewExperimental = GL_TRUE;
-
-	glewInit();
-	glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRendering::__initShaders()
+void CYGGRendering::_drawV()
 {
-	m_pRenderingTechnique = new CYGGTechnique();
-	m_pRenderingTechnique->initTechniqueV();
+	__geometryPass();
+	__envmapPass();
+	__temporalAAPass();
+	__copyHistoryTexturePass();
+	__postProcessPass();
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRendering::__initModels()
+void CYGGRendering::_handleEventsV()
 {
-	m_pModel = new CModel();
-	m_pModel->load(GEOMERY_MODEL_PATH);
+	if (g_Keys[GLFW_KEY_W])
+		m_pScene->getCamera()->processKeyboard(FORWARD, m_DeltaTime);
+	if (g_Keys[GLFW_KEY_S])
+		m_pScene->getCamera()->processKeyboard(BACKWARD, m_DeltaTime);
+	if (g_Keys[GLFW_KEY_A])
+		m_pScene->getCamera()->processKeyboard(LEFT, m_DeltaTime);
+	if (g_Keys[GLFW_KEY_D])
+		m_pScene->getCamera()->processKeyboard(RIGHT, m_DeltaTime);
+	if (g_Keys[GLFW_KEY_Q])
+		m_pScene->getCamera()->processKeyboard(UP, m_DeltaTime);
+	if (g_Keys[GLFW_KEY_E])
+		m_pScene->getCamera()->processKeyboard(DOWN, m_DeltaTime);
+}
 
-	m_pEvnCube = new CModel();
-	m_pEvnCube->load(CUBE_MODEL_PATH);
+//*********************************************************************************
+//FUNCTION:
+void CYGGRendering::__initTechniques()
+{
+	m_pShadingTechnique = new CYGGShadingTechnique();
+	m_pShadingTechnique->initTechniqueV();
+
+	m_pTAATechnique = new CTAATechnique(new CHaltonSampleGenerator(2, 8), m_ProjectionMatrix, m_pScene->getCamera()->getViewMatrix(), WIN_WIDTH, WIN_HEIGHT);
+	m_pTAATechnique->initTechniqueV();
+}
+
+//*********************************************************************************
+//FUNCTION:
+void CYGGRendering::__initScene()
+{
+	m_pScene = CScene::getInstance();
+	m_pScene->initScene();
+
+	auto pModelNanosuit = new CModel();
+	pModelNanosuit->load("res/objects/nanosuit/nanosuit.obj");
+	m_pScene->addModel(pModelNanosuit);
+
+	auto pModelMiku = new CModel();
+	pModelMiku->load("res/objects/miku/miku_snow/miku.obj");
+	m_pScene->addModel(pModelMiku);
 }
 
 //*********************************************************************************
@@ -136,10 +118,10 @@ void CYGGRendering::__initTextures()
 
 	m_EnvironmentTex = util::loadTexture(EVN_MAP_PATH.c_str());
 	m_BRDFIntegrationTex = util::setupTexture(BRDF_INT_MAP_SIZE, BRDF_INT_MAP_SIZE);
-	m_CurrentSceneTex = util::setupTexture(SCR_WIDTH, SCR_HEIGHT);
-	m_FinalSceneTex = util::setupTexture(SCR_WIDTH, SCR_HEIGHT);
-	m_HistorySceneTex = util::setupTexture(SCR_WIDTH, SCR_HEIGHT);
-	m_MotionVectorTex = util::setupTexture(SCR_WIDTH, SCR_HEIGHT, GL_RG32F, GL_RG);
+	m_CurrentSceneTex = util::setupTexture(WIN_WIDTH, WIN_HEIGHT);
+	m_FinalSceneTex = util::setupTexture(WIN_WIDTH, WIN_HEIGHT);
+	m_HistorySceneTex = util::setupTexture(WIN_WIDTH, WIN_HEIGHT);
+	m_MotionVectorTex = util::setupTexture(WIN_WIDTH, WIN_HEIGHT, GL_RG32F, GL_RG);
 }
 
 //*********************************************************************************
@@ -169,29 +151,20 @@ void CYGGRendering::__initMatrixs()
 	m_CaptureViews[4] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 	m_CaptureViews[5] = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 
-	m_ProjectionMatrix = glm::perspective(g_Camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, CAMERA_NEAR, CAMERA_FAR);
-}
-
-//*********************************************************************************
-//FUNCTION:
-void CYGGRendering::__initTemporalAntialiasing()
-{
-	auto pSampleGenerator = new CHaltonSampleGenerator(2, 8);
-
-	m_pTemporalAntialiasingComp = new CTemporalAntialiasing(pSampleGenerator, m_ProjectionMatrix, g_Camera.getViewMatrix(), SCR_WIDTH, SCR_HEIGHT);
+	m_ProjectionMatrix = glm::perspective(m_pScene->getCamera()->Zoom, (float)WIN_WIDTH / (float)WIN_HEIGHT, CAMERA_NEAR, CAMERA_FAR);
 }
 
 //*********************************************************************************
 //FUNCTION:
 void CYGGRendering::__equirectangular2CubemapPass()
 {
-	m_pRenderingTechnique->enableShader("Equirectangular2CubemapPass");
-	m_pRenderingTechnique->updateTextureShaderUniform("equirectangularMap", 0);
+	m_pShadingTechnique->enableShader("Equirectangular2CubemapPass");
+	m_pShadingTechnique->updateTextureShaderUniform("equirectangularMap", 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_EnvironmentTex);
 
-	m_pRenderingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
+	m_pShadingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
 	glViewport(0, 0, EVN_MAP_SIZE, EVN_MAP_SIZE);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 
@@ -205,16 +178,16 @@ void CYGGRendering::__equirectangular2CubemapPass()
 		glViewport(0, 0, mipWidth, mipHeight);
 		for (unsigned int i = 0; i < 6; ++i)
 		{
-			m_pRenderingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
+			m_pShadingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_EnvCubemap, mip);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_pEvnCube->draw(m_pRenderingTechnique->getProgramID("Equirectangular2CubemapPass"));
+			util::renderCube();
 		}
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -226,25 +199,25 @@ void CYGGRendering::__createIrradianceCubemapPass()
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, IRRADIANCE_MAP_SIZE, IRRADIANCE_MAP_SIZE);
 
-	m_pRenderingTechnique->enableShader("IrradianceCubemapPass");
-	m_pRenderingTechnique->updateTextureShaderUniform("environmentMap", 0);
+	m_pShadingTechnique->enableShader("IrradianceCubemapPass");
+	m_pShadingTechnique->updateTextureShaderUniform("environmentMap", 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap);
 
-	m_pRenderingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
+	m_pShadingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
 	glViewport(0, 0, IRRADIANCE_MAP_SIZE, IRRADIANCE_MAP_SIZE);
 
 	for (unsigned int i = 0; i < 6; ++i)
 	{
-		m_pRenderingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
+		m_pShadingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_IrradianceMap, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_pEvnCube->draw(m_pRenderingTechnique->getProgramID("IrradianceCubemapPass"));
+		util::renderCube();
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 }
 
 //*********************************************************************************
@@ -258,11 +231,11 @@ void CYGGRendering::__createBRDFIntegrationTexPass()
 
 	glViewport(0, 0, BRDF_INT_MAP_SIZE, BRDF_INT_MAP_SIZE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	m_pRenderingTechnique->enableShader("BRDFIntegrationPass");
+	m_pShadingTechnique->enableShader("BRDFIntegrationPass");
 	util::renderScreenQuad();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 }
 
 //*********************************************************************************
@@ -273,11 +246,11 @@ void CYGGRendering::__createPrefilterCubeMapPass()
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, PREFILTERED_MAP_SIZE, PREFILTERED_MAP_SIZE);
 
-	m_pRenderingTechnique->enableShader("PrefilterCubemapPass");
-	m_pRenderingTechnique->updateTextureShaderUniform("environmentMap", 0);
+	m_pShadingTechnique->enableShader("PrefilterCubemapPass");
+	m_pShadingTechnique->updateTextureShaderUniform("environmentMap", 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap);
-	m_pRenderingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
+	m_pShadingTechnique->updateStandShaderUniform("projection", m_CaptureProjection);
 	glViewport(0, 0, PREFILTERED_MAP_SIZE, PREFILTERED_MAP_SIZE);
 
 	unsigned int maxMipLevels = PREFILTER_MAX_MIP_LEVELS;
@@ -291,19 +264,19 @@ void CYGGRendering::__createPrefilterCubeMapPass()
 		glViewport(0, 0, mipWidth, mipHeight);
 
 		float roughness = (float)mip / (float)(maxMipLevels - 1);
-		m_pRenderingTechnique->updateStandShaderUniform("roughness", roughness);
+		m_pShadingTechnique->updateStandShaderUniform("roughness", roughness);
 		for (unsigned int i = 0; i < 6; ++i)
 		{
-			m_pRenderingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
+			m_pShadingTechnique->updateStandShaderUniform("view", m_CaptureViews[i]);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_PrefilterMap, mip);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			m_pEvnCube->draw(m_pRenderingTechnique->getProgramID("PrefilterCubemapPass"));
+			util::renderCube();
 		}
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 }
 
 //*********************************************************************************
@@ -312,25 +285,27 @@ void CYGGRendering::__envmapPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_CurrentSceneTex, 0);
 
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glDepthFunc(GL_LEQUAL);
-	m_pRenderingTechnique->enableShader("EvnMapPass");
+	m_pShadingTechnique->enableShader("EvnMapPass");
 
-	glm::mat4 ViewMatrix = g_Camera.getViewMatrix();
-	m_pRenderingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uEnvmap", 0);
+	glm::mat4 ProjectionMatrix;
+	m_pTAATechnique->undoProjectionOffset(ProjectionMatrix, m_ProjectionMatrix);
+	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
+	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", ProjectionMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uEnvmap", 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap);
-	m_pEvnCube->draw(m_pRenderingTechnique->getProgramID("EvnMapPass"));
+	util::renderCube();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 	glDepthFunc(GL_LESS);
 }
 
@@ -340,49 +315,43 @@ void CYGGRendering::__geometryPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_CurrentSceneTex, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_MotionVectorTex, 0);
 	GLuint Attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 	glDrawBuffers(2, Attachments);
 
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	m_pRenderingTechnique->enableShader("GeometryPass");
+	m_pShadingTechnique->enableShader("GeometryPass");
 
 	//update uniforms for PBR
-	glm::mat4 ViewMatrix = g_Camera.getViewMatrix();
+	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
 	glm::mat4 ModelMatrix;
-	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -1.5f, 0.0f));
-	ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.02f, 0.02f, 0.02f));
-	m_pRenderingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uModelMatrix", ModelMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uEyePositionW", g_Camera.Position);
-	m_pRenderingTechnique->updateStandShaderUniform("uIrradianceMap", 5);
-	m_pRenderingTechnique->updateStandShaderUniform("uPrefilteredMap", 6);
-	m_pRenderingTechnique->updateStandShaderUniform("uBrdfIntegrationMap", 7);
+	ModelMatrix = glm::translate(ModelMatrix, MODEL_INIT_TRANSLATE);
+	ModelMatrix = glm::scale(ModelMatrix, MODEL_INIT_SCALE);
+	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uModelMatrix", ModelMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uEyePositionW", m_pScene->getCamera()->Position);
+	m_pShadingTechnique->updateStandShaderUniform("uIrradianceMap", 5);
+	m_pShadingTechnique->updateStandShaderUniform("uPrefilteredMap", 6);
+	m_pShadingTechnique->updateStandShaderUniform("uBrdfIntegrationMap", 7);
 
 	//update uniforms for TAA
-	m_pTemporalAntialiasingComp->update(m_ProjectionMatrix, g_Camera.getViewMatrix());
-	m_pTemporalAntialiasingComp->update(m_ProjectionMatrix, g_Camera.getViewMatrix());
-	auto undoOffset = [](glm::mat4& vDest, const glm::mat4& vSrc) {
-		vDest = vSrc;
-		vDest[2][0] = 0.0f;
-		vDest[2][1] = 0.0f;
-	};
-	m_ProjectionMatrix = m_pTemporalAntialiasingComp->getCurrentCameraInfo().ProjectionMatrix;
+	m_pTAATechnique->update(m_ProjectionMatrix, m_pScene->getCamera()->getViewMatrix());
+	m_ProjectionMatrix = m_pTAATechnique->getCurrentCameraInfo().ProjectionMatrix;
 
-	SCameraMatrixInfo& CurrentCameraMatrixInfo = m_pTemporalAntialiasingComp->getCurrentCameraInfo();
-	SCameraMatrixInfo& HistoryCameraMatrixInfo = m_pTemporalAntialiasingComp->getLastCameraInfo();
+	SCameraMatrixInfo& CurrentCameraMatrixInfo = m_pTAATechnique->getCurrentCameraInfo();
+	SCameraMatrixInfo& HistoryCameraMatrixInfo = m_pTAATechnique->getLastCameraInfo();
 	glm::mat4 HistoryProjectionMatrix;
-	undoOffset(HistoryProjectionMatrix, HistoryCameraMatrixInfo.ProjectionMatrix);
+	m_pTAATechnique->undoProjectionOffset(HistoryProjectionMatrix, HistoryCameraMatrixInfo.ProjectionMatrix);
 	glm::mat4 CurrentProjectionMatrix;
-	undoOffset(CurrentProjectionMatrix, CurrentCameraMatrixInfo.ProjectionMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uHistoryProjectionMatrix", HistoryProjectionMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uHistoryViewMatrix", HistoryCameraMatrixInfo.ViewMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uCurrentProjectionMatrix", CurrentProjectionMatrix);
-	m_pRenderingTechnique->updateStandShaderUniform("uUseTAA", (float)m_IsUsingTAA);
+	m_pTAATechnique->undoProjectionOffset(CurrentProjectionMatrix, CurrentCameraMatrixInfo.ProjectionMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uHistoryProjectionMatrix", HistoryProjectionMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uHistoryViewMatrix", HistoryCameraMatrixInfo.ViewMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uCurrentProjectionMatrix", CurrentProjectionMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uUseTAA", (float)m_IsUsingTAA);
 
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_IrradianceMap);
@@ -390,14 +359,18 @@ void CYGGRendering::__geometryPass()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_PrefilterMap);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, m_BRDFIntegrationTex);
-	m_pModel->draw(m_pRenderingTechnique->getProgramID("GeometryPass"));
+	for (int i = 0; i < m_pScene->getNumModels(); ++i)
+	{
+		auto pModel = m_pScene->getModelAt(i);
+		pModel->draw(m_pShadingTechnique->getProgramID("GeometryPass"));
+	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
 	glDrawBuffers(1, Attachments);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 }
 
 //*********************************************************************************
@@ -406,16 +379,16 @@ void CYGGRendering::__temporalAAPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FinalSceneTex, 0);
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_pRenderingTechnique->enableShader("TemporalAntiAliasingPass");
-	m_pRenderingTechnique->updateStandShaderUniform("uCurrentSceneTexture", 0);
-	m_pRenderingTechnique->updateStandShaderUniform("uHistorySceneTexture", 1);
-	m_pRenderingTechnique->updateStandShaderUniform("uMotionVectorTexture", 2);
-	m_pRenderingTechnique->updateStandShaderUniform("uUseTAA", (float)m_IsUsingTAA);
+	m_pShadingTechnique->enableShader("TemporalAntiAliasingPass");
+	m_pShadingTechnique->updateStandShaderUniform("uCurrentSceneTexture", 0);
+	m_pShadingTechnique->updateStandShaderUniform("uHistorySceneTexture", 1);
+	m_pShadingTechnique->updateStandShaderUniform("uMotionVectorTexture", 2);
+	m_pShadingTechnique->updateStandShaderUniform("uUseTAA", (float)m_IsUsingTAA);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_CurrentSceneTex);
@@ -425,7 +398,7 @@ void CYGGRendering::__temporalAAPass()
 	glBindTexture(GL_TEXTURE_2D, m_MotionVectorTex);
 	util::renderScreenQuad();
 
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -437,20 +410,20 @@ void CYGGRendering::__copyHistoryTexturePass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_HistorySceneTex, 0);
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_pRenderingTechnique->enableShader("HistoryTextureCopyPass");
-	m_pRenderingTechnique->updateStandShaderUniform("uSceneTexture", 0);
+	m_pShadingTechnique->enableShader("HistoryTextureCopyPass");
+	m_pShadingTechnique->updateStandShaderUniform("uSceneTexture", 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_FinalSceneTex);
 	util::renderScreenQuad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	m_pRenderingTechnique->disableShader();
+	m_pShadingTechnique->disableShader();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
@@ -459,46 +432,27 @@ void CYGGRendering::__copyHistoryTexturePass()
 //FUNCTION:
 void CYGGRendering::__postProcessPass()
 {
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_pRenderingTechnique->enableShader("PostprocessPass");
-	m_pRenderingTechnique->updateStandShaderUniform("uSceneTexture", 0);
+	m_pShadingTechnique->enableShader("PostprocessPass");
+	m_pShadingTechnique->updateStandShaderUniform("uSceneTexture", 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_FinalSceneTex);
 	util::renderScreenQuad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	m_pRenderingTechnique->disableShader();
-}
-
-//*********************************************************************************
-//FUNCTION:
-void CYGGRendering::__handleKeyEvent()
-{
-	if (g_Keys[GLFW_KEY_W])
-		g_Camera.processKeyboard(FORWARD, m_DeltaTime);
-	if (g_Keys[GLFW_KEY_S])
-		g_Camera.processKeyboard(BACKWARD, m_DeltaTime);
-	if (g_Keys[GLFW_KEY_A])
-		g_Camera.processKeyboard(LEFT, m_DeltaTime);
-	if (g_Keys[GLFW_KEY_D])
-		g_Camera.processKeyboard(RIGHT, m_DeltaTime);
-	if (g_Keys[GLFW_KEY_Q])
-		g_Camera.processKeyboard(UP, m_DeltaTime);
-	if (g_Keys[GLFW_KEY_E])
-		g_Camera.processKeyboard(DOWN, m_DeltaTime);
+	m_pShadingTechnique->disableShader();
 }
 
 //*********************************************************************************
 //FUNCTION:
 void CYGGRendering::__destory()
 {
-	if (m_pModel) delete m_pModel;
-	if (m_pEvnCube) delete m_pEvnCube;
-	if (m_pRenderingTechnique) delete m_pRenderingTechnique;
-	if (m_pTemporalAntialiasingComp) delete m_pTemporalAntialiasingComp;
+	if (m_pScene) m_pScene->destroyScene();
+	if (m_pShadingTechnique) delete m_pShadingTechnique;
+	if (m_pTAATechnique) delete m_pTAATechnique;
 }
 
 //*********************************************************************************
@@ -521,8 +475,8 @@ void CYGGRendering::__keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, 
 void CYGGRendering::__cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	static bool FirstMouse = true;
-	static GLfloat LastX = SCR_WIDTH / 2.0;
-	static GLfloat LastY = SCR_HEIGHT / 2.0;
+	static GLfloat LastX = WIN_WIDTH / 2.0;
+	static GLfloat LastY = WIN_HEIGHT / 2.0;
 	if (FirstMouse)
 	{
 		LastX = xpos;
@@ -537,7 +491,7 @@ void CYGGRendering::__cursorPosCallback(GLFWwindow* window, double xpos, double 
 	LastY = ypos;
 
 	if (g_Buttons[GLFW_MOUSE_BUTTON_LEFT])
-		g_Camera.processMouseMovement(xoffset, yoffset);
+		m_pScene->getCamera()->processMouseMovement(xoffset, yoffset);
 }
 
 //*********************************************************************************
@@ -557,5 +511,5 @@ void CYGGRendering::__mouseButtonCallback(GLFWwindow* vWindow, int vButton, int 
 //FUNCTION:
 void CYGGRendering::__scrollCallback(GLFWwindow* vWindow, double vXOffset, double vYOffset)
 {
-	g_Camera.processMouseScroll(vYOffset);
+	m_pScene->getCamera()->processMouseScroll(vYOffset);
 }

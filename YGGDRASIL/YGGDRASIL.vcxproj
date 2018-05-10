@@ -136,27 +136,34 @@
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\mesh.cpp" />
     <ClCompile Include="Src\model.cpp" />
+    <ClCompile Include="Src\openglRendering.cpp" />
     <ClCompile Include="Src\renderUtil.cpp" />
+    <ClCompile Include="Src\scene.cpp" />
     <ClCompile Include="Src\shader.cpp" />
+    <ClCompile Include="Src\shadingTechnique.cpp" />
     <ClCompile Include="Src\technique.cpp" />
-    <ClCompile Include="Src\temporalAntialiasing.cpp" />
+    <ClCompile Include="Src\temporalAATechnique.cpp" />
     <ClCompile Include="Src\textureUtil.cpp" />
     <ClCompile Include="Src\yggRendering.cpp" />
-    <ClCompile Include="Src\yggTechnique.cpp" />
+    <ClCompile Include="Src\yggShadingTechnique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\camera.h" />
+    <ClInclude Include="Src\constants.h" />
     <ClInclude Include="Src\haltonSampleGenerator.h" />
     <ClInclude Include="Src\mesh.h" />
     <ClInclude Include="Src\model.h" />
+    <ClInclude Include="Src\openglRendering.h" />
     <ClInclude Include="Src\renderUtil.h" />
     <ClInclude Include="Src\sampleGenerator.h" />
+    <ClInclude Include="Src\scene.h" />
     <ClInclude Include="Src\shader.h" />
+    <ClInclude Include="Src\shadingTechnique.h" />
     <ClInclude Include="Src\technique.h" />
-    <ClInclude Include="Src\temporalAntialiasing.h" />
+    <ClInclude Include="Src\temporalAATechnique.h" />
     <ClInclude Include="Src\textureUtil.h" />
     <ClInclude Include="Src\yggRendering.h" />
-    <ClInclude Include="Src\yggTechnique.h" />
+    <ClInclude Include="Src\yggShadingTechnique.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\shaders\BRDF_FS.glsl">

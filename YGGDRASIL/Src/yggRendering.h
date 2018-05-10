@@ -1,32 +1,33 @@
 #pragma once
 
 #include <string>
-#include <gl/glew.h>
-#include <GLFW/glfw3.h>
 #include <GLM/glm.hpp>
+#include "openglRendering.h"
 
 class CCamera;
 class CModel;
-class CYGGTechnique;
-class CTemporalAntialiasing;
+class CShadingTechnique;
+class CTAATechnique;
+class CScene;
 
-class CYGGRendering
+class CYGGRendering : public COpenGLRendering
 {
 public:
 	CYGGRendering();
-	~CYGGRendering();
+	virtual ~CYGGRendering();
 
-	void init();
-	void draw();
+	virtual void initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight) override;
+
+protected:
+	virtual void _drawV() override;
+	virtual void _handleEventsV() override;
 
 private:
-	void __initGLFW(const std::string& vWindowTitle);
-	void __initShaders();
-	void __initModels();
+	void __initTechniques();
+	void __initScene();
 	void __initTextures();
 	void __initBuffers();
 	void __initMatrixs();
-	void __initTemporalAntialiasing();
 
 	void __equirectangular2CubemapPass();
 	void __createIrradianceCubemapPass();
@@ -38,7 +39,6 @@ private:
 	void __copyHistoryTexturePass();
 	void __postProcessPass();
 
-	void __handleKeyEvent();
 	void __destory();
 
 	static void __keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, int vAction, int vMode);
@@ -47,11 +47,10 @@ private:
 	static void __scrollCallback(GLFWwindow* vWindow, double vXOffset, double vYOffset);
 
 private:
-	GLFWwindow *m_pWindow;
-	CModel *m_pModel;
-	CModel *m_pEvnCube;
-	CYGGTechnique *m_pRenderingTechnique;
-	CTemporalAntialiasing *m_pTemporalAntialiasingComp;
+	static CScene *m_pScene;
+
+	CShadingTechnique *m_pShadingTechnique;
+	CTAATechnique *m_pTAATechnique;
 
 	GLuint m_CaptureFBO;
 	GLuint m_CaptureRBO;
@@ -69,9 +68,6 @@ private:
 	glm::mat4 m_CaptureProjection;
 	glm::mat4 m_CaptureViews[6];
 	glm::mat4 m_ProjectionMatrix;
-
-	GLfloat m_DeltaTime = 0.0f;
-	GLfloat m_LastFrame = 0.0f;
 
 	bool m_IsUsingTAA;
 };

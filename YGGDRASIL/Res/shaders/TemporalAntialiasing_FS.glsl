@@ -80,5 +80,5 @@ vec3 clampHistoryColor(vec3 vHistoryColor, vec3 vCurrentColor, sampler2D vCurren
 
 vec3 mixColor(vec3 vHistoryColor, vec3 vCurrentColor)
 {
-	return mix(vHistoryColor, vCurrentColor, 0.05f);
+	return mix(vHistoryColor, vCurrentColor, 0.02f);
 }

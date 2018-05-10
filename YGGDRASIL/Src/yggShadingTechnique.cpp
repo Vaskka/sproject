@@ -1,17 +1,19 @@
-#include "yggTechnique.h"
+#include "yggShadingTechnique.h"
 
-CYGGTechnique::CYGGTechnique()
+CYGGShadingTechnique::CYGGShadingTechnique()
 {
 }
 
-CYGGTechnique::~CYGGTechnique()
+CYGGShadingTechnique::~CYGGShadingTechnique()
 {
 }
 
 //*********************************************************************************
 //FUNCTION:
-bool CYGGTechnique::initTechniqueV()
+void CYGGShadingTechnique::initTechniqueV()
 {
+	CShadingTechnique::initTechniqueV();
+
 	auto pEquirectangular2CubemapPass = new CShader;
 	pEquirectangular2CubemapPass->addShader("res/shaders/Cubemap_VS.glsl", VERTEX_SHADER);
 	pEquirectangular2CubemapPass->addShader("res/shaders/EquirectangularToCubemap_FS.glsl", FRAGMENT_SHADER);
@@ -56,6 +58,4 @@ bool CYGGTechnique::initTechniqueV()
 	pPostprocessPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);
 	pPostprocessPass->addShader("res/shaders/PostProcess_FS.glsl", FRAGMENT_SHADER);
 	addShader("PostprocessPass", pPostprocessPass);
-
-	return true;
 }

@@ -1,6 +1,6 @@
-#include "temporalAntialiasing.h"
+#include "temporalAATechnique.h"
 
-CTemporalAntialiasing::CTemporalAntialiasing(CSampleGenerator *vSampleGenerator, const glm::mat4& vProjectionMatrix, glm::mat4& vViewMatrix, unsigned int vWindowWidth, unsigned int vWindowHeight)
+CTAATechnique::CTAATechnique(CSampleGenerator *vSampleGenerator, const glm::mat4& vProjectionMatrix, const glm::mat4& vViewMatrix, unsigned int vWindowWidth, unsigned int vWindowHeight)
 	: m_pSampleGenerator(vSampleGenerator), m_WindowWidth(vWindowWidth), m_WindowHeight(vWindowHeight)
 {
 	std::memset(&m_CurrentCameraInfo, 0, sizeof(SCameraMatrixInfo));
@@ -19,49 +19,56 @@ CTemporalAntialiasing::CTemporalAntialiasing(CSampleGenerator *vSampleGenerator,
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::setLastCameraInfo(const SCameraMatrixInfo &vCameraInfo)
+void CTAATechnique::initTechniqueV()
+{
+
+}
+
+//************************************************************************
+//Function:
+void CTAATechnique::setLastCameraInfo(const SCameraMatrixInfo &vCameraInfo)
 {
 	m_LastCameraInfo = vCameraInfo;
 }
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::setCurrentCameraInfo(const SCameraMatrixInfo &vCameraInfo)
+void CTAATechnique::setCurrentCameraInfo(const SCameraMatrixInfo &vCameraInfo)
 {
 	m_CurrentCameraInfo = vCameraInfo;
 }
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::setLastSample(const CSample &vLastSample)
+void CTAATechnique::setLastSample(const CSample &vLastSample)
 {
 	m_LastSample = vLastSample;
 }
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::setCurrentSample(const CSample &vCurrentSample)
+void CTAATechnique::setCurrentSample(const CSample &vCurrentSample)
 {
 	m_CurrentSample = vCurrentSample;
 }
 
 //************************************************************************
 //Function:
-SCameraMatrixInfo& CTemporalAntialiasing::getLastCameraInfo()
+SCameraMatrixInfo& CTAATechnique::getLastCameraInfo()
 {
 	return m_LastCameraInfo;
 }
 
 //************************************************************************
 //Function:
-SCameraMatrixInfo& CTemporalAntialiasing::getCurrentCameraInfo()
+SCameraMatrixInfo& CTAATechnique::getCurrentCameraInfo()
 {
 	return m_CurrentCameraInfo;
 }
 
 //************************************************************************
 //Function:
-CSample CTemporalAntialiasing::getLastSample() const
+CSample CTAATechnique::getLastSample() const
 {
 	return m_LastSample;
 }
@@ -69,21 +76,21 @@ CSample CTemporalAntialiasing::getLastSample() const
 
 //************************************************************************
 //Function:
-CSample CTemporalAntialiasing::getCurrentSample() const
+CSample CTAATechnique::getCurrentSample() const
 {
 	return m_CurrentSample;
 }
 
 //************************************************************************
 //Function:
-CSample CTemporalAntialiasing::getSample() const
+CSample CTAATechnique::getSample() const
 {
 	return m_pSampleGenerator->getNextSample();
 }
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::update(const glm::mat4& vCurrentProjectionMatrix, const glm::mat4& vCurrentViewMatrix)
+void CTAATechnique::update(const glm::mat4& vCurrentProjectionMatrix, const glm::mat4& vCurrentViewMatrix)
 {
 	m_LastSample = m_CurrentSample;
 	m_LastCameraInfo = m_CurrentCameraInfo;
@@ -96,10 +103,17 @@ void CTemporalAntialiasing::update(const glm::mat4& vCurrentProjectionMatrix, co
 
 //************************************************************************
 //Function:
-void CTemporalAntialiasing::__modifyCurrentProjectionMatrix()
+void CTAATechnique::undoProjectionOffset(glm::mat4& vDest, const glm::mat4& vSrc) const
 {
-	//m_CurrentCameraInfo.ProjectionMatrix[2 * 4] = (m_CurrentSample.first * 2.0f - 1.0f) / static_cast<float>(m_WindowWidth);
-	//m_CurrentCameraInfo.ProjectionMatrix[2 * 4 + 1] = (m_CurrentSample.second * 2.0f - 1.0f) / static_cast<float>(m_WindowHeight);
+	vDest = vSrc;
+	vDest[2][0] = 0.0f;
+	vDest[2][1] = 0.0f;
+}
+
+//************************************************************************
+//Function:
+void CTAATechnique::__modifyCurrentProjectionMatrix()
+{
 	m_CurrentCameraInfo.ProjectionMatrix[2][0] = (m_CurrentSample.first * 2.0f - 1.0f) / static_cast<float>(m_WindowWidth);
 	m_CurrentCameraInfo.ProjectionMatrix[2][1] = (m_CurrentSample.second * 2.0f - 1.0f) / static_cast<float>(m_WindowHeight);
 }

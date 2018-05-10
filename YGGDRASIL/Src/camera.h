@@ -22,7 +22,6 @@ const float MOUSE_SENSITIVTY = 0.08f;
 const float ZOOM = 45.0f;
 const float SCROLL_SENSITIVTY = 0.2f;
 
-
 class CCamera 
 {
 public:

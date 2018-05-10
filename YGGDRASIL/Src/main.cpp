@@ -1,15 +1,15 @@
 #include "yggRendering.h"
+#include "constants.h"
 
 int main()
 {
-	auto pYGGRendering = new CYGGRendering();
+	COpenGLRendering* pRendering = new CYGGRendering();
+	_ASSERT(pRendering);
 
-	_ASSERT(pYGGRendering);
+	pRendering->initV(Constant::WIN_NAME, Constant::WIN_WIDTH, Constant::WIN_HEIGHT);
+	pRendering->runV();
 
-	pYGGRendering->init();
-	pYGGRendering->draw();
-
-	delete pYGGRendering;
+	delete pRendering;
 
 	return 0;
 }

@@ -3,4 +3,6 @@
 namespace util
 {
 	void renderScreenQuad();
+
+	void renderCube();
 }

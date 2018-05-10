@@ -10,9 +10,6 @@
     <Filter Include="Source Files\YGGRendering">
       <UniqueIdentifier>{df24c691-3a92-438c-ab18-92f535027e60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OpenGLComponent">
-      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{405295d8-f1ca-4381-b001-567a11b1bc16}</UniqueIdentifier>
     </Filter>
@@ -31,31 +28,43 @@
     <Filter Include="Shader Files\TAA">
       <UniqueIdentifier>{2111aeda-a78e-4f87-9f76-b04478086411}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TAAComponent">
+    <Filter Include="Source Files\Techniques">
+      <UniqueIdentifier>{6cff8c2e-d4b2-421e-85ac-6f5d2e9af0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Techniques\TemporalAntiAliasing">
       <UniqueIdentifier>{fbad3906-64b1-4c5f-ac17-e32ba389eca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Techniques\Shading">
+      <UniqueIdentifier>{b22d0e5b-9fcc-4c66-8ca5-5dd1526bb7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Kernel">
+      <UniqueIdentifier>{f797d150-64c4-403a-ac92-9bd9b3430cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Kernel\Resources">
+      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Kernel\World">
+      <UniqueIdentifier>{cc5e6a12-23b0-4855-9f5d-76908a447345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Kernel\Managers">
+      <UniqueIdentifier>{a5d2560f-41ec-4948-97fc-79cd3216396c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{7aa1ae9e-4348-498d-976e-9e2978d3b668}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\camera.cpp">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Src\mesh.cpp">
-      <Filter>Source Files\OpenGLComponent</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Src\model.cpp">
-      <Filter>Source Files\OpenGLComponent</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Src\shader.cpp">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\technique.cpp">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\yggTechnique.cpp">
-      <Filter>Source Files\YGGRendering</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Src\yggRendering.cpp">
       <Filter>Source Files\YGGRendering</Filter>
@@ -66,31 +75,40 @@
     <ClCompile Include="Src\renderUtil.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Src\temporalAntialiasing.cpp">
-      <Filter>Source Files\TAAComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Src\haltonSampleGenerator.cpp">
-      <Filter>Source Files\TAAComponent</Filter>
+      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\scene.cpp">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\camera.cpp">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\shadingTechnique.cpp">
+      <Filter>Source Files\Techniques\Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\technique.cpp">
+      <Filter>Source Files\Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\yggShadingTechnique.cpp">
+      <Filter>Source Files\YGGRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\temporalAATechnique.cpp">
+      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\openglRendering.cpp">
+      <Filter>Source Files\Kernel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\camera.h">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Src\mesh.h">
-      <Filter>Source Files\OpenGLComponent</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\model.h">
-      <Filter>Source Files\OpenGLComponent</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\shader.h">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\technique.h">
-      <Filter>Source Files\OpenGLComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\yggTechnique.h">
-      <Filter>Source Files\YGGRendering</Filter>
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\yggRendering.h">
       <Filter>Source Files\YGGRendering</Filter>
@@ -102,13 +120,34 @@
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Src\sampleGenerator.h">
-      <Filter>Source Files\TAAComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\temporalAntialiasing.h">
-      <Filter>Source Files\TAAComponent</Filter>
+      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
     </ClInclude>
     <ClInclude Include="Src\haltonSampleGenerator.h">
-      <Filter>Source Files\TAAComponent</Filter>
+      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\scene.h">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\camera.h">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\shadingTechnique.h">
+      <Filter>Source Files\Techniques\Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\technique.h">
+      <Filter>Source Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\yggShadingTechnique.h">
+      <Filter>Source Files\YGGRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\temporalAATechnique.h">
+      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\openglRendering.h">
+      <Filter>Source Files\Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\constants.h">
+      <Filter>Source Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
