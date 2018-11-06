@@ -21,7 +21,7 @@ public:
 
 	void addModel(CModel* vModel) { m_ModelSet.push_back(vModel); }
 	CModel* getModelAt(int vIndex) const { return m_ModelSet[vIndex]; }
-	unsigned getNumModels() const { return m_ModelSet.size(); }
+	unsigned getNumModels() const { return static_cast<unsigned>(m_ModelSet.size()); }
 
 	CCamera* getCamera() const { return m_Camera; }
 

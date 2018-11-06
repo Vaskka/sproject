@@ -49,8 +49,8 @@ private:
 private:
 	static CScene *m_pScene;
 
-	CShadingTechnique *m_pShadingTechnique;
-	CTAATechnique *m_pTAATechnique;
+	CShadingTechnique *m_pShadingTechnique = nullptr;
+	CTAATechnique *m_pTAATechnique = nullptr;
 
 	GLuint m_CaptureFBO;
 	GLuint m_CaptureRBO;
@@ -69,5 +69,5 @@ private:
 	glm::mat4 m_CaptureViews[6];
 	glm::mat4 m_ProjectionMatrix;
 
-	bool m_IsUsingTAA;
+	bool m_IsUsingTAA = true;
 };

@@ -19,7 +19,7 @@ namespace
 
 CScene* CYGGRendering::m_pScene = nullptr;
 
-CYGGRendering::CYGGRendering() : m_pShadingTechnique(nullptr), m_pTAATechnique(nullptr), m_IsUsingTAA(true)
+CYGGRendering::CYGGRendering()
 {
 
 }
@@ -167,8 +167,8 @@ void CYGGRendering::__equirectangular2CubemapPass()
 	unsigned int maxMipLevels = PREFILTER_MAX_MIP_LEVELS;
 	for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
 	{
-		unsigned int mipWidth = (unsigned int)(EVN_MAP_SIZE * std::pow(0.5, mip));
-		unsigned int mipHeight = (unsigned int)(EVN_MAP_SIZE * std::pow(0.5, mip));
+		auto mipWidth = (unsigned int)(EVN_MAP_SIZE * std::pow(0.5, mip));
+		auto mipHeight = (unsigned int)(EVN_MAP_SIZE * std::pow(0.5, mip));
 		glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
 		glViewport(0, 0, mipWidth, mipHeight);
@@ -253,8 +253,8 @@ void CYGGRendering::__createPrefilterCubeMapPass()
 	for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
 	{
 		// reisze framebuffer according to mip-level size.
-		unsigned int mipWidth = (unsigned int)(PREFILTERED_MAP_SIZE * std::pow(0.5, mip));
-		unsigned int mipHeight = (unsigned int)(PREFILTERED_MAP_SIZE * std::pow(0.5, mip));
+		auto mipWidth = (unsigned int)(PREFILTERED_MAP_SIZE * std::pow(0.5, mip));
+		auto mipHeight = (unsigned int)(PREFILTERED_MAP_SIZE * std::pow(0.5, mip));
 		glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
 		glViewport(0, 0, mipWidth, mipHeight);
@@ -355,7 +355,7 @@ void CYGGRendering::__geometryPass()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_PrefilterMap);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, m_BRDFIntegrationTex);
-	for (int i = 0; i < m_pScene->getNumModels(); ++i)
+	for (auto i = 0u; i < m_pScene->getNumModels(); ++i)
 	{
 		auto pModel = m_pScene->getModelAt(i);
 		pModel->draw(m_pShadingTechnique->getProgramID("GeometryPass"));
@@ -471,8 +471,8 @@ void CYGGRendering::__keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, 
 void CYGGRendering::__cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	static bool FirstMouse = true;
-	static GLfloat LastX = WIN_WIDTH / 2.0;
-	static GLfloat LastY = WIN_HEIGHT / 2.0;
+	static double LastX = WIN_WIDTH / 2.0;
+	static double LastY = WIN_HEIGHT / 2.0;
 	if (FirstMouse)
 	{
 		LastX = xpos;
@@ -480,14 +480,14 @@ void CYGGRendering::__cursorPosCallback(GLFWwindow* window, double xpos, double 
 		FirstMouse = false;
 	}
 
-	GLfloat xoffset = xpos - LastX;
-	GLfloat yoffset = LastY - ypos;
+	double xoffset = xpos - LastX;
+	double yoffset = LastY - ypos;
 
 	LastX = xpos;
 	LastY = ypos;
 
 	if (g_Buttons[GLFW_MOUSE_BUTTON_LEFT])
-		m_pScene->getCamera()->processMouseMovement(xoffset, yoffset);
+		m_pScene->getCamera()->processMouseMovement(static_cast<float>(xoffset), static_cast<float>(yoffset));
 }
 
 //*********************************************************************************
@@ -507,5 +507,5 @@ void CYGGRendering::__mouseButtonCallback(GLFWwindow* vWindow, int vButton, int 
 //FUNCTION:
 void CYGGRendering::__scrollCallback(GLFWwindow* vWindow, double vXOffset, double vYOffset)
 {
-	m_pScene->getCamera()->processMouseScroll(vYOffset);
+	m_pScene->getCamera()->processMouseScroll(static_cast<float>(vYOffset));
 }

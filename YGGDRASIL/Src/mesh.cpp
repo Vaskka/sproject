@@ -39,7 +39,7 @@ void CMesh::draw(GLuint vShaderProgram)
 	glUniform3f(glGetUniformLocation(vShaderProgram, "uMaterialDiffuse"), m_Material.Diffuse.r, m_Material.Diffuse.g, m_Material.Diffuse.b);
 
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, (GLsizei)m_Indices.size(), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 
 	for (GLuint i = 0; i < m_Textures.size(); i++)

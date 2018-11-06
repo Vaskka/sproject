@@ -39,7 +39,7 @@ void COpenGLRendering::runV()
 {
 	while (!glfwWindowShouldClose(m_pWindow))
 	{
-		GLfloat CurrentFrame = glfwGetTime();
+		GLfloat CurrentFrame = static_cast<GLfloat>(glfwGetTime());
 		m_DeltaTime = CurrentFrame - m_LastFrame;
 		m_LastFrame = CurrentFrame;
 

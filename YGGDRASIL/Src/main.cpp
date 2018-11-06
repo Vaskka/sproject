@@ -1,5 +1,5 @@
-#include "yggRendering.h"
 #include "constants.h"
+#include "yggRendering.h"
 
 int main()
 {
