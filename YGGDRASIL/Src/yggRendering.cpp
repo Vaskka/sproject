@@ -99,13 +99,9 @@ void CYGGRendering::__initScene()
 	m_pScene = CScene::getInstance();
 	m_pScene->initScene();
 
-	auto pModelNanosuit = new CModel();
-	pModelNanosuit->load("res/objects/nanosuit/nanosuit.obj");
-	m_pScene->addModel(pModelNanosuit);
-
-	auto pModelMiku = new CModel();
-	pModelMiku->load("res/objects/miku/miku_snow/miku.obj");
-	m_pScene->addModel(pModelMiku);
+	auto pModel = new CModel();
+	pModel->load("res/objects/emeishan/emeishan.obj");
+	m_pScene->addModel(pModel);
 }
 
 //*********************************************************************************

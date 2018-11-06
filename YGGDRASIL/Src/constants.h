@@ -17,9 +17,9 @@ namespace Constant
 	static const unsigned int BRDF_INT_MAP_SIZE = 1024;
 	static const unsigned int PREFILTER_MAX_MIP_LEVELS = 6;
 
-	static const float CAMERA_NEAR = 0.001f;
-	static const float CAMERA_FAR = 100.0f;
+	static const float CAMERA_NEAR = 0.1f;
+	static const float CAMERA_FAR = 1000.0f;
 
-	static const glm::vec3 MODEL_INIT_TRANSLATE = { 0.0f, -1.5f, 0.0f };
-	static const glm::vec3 MODEL_INIT_SCALE = { 0.2f, 0.2f, 0.2f };
+	static const glm::vec3 MODEL_INIT_TRANSLATE = { 0.0f, 0.0f, 0.0f };
+	static const glm::vec3 MODEL_INIT_SCALE = { 10.0f, 10.0f, 10.0f };
 }

@@ -18,6 +18,7 @@ CScene::~CScene()
 //Function:
 void CScene::initScene()
 {
+	//m_Camera = new CCamera(glm::vec3(4194.15, 3021.6, 1617.54));
 	m_Camera = new CCamera();
 }
 
