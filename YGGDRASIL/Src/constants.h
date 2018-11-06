@@ -9,7 +9,7 @@ namespace Constant
 	static const int WIN_WIDTH = 1920;
 	static const int WIN_HEIGHT = 1080;
 
-	static const std::string EVN_MAP_PATH = "res/textures/UnderTheSea4k.hdr";
+	static const std::string EVN_MAP_PATH = "res/textures/EvnMap/MegaSun4k.hdr";
 
 	static const unsigned int EVN_MAP_SIZE = 1024;
 	static const unsigned int IRRADIANCE_MAP_SIZE = 128;

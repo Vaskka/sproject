@@ -293,10 +293,7 @@ void CYGGRendering::__envmapPass()
 	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
 	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", ProjectionMatrix);
 	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
-	m_pShadingTechnique->updateStandShaderUniform("uEnvmap", 0);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvCubemap);
 	util::renderCube();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

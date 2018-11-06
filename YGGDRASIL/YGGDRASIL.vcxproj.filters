@@ -19,9 +19,6 @@
     <Filter Include="Shader Files\IBL">
       <UniqueIdentifier>{3d84903b-9632-4500-8291-ad97132a8378}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader Files\Skybox">
-      <UniqueIdentifier>{02d03334-6099-4dcb-940e-8c0ecb6c198d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader Files\PostProcess">
       <UniqueIdentifier>{ca2b286a-a10a-4a39-bfa4-df0f9b8371d4}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{7aa1ae9e-4348-498d-976e-9e2978d3b668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\SkyRendering">
+      <UniqueIdentifier>{02d03334-6099-4dcb-940e-8c0ecb6c198d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -176,10 +176,10 @@
       <Filter>Shader Files\IBL</Filter>
     </None>
     <None Include="Res\shaders\Skybox_FS.glsl">
-      <Filter>Shader Files\Skybox</Filter>
+      <Filter>Shader Files\SkyRendering</Filter>
     </None>
     <None Include="Res\shaders\Skybox_VS.glsl">
-      <Filter>Shader Files\Skybox</Filter>
+      <Filter>Shader Files\SkyRendering</Filter>
     </None>
     <None Include="Res\shaders\DrawScreenQuad_VS.glsl">
       <Filter>Shader Files\PostProcess</Filter>
