@@ -99,9 +99,9 @@ void CYGGRendering::__initScene()
 	m_pScene = CScene::getInstance();
 	m_pScene->initScene();
 
-	auto pModel = new CModel();
-	pModel->load("res/objects/emeishan/emeishan.obj");
-	m_pScene->addModel(pModel);
+	//auto pModel = new CModel();
+	//pModel->load("res/objects/emeishan/emeishan.obj");
+	//m_pScene->addModel(pModel);
 }
 
 //*********************************************************************************

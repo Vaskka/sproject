@@ -14,7 +14,8 @@ void main()
 	vec3 HDRColor = texture(uSceneTexture, _TexCoords).rgb;
 
 	//tone mapping
-	vec3 MappedColor = vec3(1.0) - exp(-HDRColor * EXPOSURE);
+	//vec3 MappedColor = vec3(1.0) - exp(-HDRColor * EXPOSURE);
+	vec3 MappedColor = HDRColor;
 
 	//gamma correct
 	MappedColor = pow(MappedColor, vec3(1.0 / GAMMA));

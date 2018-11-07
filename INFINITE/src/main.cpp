@@ -2,7 +2,7 @@
 #include "constants.h"
 #include "gameConfig.h"
 
-int main()
+int main()	
 {
 	auto pGameConfig = CGameConfig::getInstance();
 	pGameConfig->init(Constant::GAME_CONFIG_FILE_PATH);
