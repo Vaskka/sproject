@@ -71,7 +71,7 @@ GLuint util::setupCubemap(int vWidth, int vHeight, bool vGenerateMipMap)
 
 //**********************************************************************************************
 //FUNCTION:
-GLuint util::loadTexture(const char *vPath)
+GLuint util::loadTexture(const char *vPath, GLint vWrapMode/* = GL_CLAMP*/, GLint vFilterMode/* = GL_LINEAR*/)
 {
 	stbi_set_flip_vertically_on_load(true);
 	int Width, Height, Channels;
@@ -104,10 +104,10 @@ GLuint util::loadTexture(const char *vPath)
 		default:
 			break;
 		}
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, vWrapMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		stbi_image_free(pData);
 		return TextureID;

@@ -112,6 +112,7 @@ void CYGGRendering::__initTextures()
 	m_IrradianceMap = util::setupCubemap(IRRADIANCE_MAP_SIZE, IRRADIANCE_MAP_SIZE, false);
 	m_PrefilterMap = util::setupCubemap(PREFILTERED_MAP_SIZE, PREFILTERED_MAP_SIZE, true);
 
+	m_WhiteNoiseTex = util::loadTexture(WHITE_NOISE_TEXTURE_PATH.c_str(), GL_REPEAT, GL_LINEAR);
 	m_EnvironmentTex = util::loadTexture(EVN_MAP_PATH.c_str());
 	m_BRDFIntegrationTex = util::setupTexture(BRDF_INT_MAP_SIZE, BRDF_INT_MAP_SIZE);
 	m_CurrentSceneTex = util::setupTexture(WIN_WIDTH, WIN_HEIGHT);
@@ -294,8 +295,13 @@ void CYGGRendering::__envmapPass()
 	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", ProjectionMatrix);
 	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
+	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 0);
+
 	util::renderCube();
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	m_pShadingTechnique->disableShader();

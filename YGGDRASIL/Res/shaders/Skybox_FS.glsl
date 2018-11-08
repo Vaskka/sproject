@@ -1,5 +1,8 @@
 #version 430 core
 
+uniform sampler2D uWhiteNoiseTex;
+uniform vec3 uSunDir = normalize(vec3(.0, .1, 1.));
+
 in vec3 _TexCoord;
 
 out vec4 _outFragColor;
@@ -8,8 +11,7 @@ out vec4 _outFragColor;
 vec3 skyColorVer1(in vec3 ray)
 {
 	vec3 col = vec3(0.0);
-	vec3 light = normalize(vec3(0.9, 0.1, 0.9));
-	float sundot = clamp(dot(ray, light), 0.0, 1.0);
+	float sundot = clamp(dot(ray, uSunDir), 0.0, 1.0);
 
 	//sky color
 	vec3 blueSky = vec3(0.3, 0.55, 0.8);
@@ -25,6 +27,16 @@ vec3 skyColorVer1(in vec3 ray)
 	//horizon        
 	col = mix(col, 0.9 * vec3(0.9, 0.75, 0.8), pow(1.0 - clamp(ray.y + 0.1, 0.0, 1.0), 8.0));
 
+	//Stars
+	float s = texture(uWhiteNoiseTex, ray.xz * 1.25, -100.).x;
+	s += texture(uWhiteNoiseTex, ray.xz* 4., -100.).x;
+	s = pow(s, 17.0) * 0.00005 * max(ray.y, -0.2) * pow((1. - max(sundot, 0.)), 2.);
+	if (s > .0)
+	{
+		vec3 backStars = vec3(s);
+		col += backStars;
+	}
+
 	//contrast
 	col = clamp(col, 0.0, 1.0);
 	col = col * col * (3.0 - 2.0 * col);
@@ -39,26 +51,38 @@ vec3 skyColorVer1(in vec3 ray)
 //based on https://www.shadertoy.com/view/lt2SR1
 vec3 skyColorVer2(in vec3 ray)
 {
-	vec3 sundir = normalize(vec3(.0, .1, 1.));
-
 	float yd = min(ray.y, 0.);
 	ray.y = max(ray.y, 0.);
 
 	vec3 col = vec3(0.);
 
+	//Sky
 	col += vec3(.4, .4 - exp(-ray.y*20.)*.3, .0) * exp(-ray.y*9.); // Red / Green 
-	col += vec3(.3, .5, .7) * (1. - exp(-ray.y*8.)) * exp(-ray.y*.9); // Blue
+	col += vec3(.3, .5, .8) * (1. - exp(-ray.y*8.)) * exp(-ray.y*.9); // Blue
 
-	col = mix(col*1.2, vec3(.3), 1. - exp(yd*100.)); // Fog
+	//Fog
+	col = mix(col*1.2, vec3(.3), 1. - exp(yd*100.));
 
-	col += vec3(1.0, .8, .55) * pow(max(dot(ray, sundir), 0.), 15.) * .6; // Sun
-	col += pow(max(dot(ray, sundir), 0.), 256.0) *.75;
+	//Sun
+	float sundot = clamp(dot(ray, uSunDir), 0.0, 1.0);
+	col += vec3(1.0, .8, .55) * pow(sundot, 15.) * .6;
+	col += pow(max(dot(ray, uSunDir), 0.), 256.0) * 0.5;
 
-	//contrast
+	//Stars
+	float s = texture(uWhiteNoiseTex, ray.xz * 1.25, -100.).x;
+	s += texture(uWhiteNoiseTex, ray.xz* 4., -100.).x;
+	s = pow(s, 17.0) * 0.00005 * max(ray.y, -0.2) * pow((1. - max(sundot, 0.)), 2.);
+	if (s > .0)
+	{
+		vec3 backStars = vec3(s);
+		col += backStars;
+	}
+
+	//Contrast
 	col = clamp(col, 0.0, 1.0);
 	col = col * col * (3.0 - 2.0 * col);
 
-	//saturation (amplify colour, subtract grayscale)
+	//Saturation (amplify colour, subtract grayscale)
 	float sat = 0.2;
 	col = col * (1.0 + sat) - sat * dot(col, vec3(0.33));
 

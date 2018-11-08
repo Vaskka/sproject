@@ -61,6 +61,7 @@ private:
 	GLuint m_FinalSceneTex;
 	GLuint m_HistorySceneTex;
 	GLuint m_MotionVectorTex;
+	GLuint m_WhiteNoiseTex;
 	GLuint m_EnvCubemap;
 	GLuint m_IrradianceMap;
 	GLuint m_PrefilterMap;
@@ -69,5 +70,5 @@ private:
 	glm::mat4 m_CaptureViews[6];
 	glm::mat4 m_ProjectionMatrix;
 
-	bool m_IsUsingTAA = true;
+	bool m_IsUsingTAA = false;
 };
