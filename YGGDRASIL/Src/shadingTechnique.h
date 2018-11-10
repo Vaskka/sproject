@@ -1,8 +1,7 @@
 #pragma once
-
 #include <map>
-#include "shader.h"
-#include "technique.h"
+#include "Shader.h"
+#include "Technique.h"
 
 class CShadingTechnique : public CTechnique
 {
@@ -23,6 +22,5 @@ public:
 
 protected:
 	std::map<std::string, CShader*> m_ShaderSet;
-
-	CShader* m_CurrentShader;
+	CShader* m_CurrentShader = nullptr;
 };

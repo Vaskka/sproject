@@ -1,24 +1,23 @@
 #pragma once
-
 #include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <assimp/Importer.hpp>
-#include "shader.h"
+#include "Shader.h"
 
-typedef struct 
+typedef struct
 {
 	GLuint Id;
 	std::string Type;
 	aiString Path;
-}STexture;
+} STexture;
 
-typedef struct 
+typedef struct
 {
 	glm::vec3 Position;
 	glm::vec3 Normal;
 	glm::vec2 TexCoords;
-}SVertex;
+} SVertex;
 
 typedef struct
 {
@@ -26,9 +25,9 @@ typedef struct
 	glm::vec3 Diffuse;
 	glm::vec3 Specular;
 	float Shinness;
-}SMaterial;
+} SMaterial;
 
-class CMesh 
+class CMesh
 {
 public:
 	CMesh(std::vector<SVertex> vVertices, std::vector<GLuint> vIndices, std::vector<STexture> vTextures, const SMaterial& vMaterial);
@@ -37,14 +36,13 @@ public:
 	void draw(GLuint vShaderProgram);
 
 private:
-	void __setupMesh();
-
-private:
 	std::vector<SVertex> m_Vertices;
 	std::vector<GLuint> m_Indices;
 	std::vector<STexture> m_Textures;
 	SMaterial m_Material;
 	GLuint m_VAO, m_VBO, m_EBO;
+
+	void __setupMesh();
 };
 
 

@@ -16,23 +16,11 @@
     <Filter Include="Shader Files\PBR">
       <UniqueIdentifier>{32463702-716a-4309-a0e5-ffcbd8d5ee02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader Files\IBL">
-      <UniqueIdentifier>{3d84903b-9632-4500-8291-ad97132a8378}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader Files\PostProcess">
       <UniqueIdentifier>{ca2b286a-a10a-4a39-bfa4-df0f9b8371d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader Files\TAA">
-      <UniqueIdentifier>{2111aeda-a78e-4f87-9f76-b04478086411}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Techniques">
       <UniqueIdentifier>{6cff8c2e-d4b2-421e-85ac-6f5d2e9af0cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Techniques\TemporalAntiAliasing">
-      <UniqueIdentifier>{fbad3906-64b1-4c5f-ac17-e32ba389eca2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Techniques\Shading">
-      <UniqueIdentifier>{b22d0e5b-9fcc-4c66-8ca5-5dd1526bb7d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Kernel">
       <UniqueIdentifier>{f797d150-64c4-403a-ac92-9bd9b3430cd7}</UniqueIdentifier>
@@ -42,9 +30,6 @@
     </Filter>
     <Filter Include="Source Files\Kernel\World">
       <UniqueIdentifier>{cc5e6a12-23b0-4855-9f5d-76908a447345}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Kernel\Managers">
-      <UniqueIdentifier>{a5d2560f-41ec-4948-97fc-79cd3216396c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{7aa1ae9e-4348-498d-976e-9e2978d3b668}</UniqueIdentifier>
@@ -57,96 +42,81 @@
     <ClCompile Include="Src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\mesh.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\model.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\shader.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\yggRendering.cpp">
-      <Filter>Source Files\YGGRendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\textureUtil.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\renderUtil.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\haltonSampleGenerator.cpp">
-      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\scene.cpp">
-      <Filter>Source Files\Kernel\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\camera.cpp">
-      <Filter>Source Files\Kernel\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\shadingTechnique.cpp">
-      <Filter>Source Files\Techniques\Shading</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\technique.cpp">
+    <ClCompile Include="Src\GLRenderer.cpp">
       <Filter>Source Files\Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="Src\yggShadingTechnique.cpp">
+    <ClCompile Include="Src\YGGRenderer.cpp">
       <Filter>Source Files\YGGRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Src\temporalAATechnique.cpp">
-      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    <ClCompile Include="Src\YGGShadingTechnique.cpp">
+      <Filter>Source Files\YGGRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Src\openglRendering.cpp">
-      <Filter>Source Files\Kernel</Filter>
+    <ClCompile Include="Src\Technique.cpp">
+      <Filter>Source Files\Techniques</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ShadingTechnique.cpp">
+      <Filter>Source Files\Techniques</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\TextureUtil.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\RenderUtil.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene.cpp">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera.cpp">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Shader.cpp">
+      <Filter>Source Files\Kernel\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Model.cpp">
+      <Filter>Source Files\Kernel\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Mesh.cpp">
+      <Filter>Source Files\Kernel\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\mesh.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\model.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\shader.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\yggRendering.h">
-      <Filter>Source Files\YGGRendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\textureUtil.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\renderUtil.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\sampleGenerator.h">
-      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\haltonSampleGenerator.h">
-      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\scene.h">
-      <Filter>Source Files\Kernel\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\camera.h">
-      <Filter>Source Files\Kernel\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\shadingTechnique.h">
-      <Filter>Source Files\Techniques\Shading</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\technique.h">
+    <ClInclude Include="Src\GLRenderer.h">
       <Filter>Source Files\Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="Src\yggShadingTechnique.h">
+    <ClInclude Include="Src\YGGRenderer.h">
       <Filter>Source Files\YGGRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Src\temporalAATechnique.h">
-      <Filter>Source Files\Techniques\TemporalAntiAliasing</Filter>
+    <ClInclude Include="Src\YGGShadingTechnique.h">
+      <Filter>Source Files\YGGRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Src\openglRendering.h">
-      <Filter>Source Files\Kernel</Filter>
+    <ClInclude Include="Src\Technique.h">
+      <Filter>Source Files\Techniques</Filter>
     </ClInclude>
-    <ClInclude Include="Src\constants.h">
+    <ClInclude Include="Src\ShadingTechnique.h">
+      <Filter>Source Files\Techniques</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TextureUtil.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\RenderUtil.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene.h">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera.h">
+      <Filter>Source Files\Kernel\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Shader.h">
+      <Filter>Source Files\Kernel\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Model.h">
+      <Filter>Source Files\Kernel\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Mesh.h">
+      <Filter>Source Files\Kernel\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Constants.h">
       <Filter>Source Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,24 +126,6 @@
     </None>
     <None Include="Res\shaders\ForwardPBRShading_FS.glsl">
       <Filter>Shader Files\PBR</Filter>
-    </None>
-    <None Include="Res\shaders\Cubemap_VS.glsl">
-      <Filter>Shader Files\IBL</Filter>
-    </None>
-    <None Include="Res\shaders\BRDF_VS.glsl">
-      <Filter>Shader Files\IBL</Filter>
-    </None>
-    <None Include="Res\shaders\BRDF_FS.glsl">
-      <Filter>Shader Files\IBL</Filter>
-    </None>
-    <None Include="Res\shaders\EquirectangularToCubemap_FS.glsl">
-      <Filter>Shader Files\IBL</Filter>
-    </None>
-    <None Include="Res\shaders\IrradianceConvolution_FS.glsl">
-      <Filter>Shader Files\IBL</Filter>
-    </None>
-    <None Include="Res\shaders\Prefilter_FS.glsl">
-      <Filter>Shader Files\IBL</Filter>
     </None>
     <None Include="Res\shaders\Skybox_FS.glsl">
       <Filter>Shader Files\SkyRendering</Filter>
@@ -186,12 +138,6 @@
     </None>
     <None Include="Res\shaders\PostProcess_FS.glsl">
       <Filter>Shader Files\PostProcess</Filter>
-    </None>
-    <None Include="Res\shaders\TemporalAntialiasing_FS.glsl">
-      <Filter>Shader Files\TAA</Filter>
-    </None>
-    <None Include="Res\shaders\TextureCopy_FS.glsl">
-      <Filter>Shader Files\TAA</Filter>
     </None>
   </ItemGroup>
 </Project>

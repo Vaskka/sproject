@@ -39,10 +39,10 @@ public:
 	void setIntUniformValue(const char *name, GLint v0, GLint v1, GLint v2, GLint v3);
 
 private:
+	GLuint m_ProgramID;
+
 	const GLchar* const __readShaderFile(const std::string& vFileName);
 	void __compileShader(GLuint& vShader);
 	void __linkProgram(GLuint& vProgram);
 	void __printUniformWarningInfo(const std::string& vUniform);
-
-	GLuint m_ProgramID;
 };

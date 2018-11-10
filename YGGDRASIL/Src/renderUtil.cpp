@@ -1,4 +1,4 @@
-#include "renderUtil.h"
+#include "RenderUtil.h"
 #include <gl/glew.h>
 
 namespace

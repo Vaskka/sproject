@@ -1,6 +1,6 @@
-#include "scene.h"
-#include "camera.h"
-#include "model.h"
+#include "Scene.h"
+#include "Camera.h"
+#include "Model.h"
 
 CScene* CScene::m_Instance = nullptr;
 

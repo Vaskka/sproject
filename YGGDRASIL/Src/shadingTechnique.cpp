@@ -1,19 +1,18 @@
-#include "shadingTechnique.h"
+#include "ShadingTechnique.h"
 #include <boost/any.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-CShadingTechnique::CShadingTechnique() : m_CurrentShader(nullptr)
+CShadingTechnique::CShadingTechnique()
 {
-	
+
 }
 
 CShadingTechnique::~CShadingTechnique()
 {
 	for (auto iter : m_ShaderSet)
 		delete iter.second;
-
 	m_ShaderSet.clear();
 }
 
@@ -21,16 +20,12 @@ CShadingTechnique::~CShadingTechnique()
 //FUNCTION:
 void CShadingTechnique::addShader(const std::string& vShaderSig, CShader* vShader)
 {
-	_ASSERT(!vShaderSig.empty());
-	_ASSERT(!(vShader == nullptr));
+	_ASSERT(!vShaderSig.empty() && vShader);
 
-	auto ShaderSetIter = m_ShaderSet.find(vShaderSig);
-	if (ShaderSetIter == m_ShaderSet.end())
-	{
+	if (m_ShaderSet.find(vShaderSig) == m_ShaderSet.end()) {
 		m_ShaderSet.insert(std::make_pair(vShaderSig, vShader));
 	}
-	else
-	{
+	else {
 		std::cout << "\nError: Shader Signature repetition!" << std::endl;
 		_ASSERT(false);
 	}

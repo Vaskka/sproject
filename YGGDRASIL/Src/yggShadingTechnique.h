@@ -1,6 +1,5 @@
 #pragma once
-
-#include "shadingTechnique.h"
+#include "ShadingTechnique.h"
 
 class CYGGShadingTechnique : public CShadingTechnique
 {

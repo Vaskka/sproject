@@ -1,15 +1,15 @@
-#include "constants.h"
-#include "yggRendering.h"
+#include "Constants.h"
+#include "YGGRenderer.h"
 
 int main()
 {
-	COpenGLRendering* pRendering = new CYGGRendering();
-	_ASSERT(pRendering);
+	CGLRenderer* pRenderer = new CYGGRenderer();
+	_ASSERT(pRenderer);
 
-	pRendering->initV(Constant::WIN_NAME, Constant::WIN_WIDTH, Constant::WIN_HEIGHT);
-	pRendering->runV();
+	pRenderer->initV(Constant::WIN_NAME, Constant::WIN_WIDTH, Constant::WIN_HEIGHT);
+	pRenderer->runV();
 
-	delete pRendering;
+	delete pRenderer;
 
 	return 0;
 }
