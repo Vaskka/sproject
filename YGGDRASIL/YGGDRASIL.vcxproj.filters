@@ -10,26 +10,11 @@
     <Filter Include="Source Files\YGGRendering">
       <UniqueIdentifier>{df24c691-3a92-438c-ab18-92f535027e60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{405295d8-f1ca-4381-b001-567a11b1bc16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader Files\PBR">
       <UniqueIdentifier>{32463702-716a-4309-a0e5-ffcbd8d5ee02}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader Files\PostProcess">
       <UniqueIdentifier>{ca2b286a-a10a-4a39-bfa4-df0f9b8371d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Techniques">
-      <UniqueIdentifier>{6cff8c2e-d4b2-421e-85ac-6f5d2e9af0cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Kernel">
-      <UniqueIdentifier>{f797d150-64c4-403a-ac92-9bd9b3430cd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Kernel\Resources">
-      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Kernel\World">
-      <UniqueIdentifier>{cc5e6a12-23b0-4855-9f5d-76908a447345}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{7aa1ae9e-4348-498d-976e-9e2978d3b668}</UniqueIdentifier>
@@ -37,13 +22,28 @@
     <Filter Include="Shader Files\SkyRendering">
       <UniqueIdentifier>{02d03334-6099-4dcb-940e-8c0ecb6c198d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GLRenderEngine">
+      <UniqueIdentifier>{f797d150-64c4-403a-ac92-9bd9b3430cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLRenderEngine\Resources">
+      <UniqueIdentifier>{496d8314-c4a7-4eca-9017-7458554ff1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLRenderEngine\World">
+      <UniqueIdentifier>{cc5e6a12-23b0-4855-9f5d-76908a447345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLRenderEngine\Utilities">
+      <UniqueIdentifier>{405295d8-f1ca-4381-b001-567a11b1bc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLRenderEngine\Techniques">
+      <UniqueIdentifier>{6cff8c2e-d4b2-421e-85ac-6f5d2e9af0cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\GLRenderer.cpp">
-      <Filter>Source Files\Kernel</Filter>
+      <Filter>Source Files\GLRenderEngine</Filter>
     </ClCompile>
     <ClCompile Include="Src\YGGRenderer.cpp">
       <Filter>Source Files\YGGRendering</Filter>
@@ -52,36 +52,36 @@
       <Filter>Source Files\YGGRendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Technique.cpp">
-      <Filter>Source Files\Techniques</Filter>
+      <Filter>Source Files\GLRenderEngine\Techniques</Filter>
     </ClCompile>
     <ClCompile Include="Src\ShadingTechnique.cpp">
-      <Filter>Source Files\Techniques</Filter>
+      <Filter>Source Files\GLRenderEngine\Techniques</Filter>
     </ClCompile>
     <ClCompile Include="Src\TextureUtil.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\GLRenderEngine\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Src\RenderUtil.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\GLRenderEngine\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Src\Scene.cpp">
-      <Filter>Source Files\Kernel\World</Filter>
+      <Filter>Source Files\GLRenderEngine\World</Filter>
     </ClCompile>
     <ClCompile Include="Src\Camera.cpp">
-      <Filter>Source Files\Kernel\World</Filter>
+      <Filter>Source Files\GLRenderEngine\World</Filter>
     </ClCompile>
     <ClCompile Include="Src\Shader.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Src\Model.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Src\Mesh.cpp">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\GLRenderer.h">
-      <Filter>Source Files\Kernel</Filter>
+      <Filter>Source Files\GLRenderEngine</Filter>
     </ClInclude>
     <ClInclude Include="Src\YGGRenderer.h">
       <Filter>Source Files\YGGRendering</Filter>
@@ -90,31 +90,31 @@
       <Filter>Source Files\YGGRendering</Filter>
     </ClInclude>
     <ClInclude Include="Src\Technique.h">
-      <Filter>Source Files\Techniques</Filter>
+      <Filter>Source Files\GLRenderEngine\Techniques</Filter>
     </ClInclude>
     <ClInclude Include="Src\ShadingTechnique.h">
-      <Filter>Source Files\Techniques</Filter>
+      <Filter>Source Files\GLRenderEngine\Techniques</Filter>
     </ClInclude>
     <ClInclude Include="Src\TextureUtil.h">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\GLRenderEngine\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Src\RenderUtil.h">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\GLRenderEngine\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Src\Scene.h">
-      <Filter>Source Files\Kernel\World</Filter>
+      <Filter>Source Files\GLRenderEngine\World</Filter>
     </ClInclude>
     <ClInclude Include="Src\Camera.h">
-      <Filter>Source Files\Kernel\World</Filter>
+      <Filter>Source Files\GLRenderEngine\World</Filter>
     </ClInclude>
     <ClInclude Include="Src\Shader.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\Model.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\Mesh.h">
-      <Filter>Source Files\Kernel\Resources</Filter>
+      <Filter>Source Files\GLRenderEngine\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Src\Constants.h">
       <Filter>Source Files\Common</Filter>

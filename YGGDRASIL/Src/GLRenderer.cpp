@@ -1,6 +1,8 @@
 #include "GLRenderer.h"
+#include <common/HiveCommonMicro.h>
+#include <common/CommonInterface.h>
 
-CGLRenderer::CGLRenderer() :m_pWindow(nullptr), m_DeltaTime(0.0f), m_LastFrame(0.0f)
+CGLRenderer::CGLRenderer()
 {
 
 }
@@ -12,57 +14,83 @@ CGLRenderer::~CGLRenderer()
 
 //*********************************************************************************
 //FUNCTION:
-void CGLRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight)
+bool CGLRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen /*= false*/)
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+	if (m_IsInitialized) return true;
 
-	m_pWindow = glfwCreateWindow(vWindowWidth, vWindowHeight, vWindowTitle.c_str(), nullptr, nullptr);
-	_ASSERTE(m_pWindow);
-	glfwMakeContextCurrent(m_pWindow);
+	_ASSERTE(vWindowWidth > 0 && vWindowHeight > 0);
+	_HIVE_EARLY_RETURN(!__createGLFWWindow(vWindowTitle, vWindowWidth, vWindowHeight, vIsFullScreen), "Fail to initialize opengl renderer due to failure of __createGLFWWindow().", false);
 
-	glewExperimental = GL_TRUE;
-
-	glewInit();
-	glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	m_IsInitialized = true;
+	return true;
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CGLRenderer::runV()
+int CGLRenderer::runV()
 {
-	while (!glfwWindowShouldClose(m_pWindow))
+	while (!m_IsRenderLoopDone)
 	{
-		GLfloat CurrentFrame = static_cast<GLfloat>(glfwGetTime());
-		m_DeltaTime = CurrentFrame - m_LastFrame;
-		m_LastFrame = CurrentFrame;
+		_handleEventsV();
+		_renderV();
 
 		glfwPollEvents();
-
-		_handleEventsV();
-		_drawV();
-
 		glfwSwapBuffers(m_pWindow);
+
+		m_IsRenderLoopDone = _isRenderLoopDoneV();
+		__updateFrameInterval();
 	}
+
 	glfwTerminate();
+	return 0;
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CGLRenderer::_drawV()
+bool CGLRenderer::_isRenderLoopDoneV()
 {
-
+	bool IsRenderLoopDone = glfwWindowShouldClose(m_pWindow);
+	if (IsRenderLoopDone) glfwTerminate();
+	return IsRenderLoopDone;
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CGLRenderer::_handleEventsV()
+bool CGLRenderer::__createGLFWWindow(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen /*= false*/)
 {
+	_HIVE_EARLY_RETURN(!glfwInit(), "Fail to initialize glfw due to failure of glfwInit().", false);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+	_ASSERTE(!m_pWindow);
+	GLFWmonitor *pMonitor = vIsFullScreen ? glfwGetPrimaryMonitor() : nullptr;
+	m_pWindow = glfwCreateWindow(vWindowWidth, vWindowHeight, vWindowTitle.c_str(), pMonitor, nullptr);
+	if (!m_pWindow)
+	{
+		hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to create window due to failure of glfwCreateWindow()");
+		glfwTerminate();
+		return false;
+	}
+	glfwSetWindowPos(m_pWindow, 0, 0); //TODO: ø…≈‰÷√≥ı ºŒª÷√
+	glfwMakeContextCurrent(m_pWindow);
+	glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	glewExperimental = GL_TRUE;
+	_HIVE_EARLY_RETURN((glewInit() != GLEW_OK), "Fail to initialize glew due to failure of glewInit().", false);
+
+	return true;
+}
+
+//*********************************************************************************
+//FUNCTION:
+void CGLRenderer::__updateFrameInterval()
+{
+	double CurrentFrameTime = static_cast<GLfloat>(glfwGetTime());
+	static double LastFrameTime = 0.0;
+	m_FrameInterval = CurrentFrameTime - LastFrameTime;
+	LastFrameTime = CurrentFrameTime;
 }

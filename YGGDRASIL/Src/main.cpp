@@ -3,13 +3,8 @@
 
 int main()
 {
-	CGLRenderer* pRenderer = new CYGGRenderer();
-	_ASSERT(pRenderer);
+	CYGGRenderer Renderer;
+	Renderer.initV(Constant::WIN_NAME, Constant::WIN_WIDTH, Constant::WIN_HEIGHT, true);
 
-	pRenderer->initV(Constant::WIN_NAME, Constant::WIN_WIDTH, Constant::WIN_HEIGHT);
-	pRenderer->runV();
-
-	delete pRenderer;
-
-	return 0;
+	return Renderer.runV();
 }

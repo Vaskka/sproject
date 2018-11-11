@@ -14,15 +14,15 @@ void CYGGShadingTechnique::initTechniqueV()
 {
 	CShadingTechnique::initTechniqueV();
 
-	auto pEvnMapPass = new CShader;
-	pEvnMapPass->addShader("res/shaders/Skybox_VS.glsl", VERTEX_SHADER);
-	pEvnMapPass->addShader("res/shaders/Skybox_FS.glsl", FRAGMENT_SHADER);
-	this->addShader("EvnMapPass", pEvnMapPass);
+	auto pRenderSkyPass = new CShader;
+	pRenderSkyPass->addShader("res/shaders/Skybox_VS.glsl", VERTEX_SHADER);
+	pRenderSkyPass->addShader("res/shaders/Skybox_FS.glsl", FRAGMENT_SHADER);
+	this->addShader("RenderSkyPass", pRenderSkyPass);
 
-	auto pGeometryPass = new CShader;
-	pGeometryPass->addShader("res/shaders/PBRShading_VS.glsl", VERTEX_SHADER);
-	pGeometryPass->addShader("res/shaders/ForwardPBRShading_FS.glsl", FRAGMENT_SHADER);
-	this->addShader("GeometryPass", pGeometryPass);
+	auto pRenderGeometryPass = new CShader;
+	pRenderGeometryPass->addShader("res/shaders/PBRShading_VS.glsl", VERTEX_SHADER);
+	pRenderGeometryPass->addShader("res/shaders/ForwardPBRShading_FS.glsl", FRAGMENT_SHADER);
+	this->addShader("RenderGeometryPass", pRenderGeometryPass);
 
 	auto pPostprocessPass = new CShader;
 	pPostprocessPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);

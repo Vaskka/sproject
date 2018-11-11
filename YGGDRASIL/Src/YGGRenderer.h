@@ -3,8 +3,6 @@
 #include <GLM/glm.hpp>
 #include "GLRenderer.h"
 
-class CCamera;
-class CModel;
 class CShadingTechnique;
 class CScene;
 
@@ -14,15 +12,13 @@ public:
 	CYGGRenderer();
 	virtual ~CYGGRenderer();
 
-	virtual void initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight) override;
+	virtual bool initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen = false) override;
 
 protected:
-	virtual void _drawV() override;
+	virtual void _renderV() override;
 	virtual void _handleEventsV() override;
 
 private:
-	static CScene *m_pScene;
-
 	GLuint m_CaptureFBO;
 	GLuint m_CaptureRBO;
 	GLuint m_SceneTexture;
@@ -30,6 +26,7 @@ private:
 
 	glm::mat4 m_ProjectionMatrix;
 	CShadingTechnique *m_pShadingTechnique = nullptr;
+	CScene *m_pScene = nullptr;
 
 	void __initTechniques();
 	void __initScene();
@@ -37,8 +34,8 @@ private:
 	void __initBuffers();
 	void __initMatrixs();
 
-	void __envmapPass();
-	void __geometryPass();
+	void __renderSkyPass();
+	void __renderGeometryPass();
 	void __postProcessPass();
 
 	void __destory();

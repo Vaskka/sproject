@@ -15,8 +15,6 @@ namespace
 	bool g_Buttons[3];
 }
 
-CScene* CYGGRenderer::m_pScene = nullptr;
-
 CYGGRenderer::CYGGRenderer()
 {
 
@@ -29,9 +27,9 @@ CYGGRenderer::~CYGGRenderer()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight)
+bool CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen)
 {
-	CGLRenderer::initV(vWindowTitle, vWindowWidth, vWindowHeight);
+	if (!CGLRenderer::initV(vWindowTitle, vWindowWidth, vWindowHeight)) return false;
 
 	__initScene();
 	__initTechniques();
@@ -39,18 +37,20 @@ void CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int 
 	__initMatrixs();
 	__initBuffers();
 
-	glfwSetKeyCallback(m_pWindow, __keyCallback);
-	glfwSetCursorPosCallback(m_pWindow, __cursorPosCallback);
-	glfwSetMouseButtonCallback(m_pWindow, __mouseButtonCallback);
-	glfwSetScrollCallback(m_pWindow, __scrollCallback);
+	_registerKeyCallback(__keyCallback);
+	_registerCursorPosCallback(__cursorPosCallback);
+	_registerMouseButtonCallback(__mouseButtonCallback);
+	_registerScrollCallback(__scrollCallback);
+
+	return true;
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::_drawV()
+void CYGGRenderer::_renderV()
 {
-	__geometryPass();
-	__envmapPass();
+	__renderSkyPass();
+	__renderGeometryPass();
 	__postProcessPass();
 }
 
@@ -58,18 +58,20 @@ void CYGGRenderer::_drawV()
 //FUNCTION:
 void CYGGRenderer::_handleEventsV()
 {
+	float FrameInterval = static_cast<float>(this->getFrameInterval());
+
 	if (g_Keys[GLFW_KEY_W])
-		m_pScene->getCamera()->processKeyboard(FORWARD, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(FORWARD, FrameInterval);
 	if (g_Keys[GLFW_KEY_S])
-		m_pScene->getCamera()->processKeyboard(BACKWARD, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(BACKWARD, FrameInterval);
 	if (g_Keys[GLFW_KEY_A])
-		m_pScene->getCamera()->processKeyboard(LEFT, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(LEFT, FrameInterval);
 	if (g_Keys[GLFW_KEY_D])
-		m_pScene->getCamera()->processKeyboard(RIGHT, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(RIGHT, FrameInterval);
 	if (g_Keys[GLFW_KEY_Q])
-		m_pScene->getCamera()->processKeyboard(UP, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(UP, FrameInterval);
 	if (g_Keys[GLFW_KEY_E])
-		m_pScene->getCamera()->processKeyboard(DOWN, m_DeltaTime);
+		m_pScene->getCamera()->processKeyboard(DOWN, FrameInterval);
 }
 
 //*********************************************************************************
@@ -87,9 +89,9 @@ void CYGGRenderer::__initScene()
 	m_pScene = CScene::getInstance();
 	m_pScene->initScene();
 
-	//auto pModel = new CModel();
-	//pModel->load("res/objects/emeishan/emeishan.obj");
-	//m_pScene->addModel(pModel);
+	auto pModel = new CModel();
+	pModel->load("res/objects/emeishan/emeishan.obj");
+	m_pScene->addModel(pModel);
 }
 
 //*********************************************************************************
@@ -124,16 +126,16 @@ void CYGGRenderer::__initMatrixs()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::__envmapPass()
+void CYGGRenderer::__renderSkyPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
-	glDepthFunc(GL_LEQUAL);
-	m_pShadingTechnique->enableShader("EvnMapPass");
+	m_pShadingTechnique->enableShader("RenderSkyPass");
 
 	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
 	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
@@ -143,18 +145,21 @@ void CYGGRenderer::__envmapPass()
 	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
 	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 0);
 
+	glDepthFunc(GL_LEQUAL);
+	glDepthMask(GL_FALSE);
 	util::renderCube();
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LESS);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	m_pShadingTechnique->disableShader();
-	glDepthFunc(GL_LESS);
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::__geometryPass()
+void CYGGRenderer::__renderGeometryPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
@@ -162,8 +167,7 @@ void CYGGRenderer::__geometryPass()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
 	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	m_pShadingTechnique->enableShader("GeometryPass");
+	m_pShadingTechnique->enableShader("RenderGeometryPass");
 
 	//update uniforms for PBR
 	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
@@ -249,7 +253,7 @@ void CYGGRenderer::__cursorPosCallback(GLFWwindow* window, double xpos, double y
 	LastY = ypos;
 
 	if (g_Buttons[GLFW_MOUSE_BUTTON_LEFT])
-		m_pScene->getCamera()->processMouseMovement(static_cast<float>(xoffset), static_cast<float>(yoffset));
+		CScene::getInstance()->getCamera()->processMouseMovement(static_cast<float>(xoffset), static_cast<float>(yoffset));
 }
 
 //*********************************************************************************
@@ -269,5 +273,5 @@ void CYGGRenderer::__mouseButtonCallback(GLFWwindow* vWindow, int vButton, int v
 //FUNCTION:
 void CYGGRenderer::__scrollCallback(GLFWwindow* vWindow, double vXOffset, double vYOffset)
 {
-	m_pScene->getCamera()->processMouseScroll(static_cast<float>(vYOffset));
+	CScene::getInstance()->getCamera()->processMouseScroll(static_cast<float>(vYOffset));
 }
