@@ -32,10 +32,11 @@ bool CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int 
 	if (!CGLRenderer::initV(vWindowTitle, vWindowWidth, vWindowHeight)) return false;
 
 	__initScene();
-	__initTechniques();
 	__initTextures();
-	__initMatrixs();
 	__initBuffers();
+	m_pShadingTechnique = new CYGGShadingTechnique();
+	m_pShadingTechnique->initTechniqueV();
+	m_StartTime = clock();
 
 	_registerKeyCallback(__keyCallback);
 	_registerCursorPosCallback(__cursorPosCallback);
@@ -52,6 +53,7 @@ void CYGGRenderer::_renderV()
 	__renderSkyPass();
 	__renderGeometryPass();
 	__postProcessPass();
+	m_CurrentTime = clock();
 }
 
 //*********************************************************************************
@@ -76,22 +78,14 @@ void CYGGRenderer::_handleEventsV()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::__initTechniques()
-{
-	m_pShadingTechnique = new CYGGShadingTechnique();
-	m_pShadingTechnique->initTechniqueV();
-}
-
-//*********************************************************************************
-//FUNCTION:
 void CYGGRenderer::__initScene()
 {
 	m_pScene = CScene::getInstance();
 	m_pScene->initScene();
-
-	auto pModel = new CModel();
-	pModel->load("res/objects/emeishan/emeishan.obj");
-	m_pScene->addModel(pModel);
+	m_ProjectionMatrix = glm::perspective(m_pScene->getCamera()->Zoom, (float)WIN_WIDTH / (float)WIN_HEIGHT, CAMERA_NEAR, CAMERA_FAR); //NOTE: 必须在initScene之后调用
+	//auto pModel = new CModel();
+	//pModel->load("res/objects/emeishan/emeishan.obj");
+	//m_pScene->addModel(pModel);
 }
 
 //*********************************************************************************
@@ -119,13 +113,6 @@ void CYGGRenderer::__initBuffers()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::__initMatrixs()
-{
-	m_ProjectionMatrix = glm::perspective(m_pScene->getCamera()->Zoom, (float)WIN_WIDTH / (float)WIN_HEIGHT, CAMERA_NEAR, CAMERA_FAR);
-}
-
-//*********************************************************************************
-//FUNCTION:
 void CYGGRenderer::__renderSkyPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
@@ -140,6 +127,7 @@ void CYGGRenderer::__renderSkyPass()
 	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
 	m_pShadingTechnique->updateStandShaderUniform("uProjectionMatrix", m_ProjectionMatrix);
 	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", ViewMatrix);
+	m_pShadingTechnique->updateStandShaderUniform("uTime", getTime());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);

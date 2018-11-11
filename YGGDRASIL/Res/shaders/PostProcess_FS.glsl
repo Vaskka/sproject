@@ -20,5 +20,5 @@ void main()
 	//gamma correct
 	MappedColor = pow(MappedColor, vec3(1.0 / GAMMA));
 
-	_outFragColor = vec4(MappedColor, 1.0);
+	_outFragColor = vec4(HDRColor, 1.0);
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <ctime>
 #include <GLM/glm.hpp>
 #include "GLRenderer.h"
 
@@ -13,6 +14,8 @@ public:
 	virtual ~CYGGRenderer();
 
 	virtual bool initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen = false) override;
+
+	float getTime() const { return (float)(m_CurrentTime - m_StartTime) / CLOCKS_PER_SEC; }
 
 protected:
 	virtual void _renderV() override;
@@ -28,11 +31,12 @@ private:
 	CShadingTechnique *m_pShadingTechnique = nullptr;
 	CScene *m_pScene = nullptr;
 
-	void __initTechniques();
+	clock_t m_StartTime = 0;
+	clock_t m_CurrentTime = 0;
+
 	void __initScene();
 	void __initTextures();
 	void __initBuffers();
-	void __initMatrixs();
 
 	void __renderSkyPass();
 	void __renderGeometryPass();

@@ -1,5 +1,7 @@
 #include "TextureUtil.h"
 #include <iostream>
+#include "common/HiveCommonMicro.h"
+#include "common/CommonInterface.h"
 #include "stb_image.h"
 
 //**********************************************************************************************
@@ -71,52 +73,46 @@ GLuint util::setupCubemap(int vWidth, int vHeight, bool vGenerateMipMap)
 
 //**********************************************************************************************
 //FUNCTION:
-GLuint util::loadTexture(const char *vPath, GLint vWrapMode/* = GL_CLAMP*/, GLint vFilterMode/* = GL_LINEAR*/)
+GLuint util::loadTexture(const char *vPath, GLint vWrapMode, GLint vFilterMode, bool vFlipVertically)
 {
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(vFlipVertically);
+
 	int Width, Height, Channels;
-	GLfloat *pData = stbi_loadf(vPath, &Width, &Height, &Channels, 0);
+	unsigned char *pImageData = stbi_load(vPath, &Width, &Height, &Channels, 0);
+	_HIVE_EARLY_RETURN(!pImageData, "Failed to load texture due to failure of stbi_load().", -1);
 
-	if (pData)
-	{
-		GLenum Format;
-		if (Channels == 1)
-			Format = GL_RED;
-		else if (Channels == 3)
-			Format = GL_RGB32F;
-		else if (Channels == 4)
-			Format = GL_RGBA32F;
+	GLenum Format;
+	if (Channels == 1) Format = GL_RED;
+	else if (Channels == 3) Format = GL_RGB;
+	else if (Channels == 4) Format = GL_RGBA;
 
-		GLuint TextureID;
-		glGenTextures(1, &TextureID);
-		glBindTexture(GL_TEXTURE_2D, TextureID);
-		switch (Format)
-		{
-		case GL_RED:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, Width, Height, 0, GL_RED, GL_FLOAT, pData);
-			break;
-		case GL_RGB32F:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, Width, Height, 0, GL_RGB, GL_FLOAT, pData);
-			break;
-		case GL_RGBA32F:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, Width, Height, 0, GL_RGBA, GL_FLOAT, pData);
-			break;
-		default:
-			break;
-		}
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, vWrapMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		stbi_image_free(pData);
-		return TextureID;
-	}
-	else
+	GLuint TextureID;
+	glGenTextures(1, &TextureID);
+	glBindTexture(GL_TEXTURE_2D, TextureID);
+
+	switch (Format)
 	{
-		std::cout << "Failed to load image." << std::endl;
-		return -1;
+	case GL_RED:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, Width, Height, 0, GL_RED, GL_UNSIGNED_BYTE, pImageData);
+		break;
+	case GL_RGB:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, pImageData);
+		break;
+	case GL_RGBA:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Width, Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pImageData);
+		break;
+	default:
+		break;
 	}
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, vWrapMode);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(pImageData);
+
+	return TextureID;
 }
 
 //**********************************************************************************************

@@ -1,6 +1,6 @@
 #include "GLRenderer.h"
-#include <common/HiveCommonMicro.h>
-#include <common/CommonInterface.h>
+#include "common/HiveCommonMicro.h"
+#include "common/CommonInterface.h"
 
 CGLRenderer::CGLRenderer()
 {
