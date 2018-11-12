@@ -37,7 +37,7 @@ vec3 skyColor(in vec3 ray)
 	col += skyColor * (1.0 - 0.8 * ray.y);
 
 	//fog        
-	//col = mix(col, 0.9 * vec3(0.9, 0.85, 0.85), pow(1.0 - clamp(ray.y + 0.1, 0.0, 1.0), 4.0));
+	//col = mix(col, 0.9 * vec3(1.0, 0.95, 1.0), pow(1.0 - clamp(ray.y + 0.1, 0.0, 1.0), 4.0));
 
 	//stars
 	float s = texture(uWhiteNoiseTex, ray.xz * 1.25, -100.0).x;

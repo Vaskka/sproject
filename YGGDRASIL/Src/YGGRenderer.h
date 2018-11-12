@@ -42,6 +42,9 @@ private:
 	void __renderGeometryPass();
 	void __postProcessPass();
 
+	void __startPlaySounds() const;
+	void __stopAllSounds() const;
+
 	void __destory();
 
 	static void __keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, int vAction, int vMode);
