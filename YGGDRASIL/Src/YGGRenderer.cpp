@@ -1,10 +1,5 @@
 #include "YGGRenderer.h"
-
-#ifdef _WINDOWS
-#include <windows.h>
-#include <mmsystem.h>
-#endif
-
+#include <boost/random.hpp>
 #include "Scene.h"
 #include "Model.h"
 #include "Camera.h"
@@ -12,6 +7,7 @@
 #include "TextureUtil.h"
 #include "RenderUtil.h"
 #include "Constants.h"
+#include "SoundPlayer.h"
 
 using namespace Constant;
 
@@ -49,7 +45,7 @@ bool CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int 
 	_registerMouseButtonCallback(__mouseButtonCallback);
 	_registerScrollCallback(__scrollCallback);
 
-	__startPlaySounds();
+	__playSound();
 
 	return true;
 }
@@ -207,24 +203,12 @@ void CYGGRenderer::__postProcessPass()
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::__startPlaySounds() const
+void CYGGRenderer::__playSound()
 {
-#ifdef _WINDOWS
-	PlaySound(Constant::MAIN_BGM_FILE_PATH.c_str(), nullptr, SND_ASYNC | SND_LOOP);
-#else
-	hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to play sounds because the platform is not supported.");
-#endif
-}
-
-//*********************************************************************************
-//FUNCTION:
-void CYGGRenderer::__stopAllSounds() const
-{
-#ifdef _WINDOWS
-	PlaySound(nullptr, nullptr, SND_ASYNC | SND_LOOP);
-#else
-	_ASSERTE(false);
-#endif
+	size_t Count = Constant::MAIN_BGM_FILE_PATH.size();
+	srand((unsigned)time(0));
+	int RandInt = rand() % Count;
+	CSoundPlayer::getInstance()->playSound(Constant::MAIN_BGM_FILE_PATH[RandInt].c_str()); //play random sound
 }
 
 //*********************************************************************************
@@ -233,7 +217,7 @@ void CYGGRenderer::__destory()
 {
 	if (m_pScene) m_pScene->destroyScene();
 	if (m_pShadingTechnique) delete m_pShadingTechnique;
-	__stopAllSounds();
+	CSoundPlayer::getInstance()->stopAllSounds();
 }
 
 //*********************************************************************************

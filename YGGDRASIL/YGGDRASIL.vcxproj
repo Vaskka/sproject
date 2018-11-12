@@ -152,8 +152,10 @@
     <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\ShadingTechnique.cpp" />
+    <ClCompile Include="Src\SoundPlayer.cpp" />
     <ClCompile Include="Src\Technique.cpp" />
     <ClCompile Include="Src\TextureUtil.cpp" />
+    <ClCompile Include="Src\Utility.cpp" />
     <ClCompile Include="Src\YGGRenderer.cpp" />
     <ClCompile Include="Src\YGGShadingTechnique.cpp" />
   </ItemGroup>
@@ -167,8 +169,10 @@
     <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\ShadingTechnique.h" />
+    <ClInclude Include="Src\SoundPlayer.h" />
     <ClInclude Include="Src\Technique.h" />
     <ClInclude Include="Src\TextureUtil.h" />
+    <ClInclude Include="Src\Utility.h" />
     <ClInclude Include="Src\YGGRenderer.h" />
     <ClInclude Include="Src\YGGShadingTechnique.h" />
   </ItemGroup>

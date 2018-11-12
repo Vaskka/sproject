@@ -41,9 +41,8 @@ private:
 	void __renderSkyPass();
 	void __renderGeometryPass();
 	void __postProcessPass();
+	void __playSound();
 
-	void __startPlaySounds() const;
-	void __stopAllSounds() const;
 
 	void __destory();
 
