@@ -1,33 +1,43 @@
 #include "SoundPlayer.h"
-
-#ifdef _WINDOWS
-#include <windows.h>
-#include <mmsystem.h>
-#endif
-
 #include "common/HiveCommonMicro.h"
 #include "common/CommonInterface.h"
 
+CSoundPlayer::CSoundPlayer()
+{
+
+}
+
+CSoundPlayer::~CSoundPlayer()
+{
+	if (m_SoundEngine)
+		m_SoundEngine->drop();
+}
+
 //*********************************************************************************
 //FUNCTION:
-void CSoundPlayer::playSound(const char* vFilePath) const
+bool CSoundPlayer::init()
+{
+	if (m_IsInitialized) return true;
+	m_SoundEngine = irrklang::createIrrKlangDevice();
+	_HIVE_EARLY_RETURN(!m_SoundEngine, "Fail to initialize sound player due to failure of irrklang::createIrrKlangDevice().", false);
+
+	m_IsInitialized = true;
+	return true;
+}
+
+//*********************************************************************************
+//FUNCTION:
+void CSoundPlayer::playSound2D(const char* vFilePath)
 {
 	_ASSERTE(vFilePath);
-
-#ifdef _WINDOWS
-	PlaySound(vFilePath, nullptr, SND_ASYNC | SND_LOOP);
-#else
-	hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to play sounds because the platform is not supported.");
-#endif
+	if (!m_IsInitialized) init();
+	m_SoundEngine->play2D(vFilePath, true);
 }
 
 //*********************************************************************************
 //FUNCTION:
 void CSoundPlayer::stopAllSounds() const
 {
-#ifdef _WINDOWS
-	PlaySound(nullptr, nullptr, SND_ASYNC | SND_LOOP);
-#else
-	_ASSERTE(false);
-#endif
+	if (!m_IsInitialized) return;
+	m_SoundEngine->stopAllSounds();
 }

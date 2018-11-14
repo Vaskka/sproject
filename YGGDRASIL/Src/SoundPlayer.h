@@ -1,16 +1,20 @@
 #pragma once
+#include <irrKlang.h>
 #include "common/Singleton.h"
 
 class CSoundPlayer : public hiveOO::CSingleton<CSoundPlayer>
 {
 public:
-	virtual ~CSoundPlayer() = default;
+	CSoundPlayer();
+	virtual ~CSoundPlayer();
 
-	void playSound(const char* vFilePath) const;
+	bool init();
+	void playSound2D(const char* vFilePath);
 	void stopAllSounds() const;
 
 private:
-	CSoundPlayer() = default;
+	bool m_IsInitialized = false;
+	irrklang::ISoundEngine* m_SoundEngine = nullptr;
 
 	friend class hiveOO::CSingleton<CSoundPlayer>;
 };

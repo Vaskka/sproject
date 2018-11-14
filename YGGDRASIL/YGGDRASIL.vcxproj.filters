@@ -22,9 +22,6 @@
     <Filter Include="Shader Files\SkyRendering">
       <UniqueIdentifier>{02d03334-6099-4dcb-940e-8c0ecb6c198d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SoundEngine">
-      <UniqueIdentifier>{04687f63-367a-4a06-a602-94ffa5ae8726}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\RenderEngine">
       <UniqueIdentifier>{f797d150-64c4-403a-ac92-9bd9b3430cd7}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Source Files\RenderEngine\Techniques">
       <UniqueIdentifier>{6cff8c2e-d4b2-421e-85ac-6f5d2e9af0cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AudioEngine">
+      <UniqueIdentifier>{04687f63-367a-4a06-a602-94ffa5ae8726}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,11 +81,11 @@
     <ClCompile Include="Src\Mesh.cpp">
       <Filter>Source Files\RenderEngine\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Src\SoundPlayer.cpp">
-      <Filter>Source Files\SoundEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Utility.cpp">
       <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SoundPlayer.cpp">
+      <Filter>Source Files\AudioEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,11 +128,11 @@
     <ClInclude Include="Src\Constants.h">
       <Filter>Source Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Src\SoundPlayer.h">
-      <Filter>Source Files\SoundEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Utility.h">
       <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SoundPlayer.h">
+      <Filter>Source Files\AudioEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
