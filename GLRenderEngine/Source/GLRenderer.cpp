@@ -2,6 +2,8 @@
 #include "common/HiveCommonMicro.h"
 #include "common/CommonInterface.h"
 
+using namespace sengine::renderEngine;
+
 CGLRenderer::CGLRenderer()
 {
 

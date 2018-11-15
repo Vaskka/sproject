@@ -45,9 +45,6 @@
     <ClCompile Include="Src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\GLRenderer.cpp">
-      <Filter>Source Files\RenderEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Src\YGGRenderer.cpp">
       <Filter>Source Files\YGGRendering</Filter>
     </ClCompile>
@@ -89,9 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\GLRenderer.h">
-      <Filter>Source Files\RenderEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Src\YGGRenderer.h">
       <Filter>Source Files\YGGRendering</Filter>
     </ClInclude>
