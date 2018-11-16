@@ -7,7 +7,7 @@
 class CShadingTechnique;
 class CScene;
 
-class CYGGRenderer : public sengine::renderEngine::CGLRenderer
+class CYGGRenderer : public sengine::srenderer::CGLRenderer
 {
 public:
 	CYGGRenderer();

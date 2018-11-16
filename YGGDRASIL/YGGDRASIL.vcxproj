@@ -94,7 +94,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>../$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;sRenderEngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;srenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/nodefaultlib:"MSVCRT" %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
@@ -112,7 +112,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>../$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;sRenderEngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;srenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -133,7 +133,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;sRenderEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;srenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;sRenderEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;srenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>

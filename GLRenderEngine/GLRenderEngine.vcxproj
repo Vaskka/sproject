@@ -23,6 +23,7 @@
     <ProjectGuid>{02FD3233-75CC-4DD4-8EF2-0AE2670642A8}</ProjectGuid>
     <RootNamespace>GLRenderEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectName>GLRenderEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,18 +73,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>sRenderEngine141D</TargetName>
+    <TargetName>srenderer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>sRenderEngine141</TargetName>
+    <TargetName>srenderer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>sRenderEngine</TargetName>
+    <TargetName>srenderer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>sRenderEngine</TargetName>
+    <TargetName>srenderer</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -94,6 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -109,6 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(OPENGL)/lib/$(PlatformTarget);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
@@ -122,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(OPENGL)/lib/$(PlatformTarget);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
@@ -137,6 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -146,11 +151,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DisplayDevice.h" />
+    <ClInclude Include="Source\GLRenderEngine.h" />
     <ClInclude Include="Source\GLRenderer.h" />
-    <ClInclude Include="Source\OpenGLRenderEngineExport.h" />
+    <ClInclude Include="Source\RenderEngineExport.h" />
+    <ClInclude Include="Source\Platform.h" />
+    <ClInclude Include="Source\RenderEngine.h" />
+    <ClInclude Include="Source\RenderEngineCommon.h" />
+    <ClInclude Include="Source\RenderEngineConfig.h" />
+    <ClInclude Include="Source\RenderEngineImp.h" />
+    <ClInclude Include="Source\RenderEngineInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DisplayDevice.cpp" />
+    <ClCompile Include="Source\GLRenderEngine.cpp" />
     <ClCompile Include="Source\GLRenderer.cpp" />
+    <ClCompile Include="Source\RenderEngine.cpp" />
+    <ClCompile Include="Source\RenderEngineConfig.cpp" />
+    <ClCompile Include="Source\RenderEngineInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

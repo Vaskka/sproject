@@ -6,7 +6,7 @@
 
 namespace sengine
 {
-	namespace renderEngine
+	namespace srenderer
 	{
 		class CGLRenderer
 		{
