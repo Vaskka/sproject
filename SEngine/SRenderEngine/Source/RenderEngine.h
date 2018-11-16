@@ -4,11 +4,10 @@
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
-		class IRenderEngineImp;
+		class IBaseRenderer;
 		class CDisplayDevice;
-		class CScene;
 		class CRenderEngineConfig;
 
 		class CRenderEngine : public hiveOO::CSingleton<CRenderEngine>
@@ -21,26 +20,24 @@ namespace sengine
 			bool init();
 			bool run();
 
-			IRenderEngineImp*	fetchRenderEngine() const { return m_pRenderEngineImp; }
+			IBaseRenderer*	fetchRenderer() const { return m_pRenderer; }
 			CDisplayDevice*		fetchDisplayDevice() const { return m_pDisplayDevice; }
-
-		private:
-			CRenderEngine();
-
-			bool __render();
-			bool __loadRenderEngineImpLibrary(const std::string& vEngineSig);
-			void __createWindow();
 
 		private:
 			bool m_IsInitialized;
 			bool m_IsRunning;
 			bool m_IsRenderLoopDone;
 
-			IRenderEngineImp	*m_pRenderEngineImp;
+			IBaseRenderer	*m_pRenderer;
 			CDisplayDevice		*m_pDisplayDevice;
-			CScene				*m_pScene;
 
 			CRenderEngineConfig m_RenderEngineConfig;
+
+			CRenderEngine();
+
+			bool __render();
+			bool __loadRendererLibrary(const std::string& vRendererSig);
+			void __createWindow();
 		};
 	}
 }

@@ -3,7 +3,7 @@
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
 		class CRenderEngineConfig : public hiveConfig::CHiveConfig
 		{

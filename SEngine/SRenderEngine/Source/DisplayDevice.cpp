@@ -3,7 +3,7 @@
 #include <common/CommonInterface.h>
 #include <common/HiveCommonMicro.h>
 
-using namespace sengine::srenderer;
+using namespace sengine::renderEngine;
 
 CDisplayDevice::CDisplayDevice()
 {

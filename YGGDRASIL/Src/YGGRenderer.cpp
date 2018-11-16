@@ -1,5 +1,8 @@
 #include "YGGRenderer.h"
 #include <boost/random.hpp>
+#include <common/HiveCommonMicro.h>
+#include <common/CommonInterface.h>
+#include <common/ProductFactory.h>
 #include "Scene.h"
 #include "Model.h"
 #include "Camera.h"
@@ -10,6 +13,9 @@
 #include "SoundPlayer.h"
 
 using namespace Constant;
+using namespace sengine::renderEngine;
+
+hiveOO::CProductFactory<CYGGRenderer> Creator("GLRenderer"); //HACK: bad design
 
 namespace
 {
@@ -29,9 +35,9 @@ CYGGRenderer::~CYGGRenderer()
 
 //*********************************************************************************
 //FUNCTION:
-bool CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen)
+bool CYGGRenderer::_initV()
 {
-	if (!CGLRenderer::initV(vWindowTitle, vWindowWidth, vWindowHeight)) return false;
+	if (!CGLRenderer::_initV()) return false;
 
 	__initScene();
 	__initTextures();
@@ -52,18 +58,23 @@ bool CYGGRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int 
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::_renderV()
+bool CYGGRenderer::_renderV()
 {
+	if (!CGLRenderer::_renderV()) return false;
 	__renderSkyPass();
 	__renderGeometryPass();
 	__postProcessPass();
 	m_CurrentTime = clock();
+
+	return true;
 }
 
 //*********************************************************************************
 //FUNCTION:
-void CYGGRenderer::_handleEventsV()
+void CYGGRenderer::_handleEventV()
 {
+	CGLRenderer::_handleEventV();
+
 	float FrameInterval = static_cast<float>(this->getFrameInterval());
 
 	if (g_Keys[GLFW_KEY_W])

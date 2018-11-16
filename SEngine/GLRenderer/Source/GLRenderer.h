@@ -1,28 +1,28 @@
 #pragma once
-#include <string>
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "OpenGLRenderEngineExport.h"
+#include "BaseRenderer.h"
+#include "GLRendererExport.h"
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
-		class CGLRenderer
+		class OPENGL_RENDERER_DLL_EXPORT CGLRenderer : public IBaseRenderer
 		{
 		public:
 			CGLRenderer();
 			virtual ~CGLRenderer();
 
-			virtual bool initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen = false); //TODO: 配置文件
-			virtual int runV();
-
 			double getFrameInterval() const { return m_FrameInterval; }
 
 		protected:
-			virtual void _renderV() {}
-			virtual void _handleEventsV() {}
-			virtual bool _isRenderLoopDoneV();
+			virtual bool _initV() override;
+			virtual bool _renderV() override;
+
+			virtual void _handleEventV();
+
+			virtual bool _isRenderLoopDoneV() override;
 
 			void _registerKeyCallback(GLFWkeyfun vFun) { glfwSetKeyCallback(m_pWindow, vFun); }	//TODO: 还可以封装
 			void _registerCursorPosCallback(GLFWcursorposfun vFun) { glfwSetCursorPosCallback(m_pWindow, vFun); }
@@ -30,14 +30,12 @@ namespace sengine
 			void _registerScrollCallback(GLFWscrollfun vFun) { glfwSetScrollCallback(m_pWindow, vFun); }
 
 		private:
-			bool m_IsInitialized = false;
-			bool m_IsRenderLoopDone = false;
+			bool __createGLFWWindow();
+			void __updateFrameInterval();
 
+		private:
 			GLFWwindow *m_pWindow = nullptr;
 			double m_FrameInterval = 0.0f;
-
-			bool __createGLFWWindow(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen = false);
-			void __updateFrameInterval();
 		};
 	}
 }

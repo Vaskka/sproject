@@ -7,19 +7,18 @@
 class CShadingTechnique;
 class CScene;
 
-class CYGGRenderer : public sengine::srenderer::CGLRenderer
+class CYGGRenderer : public sengine::renderEngine::CGLRenderer
 {
 public:
 	CYGGRenderer();
 	virtual ~CYGGRenderer();
 
-	virtual bool initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen = false) override;
-
 	float getTime() const { return (float)(m_CurrentTime - m_StartTime) / CLOCKS_PER_SEC; }
 
 protected:
-	virtual void _renderV() override;
-	virtual void _handleEventsV() override;
+	virtual bool _initV() override;
+	virtual bool _renderV() override;
+	virtual void _handleEventV() override;
 
 private:
 	GLuint m_CaptureFBO;
@@ -42,7 +41,6 @@ private:
 	void __renderGeometryPass();
 	void __postProcessPass();
 	void __playSound();
-
 
 	void __destory();
 

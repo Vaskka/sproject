@@ -2,7 +2,7 @@
 #include "RenderEngineCommon.h"
 #include "common/ProductFactory.h"
 
-using namespace sengine::srenderer;
+using namespace sengine::renderEngine;
 
 CRenderEngineConfig::CRenderEngineConfig()
 {

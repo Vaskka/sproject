@@ -1,8 +1,15 @@
 #include "GLRenderer.h"
-#include "common/HiveCommonMicro.h"
-#include "common/CommonInterface.h"
+#include <common/HiveCommonMicro.h>
+#include <common/CommonInterface.h>
+#include <common/ProductFactory.h>
+#include "RenderEngineInterface.h"
+#include "DisplayDevice.h"
 
-using namespace sengine::srenderer;
+using namespace sengine::renderEngine;
+
+#ifndef _USE_CUSTOM_RENDERER //TODO: bad design
+hiveOO::CProductFactory<CGLRenderer> Creator("GLRenderer");
+#endif
 
 CGLRenderer::CGLRenderer()
 {
@@ -16,37 +23,22 @@ CGLRenderer::~CGLRenderer()
 
 //*********************************************************************************
 //FUNCTION:
-bool CGLRenderer::initV(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen /*= false*/)
+bool CGLRenderer::_initV()
 {
-	if (m_IsInitialized) return true;
+	_HIVE_EARLY_RETURN(!__createGLFWWindow(), "Fail to initialize opengl render engine due to failure of __createGLFWWindow().", false);
 
-	_ASSERTE(vWindowWidth > 0 && vWindowHeight > 0);
-	_HIVE_EARLY_RETURN(!__createGLFWWindow(vWindowTitle, vWindowWidth, vWindowHeight, vIsFullScreen), "Fail to initialize opengl renderer due to failure of __createGLFWWindow().", false);
-
-	glEnable(GL_DEPTH_TEST);
-
-	m_IsInitialized = true;
 	return true;
 }
 
 //*********************************************************************************
 //FUNCTION:
-int CGLRenderer::runV()
+bool CGLRenderer::_renderV()
 {
-	while (!m_IsRenderLoopDone)
-	{
-		_handleEventsV();
-		_renderV();
+	_handleEventV();
+	glfwPollEvents();
+	glfwSwapBuffers(m_pWindow);
 
-		glfwPollEvents();
-		glfwSwapBuffers(m_pWindow);
-
-		m_IsRenderLoopDone = _isRenderLoopDoneV();
-		__updateFrameInterval();
-	}
-
-	glfwTerminate();
-	return 0;
+	return true;
 }
 
 //*********************************************************************************
@@ -55,36 +47,44 @@ bool CGLRenderer::_isRenderLoopDoneV()
 {
 	bool IsRenderLoopDone = glfwWindowShouldClose(m_pWindow);
 	if (IsRenderLoopDone) glfwTerminate();
+
 	return IsRenderLoopDone;
 }
 
 //*********************************************************************************
 //FUNCTION:
-bool CGLRenderer::__createGLFWWindow(const std::string& vWindowTitle, int vWindowWidth, int vWindowHeight, bool vIsFullScreen /*= false*/)
+bool CGLRenderer::__createGLFWWindow()
 {
 	_HIVE_EARLY_RETURN(!glfwInit(), "Fail to initialize glfw due to failure of glfwInit().", false);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+	auto pDisplayDevice = fetchDisplayDevice();
+	_ASSERTE(pDisplayDevice);
+	auto DisplayInfo = pDisplayDevice->getDisplayDeviceInfo();
+	_ASSERTE(DisplayInfo.isValid());
 
 	_ASSERTE(!m_pWindow);
-	GLFWmonitor *pMonitor = vIsFullScreen ? glfwGetPrimaryMonitor() : nullptr;
-	m_pWindow = glfwCreateWindow(vWindowWidth, vWindowHeight, vWindowTitle.c_str(), pMonitor, nullptr);
+	GLFWmonitor *pMonitor = DisplayInfo.IsFullScreenWindow ? glfwGetPrimaryMonitor() : nullptr;
+	m_pWindow = glfwCreateWindow(DisplayInfo.WinWidth, DisplayInfo.WinHeight, DisplayInfo.WinTitle.c_str(), pMonitor, nullptr);
 	if (!m_pWindow)
 	{
 		hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to create window due to failure of glfwCreateWindow()");
 		glfwTerminate();
 		return false;
 	}
-	glfwSetWindowPos(m_pWindow, 0, 0); //TODO: ø…≈‰÷√≥ı ºŒª÷√
+	glfwSetWindowPos(m_pWindow, DisplayInfo.WinPosX, DisplayInfo.WinPosY);
 	glfwMakeContextCurrent(m_pWindow);
-	glfwSetInputMode(m_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 	glewExperimental = GL_TRUE;
+
 	_HIVE_EARLY_RETURN((glewInit() != GLEW_OK), "Fail to initialize glew due to failure of glewInit().", false);
 
 	return true;
+}
+
+//*********************************************************************************
+//FUNCTION:
+void CGLRenderer::_handleEventV()
+{
+
 }
 
 //*********************************************************************************

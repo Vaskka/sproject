@@ -3,7 +3,7 @@
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
 		struct SDisplayInfo
 		{

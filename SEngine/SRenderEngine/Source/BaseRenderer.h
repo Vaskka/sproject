@@ -4,17 +4,17 @@
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
-		class RENDER_ENGINE_DLL_EXPORT IRenderEngineImp : public hiveOO::CBaseProduct
+		class RENDER_ENGINE_DLL_EXPORT IBaseRenderer : public hiveOO::CBaseProduct
 		{
 			friend class CRenderEngine;
 
 		public:
-			virtual ~IRenderEngineImp() {}
+			virtual ~IBaseRenderer() {}
 
 		protected:
-			IRenderEngineImp() {}
+			IBaseRenderer() {}
 
 			virtual bool _initV() = 0;
 			virtual bool _renderV() = 0;

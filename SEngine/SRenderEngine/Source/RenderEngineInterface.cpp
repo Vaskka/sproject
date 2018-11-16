@@ -3,11 +3,11 @@
 #include <common/HiveCommonMicro.h>
 #include "RenderEngine.h"
 
-using namespace sengine::srenderer;
+using namespace sengine::renderEngine;
 
 //*********************************************************************************
 //FUNCTION:
-bool sengine::srenderer::init()
+bool sengine::renderEngine::init()
 {
 	try
 	{
@@ -22,7 +22,7 @@ bool sengine::srenderer::init()
 
 //*********************************************************************************
 //FUNCTION:
-bool sengine::srenderer::run()
+bool sengine::renderEngine::run()
 {
 	bool IsNormalExit = CRenderEngine::getInstance()->run();
 	CRenderEngine::getInstance()->destroy();
@@ -32,7 +32,7 @@ bool sengine::srenderer::run()
 
 //*********************************************************************************
 //FUNCTION:
-CDisplayDevice* sengine::srenderer::fetchDisplayDevice()
+CDisplayDevice* sengine::renderEngine::fetchDisplayDevice()
 {
 	return CRenderEngine::getInstance()->fetchDisplayDevice();
 }

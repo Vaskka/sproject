@@ -5,7 +5,7 @@
 
 namespace sengine
 {
-	namespace srenderer
+	namespace renderEngine
 	{
 		namespace CONFIG_FILE_TYPE
 		{
@@ -28,7 +28,7 @@ namespace sengine
 
 		namespace CONFIG_DEFAULT
 		{
-			const std::string DEFAULT_RENDER_ENGINE_SIGNATURE = "srendererGL";
+			const std::string DEFAULT_RENDER_ENGINE_SIGNATURE = "GLRenderer";
 			const boost::tuple<int, int> DEFAULT_WIN_POSITION = boost::make_tuple(100, 100);
 			const boost::tuple<int, int> DEFAULT_WIN_SIZE = boost::make_tuple(1024, 768);
 			const std::string DEFAULT_WIN_TITLE = "sengine application";
@@ -36,11 +36,3 @@ namespace sengine
 		}
 	}
 }
-
-#define _USE_FLOAT_MATRIX
-
-#ifdef _USE_FLOAT_MATRIX
-typedef float MATRIX_VALUE_TYPE;
-#else
-typedef double MATRIX_VALUE_TYPE;
-#endif
