@@ -1,23 +1,29 @@
 #version 460 core
 
 uniform sampler2D uWhiteNoiseTex;
-uniform vec3 uSunDir = normalize(vec3(0.0, 0.1, 1.0));
+uniform vec3 uSunDir = normalize(vec3(0.0, 0.0, -1.0));
 uniform float uTime = 0.0;
 
 in vec3 _TexCoord;
 
 out vec4 _outFragColor;
 
-float fbm(vec2 p)
+float noise(vec2 pos) { return texture(uWhiteNoiseTex, pos / 256.0).x; }
+
+float fbm(vec2 pos, int octaves, float persistence)
 {
-	const mat2 m2 = mat2(0.8, -0.6, 0.6, 0.8);
-	float f = 0.0;
-	f += 0.5000*texture(uWhiteNoiseTex, p / 256.0, -100.).x; p = m2*p*2.02;
-	f += 0.2500*texture(uWhiteNoiseTex, p / 256.0, -100.).x; p = m2*p*2.03;
-	f += 0.1250*texture(uWhiteNoiseTex, p / 256.0, -100.).x; p = m2*p*2.01;
-	f += 0.0625*texture(uWhiteNoiseTex, p / 256.0, -100.).x;
-	return f / 0.9375;
+	float total = 0.0, frequency = 1.0, amplitude = 1.0, maxValue = 0.0;
+	for (int i = 0; i < octaves; ++i)
+	{
+		total += noise(pos * frequency) * amplitude;
+		maxValue += amplitude;
+		amplitude *= persistence;
+		frequency *= 2.0;
+	}
+	return total / maxValue;
 }
+
+#define cloudFbm(pos) fbm(pos, 4, 0.5)
 
 //sky color based on https://www.shadertoy.com/view/MlSSR1. 
 vec3 skyColor(in vec3 ray)
@@ -52,10 +58,10 @@ vec3 skyColor(in vec3 ray)
 	vec3 cloudColor = mix(vec3(1.0, 0.95, 1.0), 0.35 * redSky, pow(sundot, 2.0));
 	vec3 ro = 10.0 * ray;
 	vec2 sc = cloudSpeed * 50.0 * uTime * ro.xz + ray.xz * (1000.0 - ro.y) / ray.y;
-	col = mix(col, cloudColor, 0.5 * smoothstep(0.5, 0.8, fbm(0.0005 * sc + fbm(0.0005 * sc + uTime * cloudFlux))));
+	col = mix(col, cloudColor, 0.5 * smoothstep(0.5, 0.8, cloudFbm(0.0005 * sc + cloudFbm(0.0005 * sc + uTime * cloudFlux))));
 	//cloud layer 2
 	sc = cloudSpeed * 30.0 * uTime * ro.xz + ray.xz*(500.0 - ro.y) / ray.y;
-	col = mix(col, cloudColor, 0.5 * smoothstep(0.5, 0.8, fbm(0.0002 * sc + fbm(0.0005 * sc + uTime * cloudFlux))));
+	col = mix(col, cloudColor, 0.5 * smoothstep(0.5, 0.8, cloudFbm(0.0002 * sc + cloudFbm(0.0005 * sc + uTime * cloudFlux))));
 
 	//contrast
 	col = clamp(col, 0.0, 1.0);
