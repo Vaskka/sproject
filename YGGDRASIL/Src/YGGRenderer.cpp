@@ -203,10 +203,20 @@ void CYGGRenderer::__postProcessPass()
 
 	m_pShadingTechnique->enableShader("PostprocessPass");
 	m_pShadingTechnique->updateStandShaderUniform("uSceneTexture", 0);
+	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 1);
+	m_pShadingTechnique->updateStandShaderUniform("uViewOrigin", m_pScene->getCamera()->Position);
+	m_pShadingTechnique->updateStandShaderUniform("uViewDirection", m_pScene->getCamera()->Front);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_SceneTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
+
 	util::renderScreenQuad();
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	m_pShadingTechnique->disableShader();

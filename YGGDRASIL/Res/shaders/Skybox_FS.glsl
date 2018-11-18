@@ -29,14 +29,14 @@ float fbm(vec2 pos, int octaves, float persistence)
 vec3 calculateSunDirection(float globalTime)
 {
 	float dayTime = mod(globalTime, DAY_TIME_PERIOD) / DAY_TIME_PERIOD;
-	float azimuthal = dayTime * PI * 2.0;
-	float polar = 0.5 * PI * (1.0 - sin(2.0*dayTime*PI));
+	float azimuthal = dayTime * PI * 2;
+	float polar = PI * (0.5 - 0.3 * sin(2 * PI * dayTime));
 	vec3 sunDir = normalize(vec3(sin(polar) * sin(azimuthal), cos(polar), -sin(polar) * cos(azimuthal)));
 	return sunDir;
 }
 
 //sky color based on https://www.shadertoy.com/view/MlSSR1. 
-vec3 skyColor(vec3 ray)
+vec3 renderSky(vec3 ray)
 {
 	vec3 col = vec3(0.0);
 
@@ -74,19 +74,11 @@ vec3 skyColor(vec3 ray)
 	sc = cloudSpeed * 30.0 * uTime * ro.xz + ray.xz*(500.0 - ro.y) / ray.y;
 	col = mix(col, cloudColor, 0.5 * smoothstep(0.5, 0.8, cloudFbm(0.0002 * sc + cloudFbm(0.0005 * sc + uTime * cloudFlux))));
 
-	//contrast
-	col = clamp(col, 0.0, 1.0);
-	col = col * col * (3.0 - 2.0 * col);
-
-	//saturation (amplify colour, subtract grayscale)
-	float sat = 0.2;
-	col = col * (1.0 + sat) - sat * dot(col, vec3(0.33));
-
 	return col;
 }
 
 void main()
 {
-	vec3 col = skyColor(normalize(_TexCoord));
+	vec3 col = renderSky(normalize(_TexCoord));
 	_outFragColor = vec4(col, 1.0);
 }
