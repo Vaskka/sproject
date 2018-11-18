@@ -1,12 +1,13 @@
 #version 460 core
 
 uniform sampler2D uWhiteNoiseTex;
-uniform vec3 uSunDir = normalize(vec3(0.0, 0.0, -1.0));
 uniform float uTime = 0.0;
 
 in vec3 _TexCoord;
-
 out vec4 _outFragColor;
+
+#define DAY_TIME_PERIOD 24.0
+#define PI				3.1415926
 
 float noise(vec2 pos) { return texture(uWhiteNoiseTex, pos / 256.0).x; }
 
@@ -25,13 +26,23 @@ float fbm(vec2 pos, int octaves, float persistence)
 
 #define cloudFbm(pos) fbm(pos, 4, 0.5)
 
+vec3 calculateSunDirection(float globalTime)
+{
+	float dayTime = mod(globalTime, DAY_TIME_PERIOD) / DAY_TIME_PERIOD;
+	float azimuthal = dayTime * PI * 2.0;
+	float polar = 0.5 * PI * (1.0 - sin(2.0*dayTime*PI));
+	vec3 sunDir = normalize(vec3(sin(polar) * sin(azimuthal), cos(polar), -sin(polar) * cos(azimuthal)));
+	return sunDir;
+}
+
 //sky color based on https://www.shadertoy.com/view/MlSSR1. 
-vec3 skyColor(in vec3 ray)
+vec3 skyColor(vec3 ray)
 {
 	vec3 col = vec3(0.0);
 
 	//sun
-	float sundot = clamp(dot(ray, uSunDir), 0.0, 1.0);
+	vec3 sunDir = calculateSunDirection(uTime);
+	float sundot = clamp(dot(ray, sunDir), 0.0, 1.0);
 	col += 0.05 * vec3(0.9, 0.3, 0.9) * pow(sundot, 1.0);
 	col += 0.1 * vec3(1.0, 0.7, 0.7) * pow(sundot, 2.0);
 	col += 0.9 * vec3(1.0) * pow(sundot, 256.0);
