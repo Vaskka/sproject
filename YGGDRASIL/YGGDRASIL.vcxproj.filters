@@ -40,6 +40,9 @@
     <Filter Include="Source Files\AudioEngine">
       <UniqueIdentifier>{04687f63-367a-4a06-a602-94ffa5ae8726}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files\Terrain">
+      <UniqueIdentifier>{b14b2a25-c427-4b9d-b6fb-4ad07c761b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\main.cpp">
@@ -147,6 +150,9 @@
     </None>
     <None Include="Res\shaders\PostProcess_FS.glsl">
       <Filter>Shader Files\PostProcess</Filter>
+    </None>
+    <None Include="Res\shaders\Terrain_FS.glsl">
+      <Filter>Shader Files\Terrain</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

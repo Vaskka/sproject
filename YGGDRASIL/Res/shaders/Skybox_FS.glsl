@@ -6,7 +6,7 @@ uniform float uTime = 0.0;
 in vec3 _TexCoord;
 out vec4 _outFragColor;
 
-#define DAY_TIME_PERIOD 24.0
+#define DAY_TIME_PERIOD 240.0
 #define PI				3.1415926
 
 float noise(vec2 pos) { return texture(uWhiteNoiseTex, pos / 256.0).x; }

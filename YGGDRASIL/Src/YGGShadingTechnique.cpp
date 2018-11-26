@@ -19,6 +19,11 @@ void CYGGShadingTechnique::initTechniqueV()
 	pRenderSkyPass->addShader("res/shaders/Skybox_FS.glsl", FRAGMENT_SHADER);
 	this->addShader("RenderSkyPass", pRenderSkyPass);
 
+	auto pRenderTerrainPass = new CShader;
+	pRenderTerrainPass->addShader("res/shaders/DrawScreenQuad_VS.glsl", VERTEX_SHADER);
+	pRenderTerrainPass->addShader("res/shaders/Terrain_FS.glsl", FRAGMENT_SHADER);
+	this->addShader("RenderTerrainPass", pRenderTerrainPass);
+
 	auto pRenderGeometryPass = new CShader;
 	pRenderGeometryPass->addShader("res/shaders/PBRShading_VS.glsl", VERTEX_SHADER);
 	pRenderGeometryPass->addShader("res/shaders/ForwardPBRShading_FS.glsl", FRAGMENT_SHADER);

@@ -62,6 +62,7 @@ bool CYGGRenderer::_renderV()
 {
 	if (!CGLRenderer::_renderV()) return false;
 	__renderSkyPass();
+	__renderTerrainPass();
 	__renderGeometryPass();
 	__postProcessPass();
 	m_CurrentTime = clock();
@@ -162,6 +163,28 @@ void CYGGRenderer::__renderSkyPass()
 
 //*********************************************************************************
 //FUNCTION:
+void CYGGRenderer::__renderTerrainPass()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
+
+	m_pShadingTechnique->enableShader("RenderTerrainPass");
+	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 0);
+	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", m_pScene->getCamera()->getViewMatrix());
+	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
+
+	util::renderScreenQuad();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	m_pShadingTechnique->disableShader();
+}
+
+//*********************************************************************************
+//FUNCTION:
 void CYGGRenderer::__renderGeometryPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
@@ -203,22 +226,11 @@ void CYGGRenderer::__postProcessPass()
 
 	m_pShadingTechnique->enableShader("PostprocessPass");
 	m_pShadingTechnique->updateStandShaderUniform("uSceneTexture", 0);
-	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 1);
-	m_pShadingTechnique->updateStandShaderUniform("uViewOrigin", m_pScene->getCamera()->Position);
-	m_pShadingTechnique->updateStandShaderUniform("uViewDirection", m_pScene->getCamera()->Front);
-
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_SceneTexture);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
 
 	util::renderScreenQuad();
 
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
 	m_pShadingTechnique->disableShader();
 }
 

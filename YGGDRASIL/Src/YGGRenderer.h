@@ -38,6 +38,7 @@ private:
 	void __initBuffers();
 
 	void __renderSkyPass();
+	void __renderTerrainPass();
 	void __renderGeometryPass();
 	void __postProcessPass();
 	void __playSound();
