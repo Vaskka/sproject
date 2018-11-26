@@ -79,17 +79,17 @@ void CYGGRenderer::_handleEventV()
 	float FrameInterval = static_cast<float>(this->getFrameInterval());
 
 	if (g_Keys[GLFW_KEY_W])
-		m_pScene->getCamera()->processKeyboard(FORWARD, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::FORWARD, FrameInterval);
 	if (g_Keys[GLFW_KEY_S])
-		m_pScene->getCamera()->processKeyboard(BACKWARD, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::BACKWARD, FrameInterval);
 	if (g_Keys[GLFW_KEY_A])
-		m_pScene->getCamera()->processKeyboard(LEFT, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::LEFT, FrameInterval);
 	if (g_Keys[GLFW_KEY_D])
-		m_pScene->getCamera()->processKeyboard(RIGHT, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::RIGHT, FrameInterval);
 	if (g_Keys[GLFW_KEY_Q])
-		m_pScene->getCamera()->processKeyboard(UP, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::UP, FrameInterval);
 	if (g_Keys[GLFW_KEY_E])
-		m_pScene->getCamera()->processKeyboard(DOWN, FrameInterval);
+		m_pScene->getCamera()->processKeyboard(ECameraMovement::DOWN, FrameInterval);
 }
 
 //*********************************************************************************
@@ -173,6 +173,7 @@ void CYGGRenderer::__renderTerrainPass()
 	m_pShadingTechnique->enableShader("RenderTerrainPass");
 	m_pShadingTechnique->updateStandShaderUniform("uWhiteNoiseTex", 0);
 	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", m_pScene->getCamera()->getViewMatrix());
+	m_pShadingTechnique->updateStandShaderUniform("uCameraPosition", m_pScene->getCamera()->Position); //TODO: Camera类需要抽象出来
 	glBindTexture(GL_TEXTURE_2D, m_WhiteNoiseTex);
 
 	util::renderScreenQuad();

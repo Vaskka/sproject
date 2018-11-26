@@ -4,9 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-enum ECameraMovement 
+enum class ECameraMovement : unsigned char
 {
-	FORWARD,
+	FORWARD = 0,
 	BACKWARD,
 	LEFT,
 	RIGHT,
@@ -21,10 +21,10 @@ const float MOUSE_SENSITIVTY = 0.08f;
 const float ZOOM = 45.0f;
 const float SCROLL_SENSITIVTY = 0.2f;
 
-class CCamera 
+class CCamera
 {
 public:
-	CCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(MOUSE_SENSITIVTY), Zoom(ZOOM) 
+	CCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(MOUSE_SENSITIVTY), Zoom(ZOOM)
 	{
 		Position = position;
 		WorldUp = up;
@@ -33,7 +33,7 @@ public:
 		__updateCameraVectors();
 	}
 
-	CCamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(MOUSE_SENSITIVTY), Zoom(ZOOM) 
+	CCamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(MOUSE_SENSITIVTY), Zoom(ZOOM)
 	{
 		Position = glm::vec3(posX, posY, posZ);
 		WorldUp = glm::vec3(upX, upY, upZ);
@@ -42,7 +42,7 @@ public:
 		__updateCameraVectors();
 	}
 
-	glm::mat4 getViewMatrix() 
+	glm::mat4 getViewMatrix() const
 	{
 		return glm::lookAt(Position, Position + Front, Up);
 	}

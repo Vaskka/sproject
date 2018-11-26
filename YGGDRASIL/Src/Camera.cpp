@@ -5,17 +5,17 @@
 void CCamera::processKeyboard(ECameraMovement vDirection, float vDeltaTime)
 {
 	float velocity = MovementSpeed * vDeltaTime;
-	if (vDirection == FORWARD)
+	if (vDirection == ECameraMovement::FORWARD)
 		Position += Front * velocity;
-	if (vDirection == BACKWARD)
+	if (vDirection == ECameraMovement::BACKWARD)
 		Position -= Front * velocity;
-	if (vDirection == LEFT)
+	if (vDirection == ECameraMovement::LEFT)
 		Position -= Right * velocity;
-	if (vDirection == RIGHT)
+	if (vDirection == ECameraMovement::RIGHT)
 		Position += Right * velocity;
-	if (vDirection == UP)
+	if (vDirection == ECameraMovement::UP)
 		Position += Up * velocity;
-	if (vDirection == DOWN)
+	if (vDirection == ECameraMovement::DOWN)
 		Position -= Up * velocity;
 }
 

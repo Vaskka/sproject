@@ -35,17 +35,6 @@ void CGameConfig::__parseGameConfig(const std::string& vConfigFileName)
 	read_json(vConfigFileName, GameConfigTree);
 
 	//TODO: 处理标签不存在的情况
-	m_Config.winName = GameConfigTree.get<std::string>("winName");
-
-	auto WinSizeConfig = GameConfigTree.get_child("winSize");
-	m_Config.winWidth = WinSizeConfig.get<int>("width");
-	m_Config.winHeight = WinSizeConfig.get<int>("height");
-
-	auto WinPosConfig = GameConfigTree.get_child("winPos");
-	m_Config.winPosX = WinPosConfig.get<int>("x");
-	m_Config.winPosY = WinPosConfig.get<int>("y");
-
-	m_Config.isFullscreen = GameConfigTree.get<bool>("fullScreen");
 	m_Config.entrySceneID = GameConfigTree.get<int>("entrySceneID");
 
 	auto SceneConfigSet = GameConfigTree.get_child("scene");

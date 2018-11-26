@@ -36,17 +36,8 @@ struct SSceneConfig
 
 struct SGameConfig
 {
-	std::string winName;
-	int winWidth;
-	int winHeight;
-	int winPosX;
-	int winPosY;
-	bool isFullscreen;
-	int entrySceneID;
-
+	int entrySceneID = 0;
 	std::unordered_map<unsigned int, SSceneConfig> sceneConfigMap;
-
-	SGameConfig() : winWidth(0), winHeight(0), winPosX(0), winPosY(0), isFullscreen(false), entrySceneID(0) {}
 };
 
 class CGameConfig

@@ -33,9 +33,6 @@
     <ClCompile Include="src\camera.cpp">
       <Filter>Source Files\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\openglRenderer.cpp">
-      <Filter>Source Files\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\shadingTechnique.cpp">
       <Filter>Source Files\OpenGL</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
-      <Filter>Source Files\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openglRenderer.h">
       <Filter>Source Files\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\shadingTechnique.h">
@@ -149,5 +143,6 @@
     <None Include="res\shaders\game\head\headB_fs.glsl">
       <Filter>Shader Files\game\head</Filter>
     </None>
+    <None Include="RenderEngine.config" />
   </ItemGroup>
 </Project>

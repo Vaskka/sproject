@@ -27,7 +27,7 @@ void CPassRenderer::init(const SPassConfig& vPassConfig)
 	m_Config = vPassConfig;
 	m_pShadingTechnique = CGameShadingTechnique::getInstance();
 	m_pSceneRenderer = CSceneRenderer::getInstance();
-	m_pQuadRenderer = new CMeshRenderer(Constant::QUAD_VERTICES, sizeof(Constant::QUAD_VERTICES));
+	m_pQuadRenderer = new CMeshRenderer(constant::QUAD_VERTICES, sizeof(constant::QUAD_VERTICES));
 
 	__initTextures();
 	__initBuffers();
@@ -88,7 +88,7 @@ void CPassRenderer::__initTextures()
 			m_TextureSet.push_back(TextureID);
 		}
 		else if (EChannelType::KEYBOARD == Config.type) {
-			m_KeyboardTex = util::setupTexture2D(Constant::KEYBORAD_TEX_WIDTH, Constant::KEYBORAD_TEX_HEIGHT, GL_RED, GL_RED, GL_UNSIGNED_BYTE, GL_NEAREST);
+			m_KeyboardTex = util::setupTexture2D(constant::KEYBORAD_TEX_WIDTH, constant::KEYBORAD_TEX_HEIGHT, GL_RED, GL_RED, GL_UNSIGNED_BYTE, GL_NEAREST);
 			_ASSERTE(m_KeyboardTex > 0);
 			m_TextureSet.push_back(m_KeyboardTex);
 		}
@@ -105,8 +105,8 @@ void CPassRenderer::__initShaders()
 	auto pShadingPass = new CProgram;
 	const SSceneConfig& SceneConfig = CSceneRenderer::getInstance()->getSceneConfig();
 
-	pShadingPass->addShader(Constant::DRAW_QUAD_SHADER_PATH, VERTEX_SHADER);
-	std::vector<std::string> ShaderFilesPaths = { Constant::MAIN_IMAGE_SHADER_PATH };
+	pShadingPass->addShader(constant::DRAW_QUAD_SHADER_PATH, VERTEX_SHADER);
+	std::vector<std::string> ShaderFilesPaths = { constant::MAIN_IMAGE_SHADER_PATH };
 	if (!SceneConfig.commonShaderPath.empty()) { ShaderFilesPaths.push_back(SceneConfig.commonShaderPath); }
 	ShaderFilesPaths.push_back(m_Config.shaderPath);
 
@@ -144,7 +144,7 @@ void CPassRenderer::__updateKeyboardTexture()
 {
 	if (0 == m_KeyboardTex) return;
 
-	const int Width = Constant::KEYBORAD_TEX_WIDTH, Height = Constant::KEYBORAD_TEX_HEIGHT;
+	const int Width = constant::KEYBORAD_TEX_WIDTH, Height = constant::KEYBORAD_TEX_HEIGHT;
 	GLubyte ImageData[Width*Height] = { 0 };
 	for (int i = 0; i < Width; ++i) {
 		if (CGameRenderer::isKeyPressed(i)) {
@@ -163,7 +163,7 @@ void CPassRenderer::__updateShaderUniforms4ImagePass()
 {
 	m_pShadingTechnique->updateStandShaderUniform("iResolution", glm::vec2(m_pSceneRenderer->getWinSize()));
 	m_pShadingTechnique->updateStandShaderUniform("iTime", m_pSceneRenderer->getTime());
-	m_pShadingTechnique->updateStandShaderUniform("iTimeDelta", CGameRenderer::getInstance()->getDeltaTime());
+	m_pShadingTechnique->updateStandShaderUniform("iTimeDelta", CGameRenderer::getInstance()->getFrameInterval());
 	m_pShadingTechnique->updateStandShaderUniform("iFrame", m_pSceneRenderer->getFrameCount());
 
 	for (unsigned int i = 0; i < m_TextureSet.size(); ++i) {

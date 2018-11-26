@@ -1,6 +1,7 @@
 #version 460 core
 
 uniform sampler2D uWhiteNoiseTex;
+uniform vec3 uCameraPosition;
 uniform mat4 uViewMatrix;
 
 in vec2 _TexCoords;
@@ -29,9 +30,9 @@ float fbm(vec2 pos, int octaves, float persistence)
 
 vec2 map(in vec3 p) {
 	float mountains = 19. * terrainFbm(p.xz*0.091);
-	float trees = -.35 * terrainFbm(p.xz*10.);
-	float rocks = -.002 * terrainFbm(p.xz*100.);
-	float result = p.y + mountains + trees + rocks;
+	//float trees = -.35 * terrainFbm(p.xz*10.);
+	//float rocks = -.002 * terrainFbm(p.xz*100.);
+	float result = p.y + mountains /*+ trees + rocks*/;
 
 	return vec2(result, 1.0);
 }
@@ -118,7 +119,7 @@ vec3 render(in vec3 ro, in vec3 rd)
 void main()
 {
 	vec2 uv = 2.0 * _TexCoords - 1.0;
-	vec3 ro = vec3(0.0);
+	vec3 ro = uCameraPosition;
 	vec3 rd = normalize(vec3(uv, -1.0)) * mat3(uViewMatrix);
 
 	_outFragColor = vec4(render(ro, rd), 1.0);

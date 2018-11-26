@@ -4,7 +4,7 @@
 #include <GLM/glm.hpp>
 #include <gl/glew.h>
 
-namespace Constant
+namespace constant
 {
 	static const std::string GAME_CONFIG_FILE_PATH = "gameConfig.json";
 	static const std::string DRAW_QUAD_SHADER_PATH = "res/shaders/core/drawQuad_vs.glsl";

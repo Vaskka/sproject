@@ -1,15 +1,37 @@
-#include "gameRenderer.h"
+#include <memory>
+#include <iostream>
+#include "RenderEngineInterface.h"
 #include "constants.h"
 #include "gameConfig.h"
 
-int main()	
+void installMemoryLeakDetector()
 {
-	auto pGameConfig = CGameConfig::getInstance();
-	pGameConfig->init(Constant::GAME_CONFIG_FILE_PATH);
-	auto Config = pGameConfig->getConfig();
+	// Enable run-time memory check for debug builds.
+#if defined(DEBUG) | defined(_DEBUG)
+	//_CRTDBG_LEAK_CHECK_DF: Perform automatic leak checking at program exit through a call to _CrtDumpMemoryLeaks and generate an error 
+	//report if the application failed to free all the memory it allocated. OFF: Do not automatically perform leak checking at program exit.
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	auto pGameRenderer = CGameRenderer::getInstance();
-	pGameRenderer->initV(Config.winName, Config.winWidth, Config.winHeight, Config.winPosY, Config.winPosY, Config.isFullscreen);
+	//the following statement is used to trigger a breakpoint when memory leak happens
+	//comment it out if there is no memory leak report;
+	//_crtBreakAlloc = 27464;
+#endif
+}
 
-	return pGameRenderer->runV();
+int main()
+{
+	installMemoryLeakDetector();
+
+	try
+	{
+		CGameConfig::getInstance()->init(constant::GAME_CONFIG_FILE_PATH);
+
+		sengine::renderEngine::init();
+		sengine::renderEngine::run();
+	}
+	catch (...)
+	{
+		std::cerr << "The program is terminated due to unexpected error." << std::endl;
+	}
+	getchar();
 }

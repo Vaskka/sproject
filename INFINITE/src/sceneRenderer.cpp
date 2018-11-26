@@ -1,3 +1,5 @@
+#include "RenderEngineInterface.h"
+#include "DisplayDevice.h"
 #include "sceneRenderer.h"
 #include "gameConfig.h"
 #include "passRenderer.h"
@@ -15,7 +17,8 @@ CSceneRenderer* CSceneRenderer::m_pInstance = nullptr;
 bool CSceneRenderer::init()
 {
 	m_pShadingTechnique = CGameShadingTechnique::getInstance();
-	m_WinSize = CGameRenderer::getInstance()->getWinSize();
+	auto DisplayInfo = sengine::renderEngine::fetchDisplayDevice()->getDisplayDeviceInfo();
+	m_WinSize = glm::ivec2(DisplayInfo.WinWidth, DisplayInfo.WinHeight);
 
 	return true;
 }
@@ -77,14 +80,13 @@ void CSceneRenderer::__initRenderPasses()
 void CSceneRenderer::__initRenderTextures()
 {
 	auto pGameRenderer = CGameRenderer::getInstance();
-	auto WinSize = pGameRenderer->getWinSize();
 	for (auto& PassConfig : m_Config.passConfigSet)
 	{
 		auto PassID = PassConfig.passID;
 		auto Type = PassConfig.type;
 		if (EPassType::BUFFER == Type)
 		{
-			auto TextureID = util::setupTexture2D(WinSize.x, WinSize.y, GL_RGBA32F, GL_RGBA);
+			auto TextureID = util::setupTexture2D(m_WinSize.x, m_WinSize.y, GL_RGBA32F, GL_RGBA);
 			m_ID2RenderTextureMap.insert(std::make_pair(PassID, TextureID));
 		}
 	}

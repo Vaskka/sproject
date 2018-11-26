@@ -35,6 +35,7 @@ bool CGLRenderer::_initV()
 bool CGLRenderer::_renderV()
 {
 	_handleEventV();
+	__updateFrameInterval();
 	glfwPollEvents();
 	glfwSwapBuffers(m_pWindow);
 
@@ -71,6 +72,7 @@ bool CGLRenderer::__createGLFWWindow()
 		glfwTerminate();
 		return false;
 	}
+
 	glfwSetWindowPos(m_pWindow, DisplayInfo.WinPosX, DisplayInfo.WinPosY);
 	glfwMakeContextCurrent(m_pWindow);
 	glewExperimental = GL_TRUE;
