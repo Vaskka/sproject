@@ -27,6 +27,7 @@ private:
 	GLuint m_WhiteNoiseTex;
 
 	glm::mat4 m_ProjectionMatrix;
+	glm::vec2 m_WinSize;
 	CShadingTechnique *m_pShadingTechnique = nullptr;
 	CScene *m_pScene = nullptr;
 

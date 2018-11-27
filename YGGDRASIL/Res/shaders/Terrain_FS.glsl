@@ -30,9 +30,9 @@ float fbm(vec2 pos, int octaves, float persistence)
 
 vec2 map(in vec3 p) {
 	float mountains = 19. * terrainFbm(p.xz*0.091);
-	//float trees = -.35 * terrainFbm(p.xz*10.);
-	//float rocks = -.002 * terrainFbm(p.xz*100.);
-	float result = p.y + mountains /*+ trees + rocks*/;
+	float trees = -.35 * terrainFbm(p.xz*10.);
+	float rocks = -.002 * terrainFbm(p.xz*100.);
+	float result = p.y + mountains + trees + rocks;
 
 	return vec2(result, 1.0);
 }

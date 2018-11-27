@@ -121,4 +121,7 @@ void CRenderEngine::__createWindow()
 		m_pDisplayDevice->createWindow(WinTitle, WinSize.get<0>(), WinSize.get<1>(), WinPos.get<0>(), WinPos.get<1>());
 	else
 		m_pDisplayDevice->createFullScreenWindow(WinTitle);
+
+	bool IsWinResizalbe = m_RenderEngineConfig.getAttribute<bool>(CONFIG_KEYWORD::WIN_IS_RESIZABLE);
+	if (IsWinResizalbe) m_pDisplayDevice->setWindowResizableHint();
 }

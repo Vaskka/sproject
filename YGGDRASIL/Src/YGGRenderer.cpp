@@ -3,6 +3,8 @@
 #include <common/HiveCommonMicro.h>
 #include <common/CommonInterface.h>
 #include <common/ProductFactory.h>
+#include "RenderEngineInterface.h"
+#include "DisplayDevice.h"
 #include "Scene.h"
 #include "Model.h"
 #include "Camera.h"
@@ -38,6 +40,10 @@ CYGGRenderer::~CYGGRenderer()
 bool CYGGRenderer::_initV()
 {
 	if (!CGLRenderer::_initV()) return false;
+
+	auto DisplayDeviceInfo = sengine::renderEngine::fetchDisplayDevice()->getDisplayDeviceInfo();
+	_ASSERTE(DisplayDeviceInfo.WinWidth > 0 && DisplayDeviceInfo.WinHeight > 0);
+	m_WinSize = glm::vec2(DisplayDeviceInfo.WinWidth, DisplayDeviceInfo.WinHeight);
 
 	__initScene();
 	__initTextures();
@@ -96,9 +102,11 @@ void CYGGRenderer::_handleEventV()
 //FUNCTION:
 void CYGGRenderer::__initScene()
 {
+	_ASSERTE(m_WinSize.x > 0 && m_WinSize.y > 0);
+
 	m_pScene = CScene::getInstance();
 	m_pScene->initScene();
-	m_ProjectionMatrix = glm::perspective(m_pScene->getCamera()->Zoom, (float)WIN_WIDTH / (float)WIN_HEIGHT, CAMERA_NEAR, CAMERA_FAR); //NOTE: 必须在initScene之后调用
+	m_ProjectionMatrix = glm::perspective(m_pScene->getCamera()->Zoom, (float)m_WinSize.x / (float)m_WinSize.y, CAMERA_NEAR, CAMERA_FAR); //NOTE: 必须在initScene之后调用
 	//auto pModel = new CModel();
 	//pModel->load("res/objects/emeishan/emeishan.obj");
 	//m_pScene->addModel(pModel);
@@ -109,7 +117,7 @@ void CYGGRenderer::__initScene()
 void CYGGRenderer::__initTextures()
 {
 	m_WhiteNoiseTex = util::loadTexture(WHITE_NOISE_TEXTURE_PATH.c_str(), GL_REPEAT, GL_LINEAR);
-	m_SceneTexture = util::setupTexture(WIN_WIDTH, WIN_HEIGHT);
+	m_SceneTexture = util::setupTexture(m_WinSize.x, m_WinSize.y);
 }
 
 //*********************************************************************************
@@ -133,11 +141,11 @@ void CYGGRenderer::__renderSkyPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_WinSize.x, m_WinSize.y);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
+	glViewport(0, 0, m_WinSize.x, m_WinSize.y);
 	m_pShadingTechnique->enableShader("RenderSkyPass");
 
 	glm::mat4 ViewMatrix = m_pScene->getCamera()->getViewMatrix();
@@ -167,7 +175,7 @@ void CYGGRenderer::__renderTerrainPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_WinSize.x, m_WinSize.y);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
 	m_pShadingTechnique->enableShader("RenderTerrainPass");
@@ -190,10 +198,10 @@ void CYGGRenderer::__renderGeometryPass()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_CaptureFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_CaptureRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, WIN_WIDTH, WIN_HEIGHT);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_WinSize.x, m_WinSize.y);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
-	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
+	glViewport(0, 0, m_WinSize.x, m_WinSize.y);
 	m_pShadingTechnique->enableShader("RenderGeometryPass");
 
 	//update uniforms for PBR
@@ -222,7 +230,7 @@ void CYGGRenderer::__renderGeometryPass()
 //FUNCTION:
 void CYGGRenderer::__postProcessPass()
 {
-	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
+	glViewport(0, 0, m_WinSize.x, m_WinSize.y);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_pShadingTechnique->enableShader("PostprocessPass");
@@ -276,8 +284,10 @@ void CYGGRenderer::__keyCallback(GLFWwindow* vWindow, int vKey, int vScancode, i
 void CYGGRenderer::__cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	static bool FirstMouse = true;
-	static double LastX = WIN_WIDTH / 2.0;
-	static double LastY = WIN_HEIGHT / 2.0;
+
+	auto DisplayDeviceInfo = sengine::renderEngine::fetchDisplayDevice()->getDisplayDeviceInfo();
+	static double LastX = DisplayDeviceInfo.WinWidth / 2.0;
+	static double LastY = DisplayDeviceInfo.WinHeight / 2.0;
 	if (FirstMouse)
 	{
 		LastX = xpos;

@@ -5,10 +5,6 @@
 
 namespace Constant
 {
-	static const std::string WIN_NAME = "YGGDRASIL";
-	static const int WIN_WIDTH = 1920;
-	static const int WIN_HEIGHT = 1080;
-
 	static const float CAMERA_NEAR = 0.1f;
 	static const float CAMERA_FAR = 1000.0f;
 

@@ -18,6 +18,7 @@ bool CSceneRenderer::init()
 {
 	m_pShadingTechnique = CGameShadingTechnique::getInstance();
 	auto DisplayInfo = sengine::renderEngine::fetchDisplayDevice()->getDisplayDeviceInfo();
+	_ASSERTE(DisplayInfo.WinWidth > 0 && DisplayInfo.WinHeight > 0);
 	m_WinSize = glm::ivec2(DisplayInfo.WinWidth, DisplayInfo.WinHeight);
 
 	return true;

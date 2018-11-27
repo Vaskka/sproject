@@ -63,6 +63,8 @@ bool CGLRenderer::__createGLFWWindow()
 	auto DisplayInfo = pDisplayDevice->getDisplayDeviceInfo();
 	_ASSERTE(DisplayInfo.isValid());
 
+	glfwWindowHint(GLFW_RESIZABLE, DisplayInfo.IsWindowResizable);
+
 	_ASSERTE(!m_pWindow);
 	GLFWmonitor *pMonitor = DisplayInfo.IsFullScreenWindow ? glfwGetPrimaryMonitor() : nullptr;
 	m_pWindow = glfwCreateWindow(DisplayInfo.WinWidth, DisplayInfo.WinHeight, DisplayInfo.WinTitle.c_str(), pMonitor, nullptr);
