@@ -7,9 +7,7 @@
 
 using namespace sengine::renderEngine;
 
-#ifndef _USE_CUSTOM_RENDERER //TODO: bad design
 hiveOO::CProductFactory<CDXRenderer> Creator("DXRenderer");
-#endif
 
 CDXRenderer::CDXRenderer()
 {
