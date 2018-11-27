@@ -5,4 +5,12 @@
       <UniqueIdentifier>{f56bd617-d38c-41e9-a7ce-c7111e842b16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RenderEngine.config" />
+  </ItemGroup>
 </Project>

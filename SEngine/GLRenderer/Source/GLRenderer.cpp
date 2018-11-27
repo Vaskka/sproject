@@ -7,9 +7,7 @@
 
 using namespace sengine::renderEngine;
 
-#ifndef _USE_CUSTOM_RENDERER //TODO: bad design
 hiveOO::CProductFactory<CGLRenderer> Creator("GLRenderer");
-#endif
 
 CGLRenderer::CGLRenderer()
 {
