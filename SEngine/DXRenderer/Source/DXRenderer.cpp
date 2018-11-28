@@ -13,12 +13,10 @@ hiveOO::CProductFactory<CDXRenderer> Creator("DXRenderer");
 
 CDXRenderer::CDXRenderer()
 {
-
 }
 
 CDXRenderer::~CDXRenderer()
 {
-
 }
 
 //*********************************************************************************
@@ -74,16 +72,16 @@ bool CDXRenderer::__createDXWindow()
 
 	HWND hWnd;
 	WNDCLASSEX wc;
-	HMODULE hInstance = GetModuleHandle(nullptr); //NOTE: 无法保证这种做法是正确的
+	HMODULE hModule = GetModuleHandle(nullptr); //NOTE: 无法保证这种做法是正确的，是否要使用DLLMain传入的hModule
 
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = __windowProc;
-	wc.hInstance = hInstance;
+	wc.hInstance = hModule;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpszClassName = "WindowClass1";
+	wc.lpszClassName = "WindowClass1"; //TODO: 如何处理
 	RegisterClassEx(&wc);
 
 	hWnd = CreateWindowExA(NULL,
@@ -96,7 +94,7 @@ bool CDXRenderer::__createDXWindow()
 		DisplayInfo.WinHeight,				// height of the window
 		NULL,								// parent window
 		NULL,								// menus
-		hInstance,							// application handle
+		hModule,							// application handle
 		NULL);								// used with multiple windows, NULL
 
 	ShowWindow(hWnd, 1); //TODO: 第二个参数的作用
