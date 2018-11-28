@@ -20,6 +20,8 @@ namespace sengine
 			virtual void _handleEventV();
 
 		private:
+			bool m_IsRenderLoopDone = false;
+
 			bool __createDXWindow();
 		};
 	}

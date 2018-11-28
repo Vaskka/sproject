@@ -24,6 +24,7 @@ CGLRenderer::~CGLRenderer()
 bool CGLRenderer::_initV()
 {
 	_HIVE_EARLY_RETURN(!__createGLFWWindow(), "Fail to initialize opengl render engine due to failure of __createGLFWWindow().", false);
+	hiveCommon::hiveOutputEvent("Succeed to init OpenGL renderer.");
 
 	return true;
 }
