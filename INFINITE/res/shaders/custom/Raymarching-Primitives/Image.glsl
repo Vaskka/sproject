@@ -9,7 +9,7 @@
 // More info here: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
 
 
-#define AA 1   // make this 1 is your machine is too slow
+#define AA 3   // make this 1 is your machine is too slow
 
 //------------------------------------------------------------------
 

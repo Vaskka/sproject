@@ -118,6 +118,9 @@ void CYGGRenderer::__initTextures()
 {
 	m_WhiteNoiseTex = util::loadTexture(WHITE_NOISE_TEXTURE_PATH.c_str(), GL_REPEAT, GL_LINEAR);
 	m_SceneTexture = util::setupTexture(m_WinSize.x, m_WinSize.y);
+
+	GLclampf Priority = 1.0;
+	glPrioritizeTextures(1, &m_WhiteNoiseTex, &Priority);	//TODO: ×÷ÓÃ
 }
 
 //*********************************************************************************

@@ -109,6 +109,7 @@ GLuint util::loadTexture(const char *vPath, GLint vWrapMode, GLint vFilterMode, 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(pImageData);
 
