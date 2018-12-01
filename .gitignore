@@ -243,5 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-*/Res/objects/
-*/Res/sounds/
+/objects/
+/sounds/
