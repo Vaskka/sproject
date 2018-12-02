@@ -1,8 +1,7 @@
-#version 430 core
+#version 460 core
 
-uniform sampler2D uSceneTexture;
-
-in vec2 _TexCoords;
+uniform sampler2D	uSceneTexture;
+uniform vec2		uWindowSize;
 
 out vec4 _outFragColor;
 
@@ -11,16 +10,18 @@ const float EXPOSURE = 1.0;
 
 void main()
 {
-	vec3 HDRColor = texture(uSceneTexture, _TexCoords).rgb;
+	vec2 texCoord = gl_FragCoord.xy / uWindowSize;
+
+	vec3 hdrColor = texture(uSceneTexture, texCoord).rgb;
 
 	//tone mapping
-	//vec3 MappedColor = vec3(1.0) - exp(-HDRColor * EXPOSURE);
-	vec3 MappedColor = HDRColor;
+	//vec3 mappedColor = vec3(1.0) - exp(-hdrColor * EXPOSURE);
+	vec3 mappedColor = hdrColor;
 
 	//gamma correct
-	MappedColor = pow(MappedColor, vec3(1.0 / GAMMA));
+	mappedColor = pow(mappedColor, vec3(1.0 / GAMMA));
 
-	vec3 col = HDRColor;
+	vec3 col = hdrColor;
 
 	//contrast
 	col = clamp(col, 0.0, 1.0);

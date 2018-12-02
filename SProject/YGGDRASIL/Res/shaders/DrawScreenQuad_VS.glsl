@@ -1,12 +1,8 @@
-#version 430 core
+#version 460 core
 
-layout (location = 0) in vec3 _inFragPosition;
-layout (location = 1) in vec2 _inTexCoords;
-
-out vec2 _TexCoords;
+layout(location = 0) in vec2 _inFragPosition;
 
 void main()
 {
-	gl_Position = vec4(_inFragPosition, 1.0f);
-	_TexCoords = _inTexCoords;
+	gl_Position = vec4(_inFragPosition, 0.0, 1.0);
 }

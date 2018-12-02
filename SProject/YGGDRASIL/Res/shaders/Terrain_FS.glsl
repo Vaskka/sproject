@@ -4,8 +4,7 @@ uniform sampler2D uWhiteNoiseTex;
 uniform sampler2D uAbstractNoiseTex;
 uniform vec3 uCameraPosition;
 uniform mat4 uViewMatrix;
-
-in vec2 _TexCoords;
+uniform vec2 uWindowSize;
 
 out vec4 _outFragColor;
 
@@ -119,7 +118,7 @@ vec3 render(in vec3 ro, in vec3 rd)
 
 void main()
 {
-	vec2 uv = 2.0 * _TexCoords - 1.0;
+	vec2 uv = 2.0 * gl_FragCoord.xy / uWindowSize - 1.0;
 	vec3 ro = uCameraPosition;
 	vec3 rd = normalize(vec3(uv, -1.0)) * mat3(uViewMatrix);
 

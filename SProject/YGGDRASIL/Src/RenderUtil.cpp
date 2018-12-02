@@ -3,13 +3,10 @@
 
 namespace
 {
-	const GLfloat QUAD_VERTICES[] = {
-		-1.0f, 1.0f,  0.0f,  0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
-		1.0f,  -1.0f, 0.0f,  1.0f, 0.0f,
-		-1.0f, 1.0f,  0.0f,  0.0f, 1.0f,
-		1.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		1.0f,  1.0f,  0.0f,  1.0f, 1.0f
+	const GLfloat SCREEN_QUAD_VERTICES[] = {
+		-1.0f, 3.0f,	//TODO: 为什么2.0不能完全覆盖窗口
+		-1.0f, -1.0f,
+		3.0f,  -1.0f
 	};
 
 	const GLfloat CUBE_VERTICES[] = {
@@ -62,26 +59,25 @@ namespace
 //FUNCTION:
 void util::renderScreenQuad()
 {
-	GLuint creenQuadVAO = 0;
-	GLuint creenQuadVBO = 0;
-	if (creenQuadVAO == 0)
+	GLuint screenQuadVAO = 0;
+	GLuint screenQuadVBO = 0;
+	if (screenQuadVAO == 0)
 	{
-		glGenVertexArrays(1, &creenQuadVAO);
-		glGenBuffers(1, &creenQuadVBO);
+		glGenVertexArrays(1, &screenQuadVAO);
+		glGenBuffers(1, &screenQuadVBO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, creenQuadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(QUAD_VERTICES), QUAD_VERTICES, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, screenQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(SCREEN_QUAD_VERTICES), SCREEN_QUAD_VERTICES, GL_STATIC_DRAW);
 
-		glBindVertexArray(creenQuadVAO);
+		glBindVertexArray(screenQuadVAO);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
-	glBindVertexArray(creenQuadVAO);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindVertexArray(screenQuadVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindVertexArray(0);
 }
 
@@ -90,7 +86,7 @@ void util::renderScreenQuad()
 void util::renderCube()
 {
 	GLuint cubeVAO = 0;
-	GLuint cubeVBO = 0;
+	GLuint cubeVBO = 0; //TODO: 不需要每一次重新创建VAO与VBO
 	if (cubeVAO == 0)
 	{
 		glGenVertexArrays(1, &cubeVAO);

@@ -190,6 +190,7 @@ void CYGGRenderer::__renderTerrainPass()
 	m_pShadingTechnique->updateStandShaderUniform("uAbstractNoiseTex", 1);
 	m_pShadingTechnique->updateStandShaderUniform("uViewMatrix", m_pScene->getCamera()->getViewMatrix());
 	m_pShadingTechnique->updateStandShaderUniform("uCameraPosition", m_pScene->getCamera()->Position); //TODO: Camera类需要抽象出来
+	m_pShadingTechnique->updateStandShaderUniform("uWindowSize", m_WinSize);
 
 	util::renderScreenQuad();
 
@@ -211,7 +212,6 @@ void CYGGRenderer::__renderGeometryPass()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_WinSize.x, m_WinSize.y);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_SceneTexture, 0);
 
-	glViewport(0, 0, m_WinSize.x, m_WinSize.y);
 	m_pShadingTechnique->enableShader("RenderGeometryPass");
 
 	//update uniforms for PBR
@@ -244,6 +244,7 @@ void CYGGRenderer::__postProcessPass()
 
 	m_pShadingTechnique->enableShader("PostprocessPass");
 	m_pShadingTechnique->updateStandShaderUniform("uSceneTexture", 0);
+	m_pShadingTechnique->updateStandShaderUniform("uWindowSize", m_WinSize);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_SceneTexture);
