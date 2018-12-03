@@ -15,7 +15,7 @@ bool sengine::renderEngine::init()
 	}
 	catch (...)
 	{
-		hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to initialize seed rendering engine due to unexpected error.");
+		hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, "Fail to initialize render engine due to unexpected error.");
 		return false;
 	}
 }
