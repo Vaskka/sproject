@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|Win32">
+      <Configuration>UnitTest</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|x64">
+      <Configuration>UnitTest</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp" />
@@ -77,6 +85,12 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -85,6 +99,12 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -105,10 +125,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,7 +155,33 @@
       <AdditionalDependencies>winmm.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>

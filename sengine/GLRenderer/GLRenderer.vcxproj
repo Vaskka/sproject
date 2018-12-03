@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|Win32">
+      <Configuration>UnitTest</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|x64">
+      <Configuration>UnitTest</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GLRenderer.cpp" />
@@ -37,6 +45,12 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -45,6 +59,12 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -65,10 +85,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,10 +104,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>GLRendererD</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
+    <TargetName>GLRendererD</TargetName>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>GLRenderer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>GLRendererD</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
     <TargetName>GLRendererD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,7 +151,35 @@
       <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;SRenderEngineD.lib;glew32d.lib;glfw3-vc140.lib;freeglutd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;$(SolutionDir)\sengine\RenderEngine\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;OPENGL_RENDERER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OPENGL)/lib/$(PlatformTarget);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(SolutionDir)\$(PlatformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;SRenderEngineD.lib;glew32d.lib;glfw3-vc140.lib;freeglutd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(OPENGL)/include;$(BOOST);$(HIVE_ROOT)/include;$(SolutionDir)\sengine\RenderEngine\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;OPENGL_RENDERER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OPENGL)/lib/$(PlatformTarget);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(SolutionDir)\$(PlatformTarget)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;SRenderEngineD.lib;glew32d.lib;glfw3-vc140.lib;freeglutd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>

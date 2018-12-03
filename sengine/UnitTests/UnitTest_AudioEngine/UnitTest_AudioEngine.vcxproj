@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|Win32">
+      <Configuration>UnitTest</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTest|x64">
+      <Configuration>UnitTest</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -34,6 +42,13 @@
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -43,6 +58,13 @@
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -65,10 +87,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,7 +109,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +155,37 @@
       <AdditionalDependencies>SAudioEngineD.lib;%(AdditionalDependencies);hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(SolutionDir)/sengine/audioEngine/source;$(BOOST);$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SAudioEngineD.lib;%(AdditionalDependencies);hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(SolutionDir)/sengine/audioEngine/source;$(BOOST);$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SAudioEngineD.lib;%(AdditionalDependencies);hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -164,7 +228,9 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestPlayAudio2D.cpp" />
