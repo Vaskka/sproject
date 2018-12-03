@@ -1,8 +1,11 @@
 #include "IrrklangAudioPlayer.h"
 #include <common/HiveCommonMicro.h>
 #include <common/CommonInterface.h>
+#include <common/ProductFactory.h>
 
 using namespace sengine::audioEngine;
+
+hiveOO::CProductFactory<CIrrklangAudioPlayer> Creator("IrrklangAudioPlayer");
 
 CIrrklangAudioPlayer::CIrrklangAudioPlayer()
 {
@@ -11,8 +14,7 @@ CIrrklangAudioPlayer::CIrrklangAudioPlayer()
 
 CIrrklangAudioPlayer::~CIrrklangAudioPlayer()
 {
-	if (m_SoundEngine)
-		m_SoundEngine->drop();
+	_destroyV();
 }
 
 //*********************************************************************************
@@ -40,4 +42,15 @@ int CIrrklangAudioPlayer::_playAudio2DV(const std::string& vFilePath)
 void CIrrklangAudioPlayer::_stopAllAudiosV()
 {
 	m_SoundEngine->stopAllSounds();
+}
+
+//*********************************************************************************
+//FUNCTION:
+void CIrrklangAudioPlayer::_destroyV()
+{
+	if (m_SoundEngine)
+	{
+		m_SoundEngine->drop();
+		_SAFE_DELETE(m_SoundEngine);
+	}
 }

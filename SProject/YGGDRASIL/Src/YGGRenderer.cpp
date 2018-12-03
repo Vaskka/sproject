@@ -12,7 +12,7 @@
 #include "TextureUtil.h"
 #include "RenderUtil.h"
 #include "Constants.h"
-#include "SoundPlayer.h"
+#include "AudioEngineInterface.h"
 
 using namespace Constant;
 using namespace sengine::renderEngine;
@@ -260,12 +260,10 @@ void CYGGRenderer::__postProcessPass()
 //FUNCTION:
 void CYGGRenderer::__playSound()
 {
-	CSoundPlayer::getInstance()->init();
-
 	size_t Count = Constant::MAIN_BGM_FILE_PATH.size();
 	srand((unsigned)time(0));
 	int RandInt = rand() % Count;
-	CSoundPlayer::getInstance()->playSound2D(Constant::MAIN_BGM_FILE_PATH[RandInt].c_str());
+	sengine::audioEngine::playAudio2D(Constant::MAIN_BGM_FILE_PATH[RandInt].c_str());
 }
 
 //*********************************************************************************
@@ -274,7 +272,7 @@ void CYGGRenderer::__destory()
 {
 	if (m_pScene) m_pScene->destroyScene();
 	if (m_pShadingTechnique) delete m_pShadingTechnique;
-	CSoundPlayer::getInstance()->stopAllSounds();
+	sengine::audioEngine::destroy();
 }
 
 //*********************************************************************************

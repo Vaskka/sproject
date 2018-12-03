@@ -16,6 +16,8 @@ namespace sengine
 			virtual ~CAudioEngine();
 
 			bool init();
+			void destroy();
+
 			int playAudio2D(const std::string& vFilePath);
 			void stopAllAudios() const;
 

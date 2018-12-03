@@ -87,14 +87,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;SAudioEngineD.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/nodefaultlib:"MSVCRT" %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
@@ -105,14 +105,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;SAudioEngineD.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -124,7 +124,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
@@ -132,8 +132,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;SAudioEngine.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -145,7 +145,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnablePREfast>false</EnablePREfast>
       <AdditionalOptions>
@@ -154,8 +154,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;SAudioEngine.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -169,7 +169,6 @@
     <ClCompile Include="Src\Scene.cpp" />
     <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\ShadingTechnique.cpp" />
-    <ClCompile Include="Src\SoundPlayer.cpp" />
     <ClCompile Include="Src\Technique.cpp" />
     <ClCompile Include="Src\TextureUtil.cpp" />
     <ClCompile Include="Src\Utility.cpp" />
@@ -185,7 +184,6 @@
     <ClInclude Include="Src\Scene.h" />
     <ClInclude Include="Src\Shader.h" />
     <ClInclude Include="Src\ShadingTechnique.h" />
-    <ClInclude Include="Src\SoundPlayer.h" />
     <ClInclude Include="Src\Technique.h" />
     <ClInclude Include="Src\TextureUtil.h" />
     <ClInclude Include="Src\Utility.h" />

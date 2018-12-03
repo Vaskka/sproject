@@ -16,6 +16,7 @@ namespace sengine
 			virtual bool _initV() override;
 			virtual int _playAudio2DV(const std::string& vFilePath) override;
 			virtual void _stopAllAudiosV() override;
+			virtual void _destroyV() override;
 
 		private:
 			irrklang::ISoundEngine* m_SoundEngine = nullptr;

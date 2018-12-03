@@ -20,6 +20,13 @@ AUDIO_ENGINE_DLL_EXPORT bool sengine::audioEngine::init()
 
 //*********************************************************************************
 //FUNCTION:
+AUDIO_ENGINE_DLL_EXPORT void sengine::audioEngine::destroy()
+{
+	CAudioEngine::getInstance()->destroy();
+}
+
+//*********************************************************************************
+//FUNCTION:
 AUDIO_ENGINE_DLL_EXPORT int sengine::audioEngine::playAudio2D(const std::string& vFilePath)
 {
 	return CAudioEngine::getInstance()->playAudio2D(vFilePath);
