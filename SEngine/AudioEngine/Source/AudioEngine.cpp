@@ -17,6 +17,7 @@ CAudioEngine::CAudioEngine()
 CAudioEngine::~CAudioEngine()
 {
 	destroy();
+	_SAFE_DELETE(m_pAudioEngineImp);
 }
 
 //*********************************************************************************
@@ -60,6 +61,6 @@ void CAudioEngine::stopAllAudios() const
 void CAudioEngine::destroy()
 {
 	m_IsInitialized = false;
-	m_pAudioEngineImp->_destroyV();
-	_SAFE_DELETE(m_pAudioEngineImp);
+	if (m_pAudioEngineImp)
+		m_pAudioEngineImp->_destroyV();
 }

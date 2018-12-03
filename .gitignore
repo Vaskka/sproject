@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 /objects/
 /sounds/
+*.mp3

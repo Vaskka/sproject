@@ -11,3 +11,9 @@
 #include "CppUnitTest.h"
 
 // TODO: 在此处引用程序需要的其他头文件
+#include <thread>
+#include <common/ProductFactory.h>
+#include <common/CommonInterface.h>
+#include "AudioEngine.h"
+#include "IrrklangAudioPlayer.h"
+#include "AudioEngineTestCommon.h"

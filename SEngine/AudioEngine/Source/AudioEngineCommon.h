@@ -15,5 +15,7 @@ namespace sengine
 		{
 			const std::string DEFAULT_AUDIO_ENGINE_SIGNATURE = "IrrklangAudioPlayer";
 		}
+
+		using AudioID = int;
 	}
 }

@@ -32,7 +32,8 @@ bool CIrrklangAudioPlayer::_initV()
 int CIrrklangAudioPlayer::_playAudio2DV(const std::string& vFilePath)
 {
 	_ASSERTE(!vFilePath.empty());
-	m_SoundEngine->play2D(vFilePath.c_str(), true);
+	auto pSound = m_SoundEngine->play2D(vFilePath.c_str(), true, false, true);
+	if (!pSound) return -1;
 
 	return 0;
 }
@@ -49,8 +50,5 @@ void CIrrklangAudioPlayer::_stopAllAudiosV()
 void CIrrklangAudioPlayer::_destroyV()
 {
 	if (m_SoundEngine)
-	{
-		m_SoundEngine->drop();
-		_SAFE_DELETE(m_SoundEngine);
-	}
+		m_SoundEngine->drop(); //NOTE: 这里m_SoundEngine不需要delete
 }
