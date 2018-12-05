@@ -1,8 +1,10 @@
 #include "gameConfig.h"
+#include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
 #include <gl/glew.h>
-#include <iostream>
+#include <common/CommonInterface.h>
+#include <common/HiveCommonMicro.h>
 #include "common.h"
 #include "constants.h"
 
@@ -55,7 +57,13 @@ SSceneConfig CGameConfig::__parseSceneConfig(const std::string& vConfigFileName)
 	_ASSERTE(!vConfigFileName.empty());
 
 	ptree SceneConfigTree;
-	read_json(vConfigFileName, SceneConfigTree);
+	try {
+		boost::property_tree::read_json(vConfigFileName, SceneConfigTree);
+	}
+	catch (std::exception & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	_ASSERTE(!SceneConfigTree.empty());
 
 	SSceneConfig SceneConfig;
 	SceneConfig.commonShaderPath = SceneConfigTree.get_optional<std::string>("common").get_value_or("");

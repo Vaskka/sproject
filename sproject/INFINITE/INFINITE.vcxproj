@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gameConfig.json" />
-    <None Include="RenderEngine.config" />
+    <None Include="RenderEngine.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="res\shaders\core\drawQuad_vs.glsl" />
     <None Include="res\shaders\core\mainImage_fs.glsl" />
     <None Include="res\shaders\core\renderKeyEvent2Texture_fs.glsl" />
@@ -72,6 +74,10 @@
     <None Include="res\shaders\game\head\config.json" />
     <None Include="res\shaders\game\head\headA_fs.glsl" />
     <None Include="res\shaders\game\head\headB_fs.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\BufferA.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\BufferB.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\config.json" />
+    <None Include="res\shaders\mini-project\touhouMusic\Image.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
