@@ -1,10 +1,10 @@
 {
-  "entrySceneID":  8,
+  "entrySceneID":  0,
 
   "scene": [
     {
       "id": 0,
-      "configFile": "res\\shaders\\custom\\Contra\\config.json"
+      "configFile": "res\\shaders\\mini-project\\audioPlayer\\config.json"
     },
     {
       "id": 1,
