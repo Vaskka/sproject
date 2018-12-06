@@ -74,10 +74,10 @@
     <None Include="res\shaders\game\head\config.json" />
     <None Include="res\shaders\game\head\headA_fs.glsl" />
     <None Include="res\shaders\game\head\headB_fs.glsl" />
-    <None Include="res\shaders\mini-project\touhouMusic\BufferA.glsl" />
-    <None Include="res\shaders\mini-project\touhouMusic\BufferB.glsl" />
-    <None Include="res\shaders\mini-project\touhouMusic\config.json" />
-    <None Include="res\shaders\mini-project\touhouMusic\Image.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic-Flandre\BufferA.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic-Flandre\BufferB.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic-Flandre\config.json" />
+    <None Include="res\shaders\mini-project\touhouMusic-Flandre\Image.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -12,10 +12,12 @@ uniform vec2 iResolution;
 uniform vec4 iDate;
 uniform vec4 iMouse;
 
-uniform sampler2D iChannel0;
-uniform sampler2D iChannel1;
-uniform sampler2D iChannel2;
-uniform sampler2D iChannel3;
+uniform sampler2D iChannel[4];
+
+#define iChannel0 iChannel[0]
+#define iChannel1 iChannel[1]
+#define iChannel2 iChannel[2]
+#define iChannel3 iChannel[3]
 
 in vec2 _TexCoords;
 

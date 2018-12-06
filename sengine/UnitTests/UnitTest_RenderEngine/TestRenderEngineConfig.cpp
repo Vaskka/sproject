@@ -1,6 +1,6 @@
 #include "pch.h"
 
-TEST(TestRenderEngine, initRenderEngine) {
+TEST(TestRenderEngineConfig, initConfig) {
   EXPECT_EQ(1, 1);
   EXPECT_TRUE(true);
 }

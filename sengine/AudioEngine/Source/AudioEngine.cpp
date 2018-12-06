@@ -43,6 +43,7 @@ int CAudioEngine::playAudio2D(const std::string& vFilePath)
 {
 	_ASSERTE(!vFilePath.empty());
 	if (!m_IsInitialized) init();
+	if (!m_IsInitialized) return 0;
 
 	return m_pAudioEngineImp->_playAudio2DV(vFilePath);
 }

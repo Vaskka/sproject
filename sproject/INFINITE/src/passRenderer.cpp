@@ -171,7 +171,7 @@ void CPassRenderer::__updateShaderUniforms4ImagePass()
 
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, TextureID);
-		std::string UniformName = boost::str(boost::format("iChannel%1%") % i);
+		std::string UniformName = boost::str(boost::format("iChannel[%1%]") % i);
 		m_pShadingTechnique->updateStandShaderUniform(UniformName, i);
 
 		GLint Width, Height;

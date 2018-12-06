@@ -3,14 +3,23 @@
     {
       "id": 0,
       "type": "buffer",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic\\BufferA.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\BufferA.glsl",
       "channels": [
         {
           "type": "texture",
-          "value": "res\\textures\\flandre02.jpg",
-          "filterMode": "mipmap",
-          "wrapMode": "repeat",
-          "isMipmap": true
+          "value": "res\\textures\\flandre01.jpg"
+        },
+        {
+          "type": "texture",
+          "value": "res\\textures\\flandre02.jpg"
+        },
+        {
+          "type": "texture",
+          "value": "res\\textures\\alice01.jpg"
+        },
+        {
+          "type": "texture",
+          "value": "res\\textures\\alice02.jpg"
         },
         {
           "type": "sound",
@@ -22,7 +31,7 @@
     {
       "id": 1,
       "type": "buffer",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic\\BufferB.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\BufferB.glsl",
       "channels": [
         {
           "type": "buffer",
@@ -34,7 +43,7 @@
     {
       "id": 2,
       "type": "image",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic\\Image.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\Image.glsl",
       "channels": [
         {
           "type": "buffer",
