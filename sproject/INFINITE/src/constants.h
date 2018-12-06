@@ -30,4 +30,5 @@ namespace Default
 	const GLint TEXTURE_WRAP_MODE = GL_CLAMP_TO_EDGE;
 	const bool	TEXTURE_IS_VFLIP = true;
 	const bool  TEXTURE_IS_MIPMAP = false;
+	const GLenum TEXTURE_FORMAT = GL_RGB;
 }

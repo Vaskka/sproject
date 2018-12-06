@@ -14,6 +14,7 @@ struct SChannelConfig
 	int wrapMode;
 	bool vflip;
 	bool isMipmap;
+	unsigned int format;
 };
 
 struct SPassConfig
@@ -65,6 +66,7 @@ private:
 
 	int __parseFilterMode(const std::string& vModeStr);
 	int __parseWrapMode(const std::string& vModeStr);
+	unsigned int __parseTextureFormat(const std::string& vModeStr);
 	EChannelType __parseChannelType(const std::string& vTypeStr);
 	EPassType __parsePassType(const std::string& vTypeStr);
 

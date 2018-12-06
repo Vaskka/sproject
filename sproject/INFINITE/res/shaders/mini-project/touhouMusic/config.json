@@ -14,7 +14,7 @@
         },
         {
           "type": "sound",
-          "value": "res\\sounds\\flandre01.mp3"
+          "value": "res\\sounds\\flandre02.mp3"
         }
       ]
     },
@@ -22,7 +22,13 @@
     {
       "id": 1,
       "type": "buffer",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic\\BufferB.glsl"
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic\\BufferB.glsl",
+      "channels": [
+        {
+          "type": "buffer",
+          "value": "0"
+        }
+      ]
     },
 
     {

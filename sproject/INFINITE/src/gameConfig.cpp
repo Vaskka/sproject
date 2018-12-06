@@ -109,6 +109,7 @@ SChannelConfig CGameConfig::__parseChannelConfig(const ptree& vConfigItem)
 	ChannelConfig.wrapMode = __parseWrapMode(vConfigItem.get_optional<std::string>("wrapMode").get_value_or(""));
 	ChannelConfig.vflip = vConfigItem.get_optional<bool>("vflip").get_value_or(Default::TEXTURE_IS_VFLIP);
 	ChannelConfig.isMipmap = vConfigItem.get_optional<bool>("isMipmap").get_value_or(Default::TEXTURE_IS_MIPMAP);
+	ChannelConfig.format = __parseTextureFormat(vConfigItem.get_optional<std::string>("format").get_value_or(""));
 
 	return ChannelConfig;
 }
@@ -140,6 +141,24 @@ int CGameConfig::__parseWrapMode(const std::string& vModeStr)
 	else if ("border" == vModeStr) WrapMode = GL_CLAMP_TO_BORDER;
 
 	return WrapMode;
+}
+
+//*********************************************************************************
+//FUNCTION:
+unsigned int CGameConfig::__parseTextureFormat(const std::string& vModeStr)
+{
+	if (vModeStr.empty()) return Default::TEXTURE_FORMAT;
+
+	if ("red" == vModeStr || "r" == vModeStr)
+		return GL_RED;
+	else if ("rgb" == vModeStr)
+		return GL_RGB;
+	else if ("rgba" == vModeStr)
+		return GL_RGBA;
+
+	hiveCommon::hiveOutputWarning(__EXCEPTION_SITE__, _BOOST_STR1("Failed to parse texture format [%1].", vModeStr));
+
+	return 0;
 }
 
 //*********************************************************************************

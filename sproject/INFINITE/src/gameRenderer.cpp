@@ -5,6 +5,7 @@
 #include <common/ProductFactory.h>
 #include <common/CommonInterface.h>
 #include "RenderEngineInterface.h"
+#include "AudioEngineInterface.h"
 #include "DisplayDevice.h"
 #include "gameShadingTechnique.h"
 #include "meshRenderer.h"
@@ -106,7 +107,7 @@ void CGameRenderer::_handleEventV()
 //FUNCTION:
 void CGameRenderer::__destory()
 {
-
+	sengine::audioEngine::destroy();
 }
 
 //*********************************************************************************
