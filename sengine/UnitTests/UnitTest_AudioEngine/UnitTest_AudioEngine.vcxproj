@@ -33,6 +33,7 @@
     <RootNamespace>UnitTest_001</RootNamespace>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
     <ProjectName>UnitTest_AudioEngine</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -167,7 +168,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SAudioEngineD.lib;%(AdditionalDependencies);hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib</AdditionalDependencies>
+      <AdditionalDependencies>SAudioEngineD.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -197,7 +198,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories);$(BOOST)/$(PlatformTarget);$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SAudioEngineD.lib;%(AdditionalDependencies);hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib</AdditionalDependencies>
+      <AdditionalDependencies>SAudioEngineD.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;hiveConfiguration-vc140D.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -235,6 +236,11 @@
     </ClCompile>
     <ClCompile Include="TestPlayAudio2D.cpp" />
     <ClCompile Include="TestPlayAudio3D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AudioEngine\AudioEngine.vcxproj">
+      <Project>{f540d069-97e8-421f-8a0b-fa9290487d3b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
