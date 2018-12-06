@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gameConfig.json" />
-    <None Include="RenderEngine.config" />
+    <None Include="RenderEngine.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="res\shaders\core\drawQuad_vs.glsl" />
     <None Include="res\shaders\core\mainImage_fs.glsl" />
     <None Include="res\shaders\core\renderKeyEvent2Texture_fs.glsl" />
@@ -72,6 +74,10 @@
     <None Include="res\shaders\game\head\config.json" />
     <None Include="res\shaders\game\head\headA_fs.glsl" />
     <None Include="res\shaders\game\head\headB_fs.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\BufferA.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\BufferB.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic\config.json" />
+    <None Include="res\shaders\mini-project\touhouMusic\Image.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -148,12 +154,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;SAudioEngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|Win32'">
@@ -161,7 +167,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -174,12 +180,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140D.lib;hiveCommon-vc140D.lib;glew32d.lib;freeglutd.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngineD.lib;GLRendererD.lib;SAudioEngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTest|x64'">
@@ -187,7 +193,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -202,14 +208,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;SAudioEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -219,14 +225,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(IRRKLANG)/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)sengine\RenderEngine\Source;$(SolutionDir)SEngine\GLRenderer\Source;$(BOOST);$(OPENGL)\include;$(GLM);$(ASSIMP)\include;$(HIVE_ROOT)/include;$(SolutionDir)sengine\audioEngine\Source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)/$(PlatformTarget)/$(Configuration);$(BOOST)/$(PlatformTarget);$(OPENGL)\lib\$(PlatformTarget);$(ASSIMP)\lib\$(PlatformTarget);;$(HIVE_ROOT)/lib/$(PlatformTarget);$(IRRKLANG)/lib/$(PlatformTarget);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hiveOO-vc140.lib;hiveCommon-vc140.lib;glew32.lib;freeglut.lib;glfw3-vc140.lib;assimp-vc140-mt.lib;irrKlang.lib;SRenderEngine.lib;GLRenderer.lib;SAudioEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

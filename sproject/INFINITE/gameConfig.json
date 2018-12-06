@@ -1,14 +1,14 @@
 {
-  "entrySceneID":  8,
+  "entrySceneID":  0,
 
   "scene": [
     {
       "id": 0,
-      "configFile": "res\\shaders\\custom\\Contra\\config.json"
+      "configFile": "res\\shaders\\mini-project\\touhouMusic\\config.json"
     },
     {
       "id": 1,
-      "configFile": "res\\shaders\\custom\\Mario\\config.json"
+      "configFile": "res\\shaders\\custom\\MusicPlayer\\config.json"
     },
     {
       "id": 2,

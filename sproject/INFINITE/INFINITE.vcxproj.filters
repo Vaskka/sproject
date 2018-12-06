@@ -28,6 +28,12 @@
     <Filter Include="Shader Files\game\head">
       <UniqueIdentifier>{b4037b9d-5b87-49d5-b920-7c5a629a3047}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files\mini">
+      <UniqueIdentifier>{85c754fd-72d1-4a19-8017-236dea8a45fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files\mini\touhouMusic">
+      <UniqueIdentifier>{36cdf4be-f01f-4040-ba73-0fef0b3d5a7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp">
@@ -144,5 +150,17 @@
       <Filter>Shader Files\game\head</Filter>
     </None>
     <None Include="RenderEngine.config" />
+    <None Include="res\shaders\mini-project\touhouMusic\BufferA.glsl">
+      <Filter>Shader Files\mini\touhouMusic</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic\BufferB.glsl">
+      <Filter>Shader Files\mini\touhouMusic</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic\config.json">
+      <Filter>Shader Files\mini\touhouMusic</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic\Image.glsl">
+      <Filter>Shader Files\mini\touhouMusic</Filter>
+    </None>
   </ItemGroup>
 </Project>

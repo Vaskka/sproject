@@ -1,7 +1,6 @@
 #include "passRenderer.h"
-#include <windows.h>
-#include <mmsystem.h>
 #include <boost/format.hpp>
+#include "AudioEngineInterface.h"
 #include "constants.h"
 #include "common.h"
 #include "textureUtil.h"
@@ -200,7 +199,7 @@ void CPassRenderer::__updateShaderUniforms4ImagePass()
 void CPassRenderer::__playSound() const
 {
 	if (m_SoundFilePath.empty()) return;
-	PlaySound(m_SoundFilePath.c_str(), nullptr, SND_ASYNC | SND_LOOP);
+	sengine::audioEngine::playAudio2D(m_SoundFilePath);
 }
 
 //*********************************************************************************
@@ -219,5 +218,5 @@ void CPassRenderer::__destroy()
 	glDeleteBuffers(1, &m_CaptureRBO);
 	glDeleteBuffers(1, &m_CaptureFBO);
 
-	PlaySound(nullptr, nullptr, SND_ASYNC | SND_LOOP);
+	sengine::audioEngine::destroy();
 }
