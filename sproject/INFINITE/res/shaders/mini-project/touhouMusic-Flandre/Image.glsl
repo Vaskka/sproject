@@ -5,5 +5,5 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 	vec4 layer2 = texture(iChannel1, uv); //bubble
 	vec4 outColor = mix(layer1, layer2, layer2.a);
 
-	fragColor = outColor;
+	fragColor = layer2;
 }

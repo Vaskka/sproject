@@ -1,8 +1,9 @@
 #include "textureUtil.h"
 #include <iostream>
+#include <SOIL/stb_image_aug.h>
+#include <SOIL/SOIL.h>
 #include <common/HiveCommonMicro.h>
 #include <common/CommonInterface.h>
-#include "stb_image.h"
 
 //**********************************************************************************************
 //FUNCTION:
@@ -76,8 +77,6 @@ GLuint util::setupCubemap(int vWidth, int vHeight, bool vGenerateMipMap)
 //FUNCTION:
 GLuint util::loadTexture(const char *vPath, GLint vFilterMode, GLint vWrapMode, GLenum vFormat, bool vVerticallyFlip, bool vGenerateMipMap)
 {
-	stbi_set_flip_vertically_on_load(vVerticallyFlip);
-
 	int Width, Height, Channels;
 	unsigned char *pImageData = nullptr;
 

@@ -25,9 +25,8 @@ out vec4 _outFragColor;
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
-
 void main()
 {
-	vec2 fragCoord = _TexCoords * iResolution;
+	vec2 fragCoord = vec2(_TexCoords.x, 1.0 - _TexCoords.y) * iResolution;
 	mainImage(_outFragColor, fragCoord);
 }

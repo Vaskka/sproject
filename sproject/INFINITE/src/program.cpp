@@ -261,5 +261,7 @@ void CProgram::__linkProgram(GLuint& vProgram)
 //FUNCTION:
 void CProgram::__printUniformWarningInfo(const std::string& vUniform)
 {
+#ifdef _DEBUG
 	std::cout << "The Uniform '" << vUniform << "' does not exist or never be used: " << std::endl;
+#endif
 }

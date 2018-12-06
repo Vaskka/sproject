@@ -57,9 +57,6 @@
     <ClCompile Include="src\textureUtil.cpp">
       <Filter>Source Files\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\stb_image.cpp">
-      <Filter>Source Files\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\meshRenderer.cpp">
       <Filter>Source Files\OpenGL</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Source Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="src\textureUtil.h">
-      <Filter>Source Files\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stb_image.h">
       <Filter>Source Files\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\meshRenderer.h">
