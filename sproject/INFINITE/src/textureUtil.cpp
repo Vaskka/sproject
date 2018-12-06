@@ -133,7 +133,6 @@ GLuint util::setupTexture2D(unsigned int vWidth, unsigned int vHeight, GLint vIn
 
 	if (vGenerateMipMap == true)
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 

@@ -87,7 +87,7 @@ void CSceneRenderer::__initRenderTextures()
 		auto Type = PassConfig.type;
 		if (EPassType::BUFFER == Type)
 		{
-			auto TextureID = util::setupTexture2D(m_WinSize.x, m_WinSize.y, GL_RGBA32F, GL_RGBA);
+			auto TextureID = util::setupTexture2D(m_WinSize.x, m_WinSize.y, GL_RGBA32F, GL_RGBA, GL_FLOAT, GL_LINEAR, GL_CLAMP_TO_BORDER, true);
 			m_ID2RenderTextureMap.insert(std::make_pair(PassID, TextureID));
 		}
 	}

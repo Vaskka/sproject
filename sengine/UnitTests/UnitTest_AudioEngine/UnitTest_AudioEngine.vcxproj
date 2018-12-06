@@ -32,7 +32,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>UnitTest_001</RootNamespace>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
-    <ProjectName>UnitTest_AudioEngine</ProjectName>
+    <ProjectName>UnitTest_AudioEngine (MicrosoftUnitTest)</ProjectName>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
