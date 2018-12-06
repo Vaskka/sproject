@@ -44,6 +44,8 @@ bool CRenderEngine::init()
 	_HIVE_EARLY_RETURN(!m_pRenderer, _BOOST_STR1("Fail to initialize engine due to bad engine object signature [%1%].", EngineSig), false);
 	_HIVE_EARLY_RETURN(!m_pRenderer->_initV(), "Fail to initialize engine due to failure of initialzing concrete engine object.", false);
 
+	hiveCommon::hiveOutputEvent("Succeed to init render engine.");
+
 	m_IsInitialized = true;
 	return true;
 }

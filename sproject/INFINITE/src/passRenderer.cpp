@@ -82,7 +82,7 @@ void CPassRenderer::__initTextures()
 			m_TextureSet.push_back(TextureID);
 		}
 		else if (EChannelType::TEXTURE == Config.type) {
-			auto TextureID = util::loadTexture(Config.value.c_str(), Config.filterMode, Config.wrapMode, Config.format, Config.vflip, Config.isMipmap);
+			auto TextureID = util::loadTexture(Config.value.c_str(), Config.filterMode, Config.wrapMode, Config.vflip, Config.isMipmap);
 			_ASSERTE(TextureID > 0);
 			m_TextureSet.push_back(TextureID);
 		}

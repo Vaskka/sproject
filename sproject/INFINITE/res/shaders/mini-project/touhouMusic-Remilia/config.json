@@ -3,27 +3,27 @@
     {
       "id": 0,
       "type": "buffer",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\BufferA.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Remilia\\BufferA.glsl",
       "channels": [
         {
           "type": "texture",
-          "value": "res\\textures\\flandre01.jpg"
+          "value": "res\\textures\\remilia01.jpg"
         },
         {
           "type": "texture",
-          "value": "res\\textures\\flandre02.jpg"
+          "value": "res\\textures\\remilia02.jpg"
         },
         {
           "type": "texture",
-          "value": "res\\textures\\flandre03.png"
+          "value": "res\\textures\\remilia03.jpg"
         },
         {
           "type": "texture",
-          "value": "res\\textures\\flandre04.jpg"
+          "value": "res\\textures\\remilia04.jpg"
         },
         {
           "type": "sound",
-          "value": "res\\sounds\\flandre02.mp3"
+          "value": "res\\sounds\\remilia01.mp3"
         }
       ]
     },
@@ -31,7 +31,7 @@
     {
       "id": 1,
       "type": "buffer",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\BufferB.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Remilia\\BufferB.glsl",
       "channels": [
         {
           "type": "buffer",
@@ -43,7 +43,7 @@
     {
       "id": 2,
       "type": "image",
-      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Flandre\\Image.glsl",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Remilia\\Image.glsl",
       "channels": [
         {
           "type": "buffer",

@@ -33,6 +33,8 @@ bool CAudioEngine::init()
 	_HIVE_EARLY_RETURN(!m_pAudioEngineImp, _BOOST_STR1("Fail to initialize audio engine due to bad engine object signature [%1%].", EngineSig), false);
 	_HIVE_EARLY_RETURN(!m_pAudioEngineImp->_initV(), "Fail to initialize audio engine due to failure of initialzing concrete engine object.", false);
 
+	hiveCommon::hiveOutputEvent("Succeed to init audio engine.");
+
 	m_IsInitialized = true;
 	return true;
 }

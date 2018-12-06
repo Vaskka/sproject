@@ -34,6 +34,9 @@
     <Filter Include="Shader Files\mini\touhouMusic-Flandre">
       <UniqueIdentifier>{36cdf4be-f01f-4040-ba73-0fef0b3d5a7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader Files\mini\touhouMusic-Remilia">
+      <UniqueIdentifier>{65dc79c1-a1cd-4b91-bd2e-478ceafc36e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp">
@@ -155,6 +158,18 @@
     </None>
     <None Include="res\shaders\mini-project\touhouMusic-Flandre\Image.glsl">
       <Filter>Shader Files\mini\touhouMusic-Flandre</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic-Remilia\BufferA.glsl">
+      <Filter>Shader Files\mini\touhouMusic-Remilia</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic-Remilia\BufferB.glsl">
+      <Filter>Shader Files\mini\touhouMusic-Remilia</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic-Remilia\config.json">
+      <Filter>Shader Files\mini\touhouMusic-Remilia</Filter>
+    </None>
+    <None Include="res\shaders\mini-project\touhouMusic-Remilia\Image.glsl">
+      <Filter>Shader Files\mini\touhouMusic-Remilia</Filter>
     </None>
   </ItemGroup>
 </Project>

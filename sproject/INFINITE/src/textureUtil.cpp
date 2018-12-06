@@ -75,43 +75,23 @@ GLuint util::setupCubemap(int vWidth, int vHeight, bool vGenerateMipMap)
 
 //**********************************************************************************************
 //FUNCTION:
-GLuint util::loadTexture(const char *vPath, GLint vFilterMode, GLint vWrapMode, GLenum vFormat, bool vVerticallyFlip, bool vGenerateMipMap)
+GLuint util::loadTexture(const char *vPath, GLint vFilterMode, GLint vWrapMode, bool vVerticallyFlip, bool vGenerateMipMap)
 {
-	int Width, Height, Channels;
-	unsigned char *pImageData = nullptr;
+	_ASSERTE(vPath);
 
-	GLuint TextureID;
-	glGenTextures(1, &TextureID);
+	unsigned Flags = 0;
+	if (vVerticallyFlip) Flags |= SOIL_FLAG_INVERT_Y;
+	if (vGenerateMipMap) Flags |= SOIL_FLAG_MIPMAPS;
+
+	GLuint TextureID = SOIL_load_OGL_texture(vPath, SOIL_LOAD_AUTO, 0, Flags);
+	_HIVE_EARLY_RETURN(TextureID <= 0, "Failed to load texture due to failure of SOIL_load_OGL_texture().", 0);
+
 	glBindTexture(GL_TEXTURE_2D, TextureID);
-
-	switch (vFormat)
-	{
-	case GL_RED:
-		pImageData = stbi_load(vPath, &Width, &Height, &Channels, STBI_grey);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, Width, Height, 0, GL_RED, GL_UNSIGNED_BYTE, pImageData);
-		break;
-	case GL_RGB:
-		pImageData = stbi_load(vPath, &Width, &Height, &Channels, STBI_rgb);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, pImageData);
-		break;
-	case GL_RGBA:
-		pImageData = stbi_load(vPath, &Width, &Height, &Channels, STBI_rgb_alpha);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Width, Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pImageData);
-		break;
-	default:
-		break;
-	}
-
-	_HIVE_EARLY_RETURN(!pImageData, "Failed to load texture due to failure of stbi_load().", 0);
-
-	if (vGenerateMipMap == true) glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, vWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
-
 	glBindTexture(GL_TEXTURE_2D, 0);
-	stbi_image_free(pImageData);
 
 	return TextureID;
 }
