@@ -8,7 +8,7 @@ uniform float iTimeDelta;
 uniform int iFrame;
 
 uniform vec3 iChannelResolution[MAX_CHANNEL_NUM];
-uniform vec2 iResolution;
+uniform vec3 iResolution;
 uniform vec4 iDate;
 uniform vec4 iMouse;
 
@@ -27,6 +27,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord);
 
 void main()
 {
-	vec2 fragCoord = _TexCoords * iResolution;
+	vec2 fragCoord = _TexCoords * iResolution.xy;
 	mainImage(_outFragColor, fragCoord);
 }

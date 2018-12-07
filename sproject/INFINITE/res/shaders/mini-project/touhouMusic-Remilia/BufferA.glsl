@@ -1,5 +1,5 @@
 #define IMAGE_NUM		4
-#define LAST_TIME		10.0
+#define LAST_TIME		600.0
 #define SWITCH_DELAY	2.0
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)

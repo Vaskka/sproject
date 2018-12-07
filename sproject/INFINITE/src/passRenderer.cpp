@@ -58,6 +58,8 @@ void CPassRenderer::renderPass()
 	m_pQuadRenderer->draw();
 	m_pShadingTechnique->disableProgram();
 
+	glGenerateMipmap(GL_TEXTURE_2D); //TODO: ø…≈‰÷√
+
 	for (unsigned int i = 0; i < m_TextureSet.size(); ++i) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -160,7 +162,8 @@ void CPassRenderer::__updateKeyboardTexture()
 //FUNCTION:
 void CPassRenderer::__updateShaderUniforms4ImagePass()
 {
-	m_pShadingTechnique->updateStandShaderUniform("iResolution", glm::vec2(m_pSceneRenderer->getWinSize()));
+	auto Resolution = glm::vec3(glm::vec2(m_pSceneRenderer->getWinSize()), 1.0);
+	m_pShadingTechnique->updateStandShaderUniform("iResolution", Resolution);
 	m_pShadingTechnique->updateStandShaderUniform("iTime", m_pSceneRenderer->getTime());
 	m_pShadingTechnique->updateStandShaderUniform("iTimeDelta", CGameRenderer::getInstance()->getFrameInterval());
 	m_pShadingTechnique->updateStandShaderUniform("iFrame", m_pSceneRenderer->getFrameCount());

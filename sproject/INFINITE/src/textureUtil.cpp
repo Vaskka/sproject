@@ -105,15 +105,11 @@ GLuint util::setupTexture2D(unsigned int vWidth, unsigned int vHeight, GLint vIn
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, vInternalFormat, vWidth, vHeight, 0, vFormat, vType, nullptr);
 
+	if (vGenerateMipMap) glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, vWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, vFilterMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, vFilterMode);
-
-	if (vGenerateMipMap == true)
-	{
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

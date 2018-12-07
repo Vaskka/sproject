@@ -1,169 +1,213 @@
-//from: https://www.shadertoy.com/view/llsSDf
+// Heartfelt - by Martijn Steinrucken aka BigWings - 2017
+// Email:countfrolic@gmail.com Twitter:@The_ArtOfCode
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
-vec2 uv;
+// I revisited the rain effect I did for another shader. This one is better in multiple ways:
+// 1. The glass gets foggy.
+// 2. Drops cut trails in the fog on the glass.
+// 3. The amount of rain is adjustable (with Mouse.y)
 
-vec2 hash2a(vec2 x, float anim)
-{
-	float r = 523.0*sin(dot(x, vec2(53.3158, 43.6143)));
-	float xa1 = fract(anim);
-	float xb1 = anim - xa1;
-	anim += 0.5;
-	float xa2 = fract(anim);
-	float xb2 = anim - xa2;
+// To have full control over the rain, uncomment the HAS_HEART define 
 
-	vec2 z1 = vec2(fract(15.32354 * (r + xb1)), fract(17.25865 * (r + xb1)));
-	r = r + 1.0;
-	vec2 z2 = vec2(fract(15.32354 * (r + xb1)), fract(17.25865 * (r + xb1)));
-	r = r + 1.0;
-	vec2 z3 = vec2(fract(15.32354 * (r + xb2)), fract(17.25865 * (r + xb2)));
-	r = r + 1.0;
-	vec2 z4 = vec2(fract(15.32354 * (r + xb2)), fract(17.25865 * (r + xb2)));
-	return (mix(z1, z2, xa1) + mix(z3, z4, xa2))*0.5;
+// A video of the effect can be found here:
+// https://www.youtube.com/watch?v=uiF5Tlw22PI&feature=youtu.be
+
+// Music - Alone In The Dark - Vadim Kiselev
+// https://soundcloud.com/ahmed-gado-1/sad-piano-alone-in-the-dark
+// Rain sounds:
+// https://soundcloud.com/elirtmusic/sleeping-sound-rain-and-thunder-1-hours
+
+#define S(a, b, t) smoothstep(a, b, t)
+//#define CHEAP_NORMALS
+#define HAS_HEART
+#define USE_POST_PROCESSING
+
+vec3 N13(float p) {
+	//  from DAVE HOSKINS
+	vec3 p3 = fract(vec3(p) * vec3(.1031, .11369, .13787));
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract(vec3((p3.x + p3.y)*p3.z, (p3.x + p3.z)*p3.y, (p3.y + p3.z)*p3.x));
 }
 
-float hashNull(vec2 x)
-{
-	float r = fract(523.0*sin(dot(x, vec2(53.3158, 43.6143))));
-	return r;
+vec4 N14(float t) {
+	return fract(sin(t*vec4(123., 1024., 1456., 264.))*vec4(6547., 345., 8799., 1564.));
+}
+float N(float t) {
+	return fract(sin(t*12345.564)*7658.76);
 }
 
-vec4 NC0 = vec4(0.0, 157.0, 113.0, 270.0);
-vec4 NC1 = vec4(1.0, 158.0, 114.0, 271.0);
-
-vec4 hash4(vec4 n) { return fract(sin(n)*753.5453123); }
-vec2 hash2(vec2 n) { return fract(sin(n)*753.5453123); }
-float noise2(vec2 x)
-{
-	vec2 p = floor(x);
-	vec2 f = fract(x);
-	f = f * f*(3.0 - 2.0*f);
-
-	float n = p.x + p.y*157.0;
-	vec2 s1 = mix(hash2(vec2(n) + NC0.xy), hash2(vec2(n) + NC1.xy), vec2(f.x));
-	return mix(s1.x, s1.y, f.y);
+float Saw(float b, float t) {
+	return S(0., b, t)*S(1., b, t);
 }
 
-float noise3(vec3 x)
-{
-	vec3 p = floor(x);
-	vec3 f = fract(x);
-	f = f * f*(3.0 - 2.0*f);
 
-	float n = p.x + dot(p.yz, vec2(157.0, 113.0));
-	vec4 s1 = mix(hash4(vec4(n) + NC0), hash4(vec4(n) + NC1), vec4(f.x));
-	return mix(mix(s1.x, s1.y, f.y), mix(s1.z, s1.w, f.y), f.z);
+vec2 DropLayer2(vec2 uv, float t) {
+	vec2 UV = uv;
+
+	uv.y += t * 0.75;
+	vec2 a = vec2(6., 1.);
+	vec2 grid = a * 2.;
+	vec2 id = floor(uv*grid);
+
+	float colShift = N(id.x);
+	uv.y += colShift;
+
+	id = floor(uv*grid);
+	vec3 n = N13(id.x*35.2 + id.y*2376.1);
+	vec2 st = fract(uv*grid) - vec2(.5, 0);
+
+	float x = n.x - .5;
+
+	float y = UV.y*20.;
+	float wiggle = sin(y + sin(y));
+	x += wiggle * (.5 - abs(x))*(n.z - .5);
+	x *= .7;
+	float ti = fract(t + n.z);
+	y = (Saw(.85, ti) - .5)*.9 + .5;
+	vec2 p = vec2(x, y);
+
+	float d = length((st - p)*a.yx);
+
+	float mainDrop = S(.4, .0, d);
+
+	float r = sqrt(S(1., y, st.y));
+	float cd = abs(st.x - x);
+	float trail = S(.23*r, .15*r*r, cd);
+	float trailFront = S(-.02, .02, st.y - y);
+	trail *= trailFront * r*r;
+
+	y = UV.y;
+	float trail2 = S(.2*r, .0, cd);
+	float droplets = max(0., (sin(y*(1. - y)*120.) - st.y))*trail2*trailFront*n.z;
+	y = fract(y*10.) + (st.y - .5);
+	float dd = length(st - vec2(x, y));
+	droplets = S(.3, 0., dd);
+	float m = mainDrop + droplets * r*trailFront;
+
+	//m += st.x>a.y*.45 || st.y>a.x*.165 ? 1.2 : 0.;
+	return vec2(m, trail);
 }
 
-vec4 booble(vec2 te, vec2 pos, float numCells)
-{
-	float d = dot(te, te);
-	//if (d>=0.06) return vec4(0.0);
+float StaticDrops(vec2 uv, float t) {
+	uv *= 40.;
 
-	vec2 te1 = te + (pos - vec2(0.5, 0.5))*0.4 / numCells;
-	vec2 te2 = -te1;
-	float zb1 = max(pow(noise2(te2*1000.11*d), 10.0), 0.01);
-	float zb2 = noise2(te1*1000.11*d);
-	float zb3 = noise2(te1*200.11*d);
-	float zb4 = noise2(te1*200.11*d + vec2(20.0));
+	vec2 id = floor(uv);
+	uv = fract(uv) - .5;
+	vec3 n = N13(id.x*107.45 + id.y*3543.654);
+	vec2 p = (n.xy - .5)*.7;
+	float d = length(uv - p);
 
-	vec4 colorb = vec4(1.0);
-	colorb.xyz = colorb.xyz*(0.7 + noise2(te1*1000.11*d)*0.3);
-
-	zb2 = max(pow(zb2, 20.1), 0.01);
-	colorb.xyz = colorb.xyz*(zb2*1.9);
-
-	vec4 color = vec4(noise2(te2*10.8), noise2(te2*9.5 + vec2(15.0, 15.0)), noise2(te2*11.2 + vec2(12.0, 12.0)), 1.0);
-	color = mix(color, vec4(1.0), noise2(te2*20.5 + vec2(200.0, 200.0)));
-	color.xyz = color.xyz*(0.7 + noise2(te2*1000.11*d)*0.3);
-	color.xyz = color.xyz*(0.2 + zb1 * 1.9);
-
-	float r1 = max(min((0.033 - min(0.04, d))*100.0 / sqrt(numCells), 1.0), -1.6);
-	float d2 = (0.06 - min(0.06, d))*10.0;
-	d = (0.04 - min(0.04, d))*10.0;
-	color.xyz = color.xyz + colorb.xyz*d*1.5;
-
-	float f1 = min(d*10.0, 0.5 - d)*2.2;
-	f1 = pow(f1, 4.0);
-	float f2 = min(min(d*4.1, 0.9 - d)*2.0*r1, 1.0);
-
-	float f3 = min(d2*2.0, 0.7 - d2)*2.2;
-	f3 = pow(f3, 4.0);
-
-	return vec4(color*max(min(f1 + f2, 1.0), -0.5) + vec4(zb3)*f3 - vec4(zb4)*(f2*0.5 + f1)*0.5);
+	float fade = Saw(.025, fract(t + n.z));
+	float c = S(.3, 0., d)*fract(n.z*10.)*fade;
+	return c;
 }
 
-// base from https://www.shadertoy.com/view/4djGRh
-vec4 Cells(vec2 p, vec2 move, in float numCells, in float count, float blur)
-{
-	vec2 inp = p + move;
-	inp *= numCells;
-	float d = 1.0;
-	vec2 te;
-	vec2 pos;
-	for (int xo = -1; xo <= 1; xo++)
-	{
-		for (int yo = -1; yo <= 1; yo++)
-		{
-			vec2 tp = floor(inp) + vec2(xo, yo);
-			vec2 rr = mod(tp, numCells);
-			tp = tp + (hash2a(rr, iTime*0.1) + hash2a(rr, iTime*0.1 + 0.25))*0.5;
-			vec2 l = inp - tp;
-			float dr = dot(l, l);
-			if (hashNull(rr) > count)
-				if (d > dr) {
-					d = dr;
-					pos = tp;
-				}
-		}
-	}
-	if (d >= 0.06) return vec4(0.0);
-	te = inp - pos;
+vec2 Drops(vec2 uv, float t, float l0, float l1, float l2) {
+	float s = StaticDrops(uv, t)*l0;
+	vec2 m1 = DropLayer2(uv, t)*l1;
+	vec2 m2 = DropLayer2(uv*1.85, t)*l2;
 
-	//te=te+(te*noise3(vec3(te*5.9,iTime*40.0))*0.02);
-	//te=te+(te*(noise3(vec3(te*3.9+p,iTime*0.2))+noise3(vec3(te*3.9+p,iTime*0.2+0.25))+noise3(vec3(te*3.9+p,iTime*0.2+0.5))+noise3(vec3(te*3.9+p,iTime*0.2+0.75)))*0.05);
+	float c = s + m1.x + m2.x;
+	c = S(.3, 1., c);
 
-	if (d < 0.04) uv = uv + te * (d)*2.0;
-	if (blur > 0.0001) {
-		vec4 c = vec4(0.0);
-		for (float x = -1.0; x < 1.0; x += 0.5) {
-			for (float y = -1.0; y < 1.0; y += 0.5) {
-				c += booble(te + vec2(x, y)*blur, p, numCells);
-			}
-		}
-		return c * 0.05;
-	}
-
-	return booble(te, p, numCells);
+	return vec2(c, max(m1.y*l0, m2.y*l1));
 }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
-	uv = fragCoord / iResolution.y*0.5;
+	vec2 uv = (fragCoord.xy - .5*iResolution.xy) / iResolution.y;
+	vec2 UV = fragCoord.xy / iResolution.xy;
+	vec3 M = iMouse.xyz / iResolution.xyz;
+	float T = iTime + M.x*2.;
 
-	vec2 l1 = vec2(iTime*0.02, -iTime*0.02);
-	vec2 l2 = vec2(-iTime * 0.01, -iTime*0.007);
-	vec2 l3 = vec2(0.0, -iTime*0.01);
+#ifdef HAS_HEART
+	T = mod(iTime, 102.);
+	T = mix(T, M.x*102., M.z > 0. ? 1. : 0.);
+#endif
 
-	//vec4 e=vec4(noise2(uv*2.0),noise2(uv*2.0+vec2(200.0)),noise2(uv*2.0+vec2(50.0)),0.0);
-	vec4 e = texture(iChannel0, fragCoord / iResolution.xy);
-	//vec4 e = vec4(0.5);
 
-	vec4 cr1 = Cells(uv, vec2(20.2449, 93.78) + l1, 2.0, 0.5, 0.005);
-	vec4 cr2 = Cells(uv, vec2(0.0, 0.0), 3.0, 0.5, 0.003);
-	vec4 cr3 = Cells(uv, vec2(230.79, 193.2) + l2, 4.0, 0.5, 0.0);
-	vec4 cr4 = Cells(uv, vec2(200.19, 393.2) + l3, 7.0, 0.8, 0.01);
-	vec4 cr5 = Cells(uv, vec2(10.3245, 233.645) + l3, 9.2, 0.9, 0.02);
-	vec4 cr6 = Cells(uv, vec2(10.3245, 233.645) + l3, 14.2, 0.95, 0.05);
+	float t = T * .2;
 
-	e = max(e - vec4(dot(cr6, cr6))*0.1, 0.0) + cr6 * 1.6;
-	e = max(e - vec4(dot(cr5, cr5))*0.1, 0.0) + cr5 * 1.6;
-	e = max(e - vec4(dot(cr4, cr4))*0.1, 0.0) + cr4 * 1.3;
-	e = max(e - vec4(dot(cr3, cr3))*0.1, 0.0) + cr3 * 1.1;
-	e = max(e - vec4(dot(cr2, cr2))*0.1, 0.0) + cr2 * 1.4;
+	float rainAmount = iMouse.z > 0. ? M.y : sin(T*.05)*.3 + .7;
 
-	e = max(e - vec4(dot(cr1, cr1))*0.1, 0.0) + cr1 * 1.8;
+	float maxBlur = mix(1., 4., rainAmount);
+	float minBlur = 1.;
 
-	//e=e*(3.0+sin(iTime*10.0)*0.4+sin(iTime*5.0)*0.5+sin(iTime*100.0)*0.05 )*0.25;
+	float story = 0.;
+	float heart = 0.;
 
-	fragColor = e;
+#ifdef HAS_HEART
+	story = S(0., 70., T);
+
+	t = min(1., T / 70.);						// remap drop time so it goes slower when it freezes
+	t = 1. - t;
+	t = (1. - t * t)*70.;
+
+	float zoom = mix(.3, 1.2, story);		// slowly zoom out
+	uv *= zoom;
+	minBlur = 0. + S(.5, 1., story)*3.;		// more opaque glass towards the end
+	maxBlur = 1. + S(.5, 1., story)*1.5;
+
+	vec2 hv = uv - vec2(.0, -.1);				// build heart
+	hv.x *= .5;
+	float s = S(110., 70., T);				// heart gets smaller and fades towards the end
+	hv.y -= sqrt(abs(hv.x))*.5*s;
+	heart = length(hv);
+	heart = S(.4*s, .2*s, heart)*s;
+	rainAmount = heart;						// the rain is where the heart is
+
+	maxBlur -= heart;							// inside the heart slighly less foggy
+	uv *= 1.5;								// zoom out a bit more
+	t *= .25;
+#else
+	float zoom = -cos(T*.2);
+	uv *= .7 + zoom * .3;
+#endif
+	UV = (UV - .5)*(.9 + zoom * .1) + .5;
+
+	float staticDrops = S(-.5, 1., rainAmount)*2.;
+	float layer1 = S(.25, .75, rainAmount);
+	float layer2 = S(.0, .5, rainAmount);
+
+
+	vec2 c = Drops(uv, t, staticDrops, layer1, layer2);
+#ifdef CHEAP_NORMALS
+	vec2 n = vec2(dFdx(c.x), dFdy(c.x));// cheap normals (3x cheaper, but 2 times shittier ;))
+#else
+	vec2 e = vec2(.001, 0.);
+	float cx = Drops(uv + e, t, staticDrops, layer1, layer2).x;
+	float cy = Drops(uv + e.yx, t, staticDrops, layer1, layer2).x;
+	vec2 n = vec2(cx - c.x, cy - c.x);		// expensive normals
+#endif
+
+
+#ifdef HAS_HEART
+	n *= 1. - S(60., 85., T);
+	c.y *= 1. - S(80., 100., T)*.8;
+#endif
+
+	float focus = mix(maxBlur - c.y, minBlur, S(.1, .2, c.x));
+	vec3 col = textureLod(iChannel0, UV + n, focus).rgb;
+
+
+#ifdef USE_POST_PROCESSING
+	t = (T + 3.)*.5;										// make time sync with first lightnoing
+	float colFade = sin(t*.2)*.5 + .5 + story;
+	col *= mix(vec3(1.), vec3(.8, .9, 1.3), colFade);	// subtle color shift
+	float fade = S(0., 10., T);							// fade in at the start
+	float lightning = sin(t*sin(t*10.));				// lighting flicker
+	lightning *= pow(max(0., sin(t + sin(t))), 10.);		// lightning flash
+	col *= 1. + lightning * fade*mix(1., .1, story*story);	// composite lightning
+	col *= 1. - dot(UV -= .5, UV);							// vignette
+
+#ifdef HAS_HEART
+	col = mix(pow(col, vec3(1.2)), col, heart);
+	fade *= S(102., 97., T);
+#endif
+
+	col *= fade;										// composite start and end fade
+#endif
+
+//col = vec3(heart);
+	fragColor = vec4(col, 1.);
 }
