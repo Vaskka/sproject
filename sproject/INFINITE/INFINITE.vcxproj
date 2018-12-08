@@ -71,10 +71,12 @@
     <None Include="res\shaders\game\head\headB_fs.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Flandre\BufferA.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Flandre\BufferB.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic-Flandre\BufferC.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Flandre\config.json" />
     <None Include="res\shaders\mini-project\touhouMusic-Flandre\Image.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Remilia\BufferA.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Remilia\BufferB.glsl" />
+    <None Include="res\shaders\mini-project\touhouMusic-Remilia\BufferC.glsl" />
     <None Include="res\shaders\mini-project\touhouMusic-Remilia\config.json" />
     <None Include="res\shaders\mini-project\touhouMusic-Remilia\Image.glsl" />
   </ItemGroup>

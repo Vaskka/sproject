@@ -42,16 +42,22 @@
 
     {
       "id": 2,
+      "type": "buffer",
+      "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Remilia\\BufferC.glsl"
+    },
+
+    {
+      "id": 3,
       "type": "image",
       "shaderPath": "res\\shaders\\mini-project\\touhouMusic-Remilia\\Image.glsl",
       "channels": [
         {
           "type": "buffer",
-          "value": "0"
+          "value": "1"
         },
         {
           "type": "buffer",
-          "value": "1"
+          "value": "2"
         }
       ]
     }

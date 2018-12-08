@@ -3,6 +3,8 @@
 #include <common/HiveCommonMicro.h>
 #include "AudioEngine.h"
 
+using namespace sengine::audioEngine;
+
 //*********************************************************************************
 //FUNCTION:
 AUDIO_ENGINE_DLL_EXPORT bool sengine::audioEngine::init()
@@ -27,7 +29,7 @@ AUDIO_ENGINE_DLL_EXPORT void sengine::audioEngine::destroy()
 
 //*********************************************************************************
 //FUNCTION:
-AUDIO_ENGINE_DLL_EXPORT int sengine::audioEngine::playAudio2D(const std::string& vFilePath)
+AUDIO_ENGINE_DLL_EXPORT AudioID sengine::audioEngine::playAudio2D(const std::string& vFilePath)
 {
 	return CAudioEngine::getInstance()->playAudio2D(vFilePath);
 }

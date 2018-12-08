@@ -2,6 +2,7 @@
 #include <irrKlang.h>
 #include <unordered_map>
 #include "IAudioEngineImp.h"
+#include "AudioEngineCommon.h"
 
 namespace sengine
 {

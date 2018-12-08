@@ -33,10 +33,7 @@ AudioID CIrrklangAudioPlayer::_playAudio2DV(const std::string& vFilePath)
 {
 	_ASSERTE(!vFilePath.empty());
 
-	auto pSoundSource = m_SoundEngine->addSoundSourceFromFile(vFilePath.c_str(), irrklang::ESM_NO_STREAMING, true);
-	pSoundSource->setForcedStreamingThreshold(0);
-
-	auto pSound = m_SoundEngine->play2D(pSoundSource, true, false, true);
+	auto pSound = m_SoundEngine->play2D(vFilePath.c_str(), true, false, true);
 	if (!pSound) return -1;
 
 	m_ID2SoundMap[++m_AudioID] = pSound;

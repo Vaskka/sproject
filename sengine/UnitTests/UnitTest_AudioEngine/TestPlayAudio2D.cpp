@@ -51,7 +51,7 @@ namespace unitTest4AudioEngine
 
 		TEST_METHOD(getAudioSampleData)
 		{
- 			auto AudioID = CAudioEngine::getInstance()->playAudio2D("../../res/sounds/04.mp3");
+ 			auto AudioID = CAudioEngine::getInstance()->playAudio2D("../../res/sounds/03.mp3");
 			//Assert::IsTrue(AudioID >= 0);
 
 			std::this_thread::sleep_for(std::chrono::seconds(3));

@@ -19,7 +19,7 @@ namespace sengine
 			bool init();
 			void destroy();
 
-			int playAudio2D(const std::string& vFilePath);
+			AudioID playAudio2D(const std::string& vFilePath);
 			void stopAllAudios() const;
 			void* getAudioSampleData(AudioID vAudioID) const;
 
