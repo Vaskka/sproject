@@ -12,7 +12,7 @@ uniform vec3 iResolution;
 uniform vec4 iDate;
 uniform vec4 iMouse;
 
-uniform sampler2D iChannel[4];
+uniform sampler2D iChannel[MAX_CHANNEL_NUM];
 
 #define iChannel0 iChannel[0]
 #define iChannel1 iChannel[1]

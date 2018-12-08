@@ -41,7 +41,7 @@ bool CAudioEngine::init()
 
 //*********************************************************************************
 //FUNCTION:
-int CAudioEngine::playAudio2D(const std::string& vFilePath)
+AudioID CAudioEngine::playAudio2D(const std::string& vFilePath)
 {
 	_ASSERTE(!vFilePath.empty());
 	if (!m_IsInitialized) init();
@@ -66,4 +66,11 @@ void CAudioEngine::destroy()
 	m_IsInitialized = false;
 	if (m_pAudioEngineImp)
 		m_pAudioEngineImp->_destroyV();
+}
+
+//*********************************************************************************
+//FUNCTION:
+void* CAudioEngine::getAudioSampleData(AudioID vAudioID) const
+{
+	return m_pAudioEngineImp->_getAudioSampleDataV(vAudioID);
 }

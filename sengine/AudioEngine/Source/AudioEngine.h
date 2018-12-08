@@ -2,6 +2,7 @@
 #include <string>
 #include <common/Singleton.h>
 #include "AudioEngineExport.h"
+#include "AudioEngineCommon.h"
 
 namespace sengine
 {
@@ -20,6 +21,7 @@ namespace sengine
 
 			int playAudio2D(const std::string& vFilePath);
 			void stopAllAudios() const;
+			void* getAudioSampleData(AudioID vAudioID) const;
 
 		private:
 			bool m_IsInitialized = false;

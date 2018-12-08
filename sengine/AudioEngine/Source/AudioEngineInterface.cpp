@@ -38,3 +38,10 @@ AUDIO_ENGINE_DLL_EXPORT void sengine::audioEngine::stopAllAudios()
 {
 	CAudioEngine::getInstance()->stopAllAudios();
 }
+
+//*********************************************************************************
+//FUNCTION:
+AUDIO_ENGINE_DLL_EXPORT void* sengine::audioEngine::getAudioSampleData(AudioID vAudioID)
+{
+	return CAudioEngine::getInstance()->getAudioSampleData(vAudioID);
+}

@@ -29,13 +29,17 @@ bool CIrrklangAudioPlayer::_initV()
 
 //*********************************************************************************
 //FUNCTION:
-int CIrrklangAudioPlayer::_playAudio2DV(const std::string& vFilePath)
+AudioID CIrrklangAudioPlayer::_playAudio2DV(const std::string& vFilePath)
 {
 	_ASSERTE(!vFilePath.empty());
-	auto pSound = m_SoundEngine->play2D(vFilePath.c_str(), true, false, true);
+
+	auto pSoundSource = m_SoundEngine->addSoundSourceFromFile(vFilePath.c_str(), irrklang::ESM_NO_STREAMING, true);
+	auto pSound = m_SoundEngine->play2D(pSoundSource, true, false, true);
 	if (!pSound) return -1;
 
-	return 0;
+	m_ID2SoundMap[++m_AudioID] = pSound;
+
+	return m_AudioID;
 }
 
 //*********************************************************************************
@@ -51,4 +55,20 @@ void CIrrklangAudioPlayer::_destroyV()
 {
 	if (m_SoundEngine)
 		m_SoundEngine->drop(); //NOTE: 这里m_SoundEngine不需要delete
+}
+
+//*********************************************************************************
+//FUNCTION:
+void* sengine::audioEngine::CIrrklangAudioPlayer::_getAudioSampleDataV(AudioID vAudioID) const
+{
+	const auto Iter = m_ID2SoundMap.find(vAudioID);
+	if (Iter == m_ID2SoundMap.end()) return nullptr;
+
+	auto pSound = Iter->second;
+	_ASSERTE(pSound);
+
+	auto pSoundSource = pSound->getSoundSource();
+	_ASSERTE(pSoundSource);
+
+	return pSoundSource->getSampleData();
 }

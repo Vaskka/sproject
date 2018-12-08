@@ -1,6 +1,7 @@
 #pragma once
 #include <common/BaseProduct.h>
 #include "AudioEngineExport.h"
+#include "AudioEngineCommon.h"
 
 namespace sengine
 {
@@ -17,9 +18,10 @@ namespace sengine
 			IAudioEngineImp() = default;
 
 			virtual bool _initV() = 0;
-			virtual int _playAudio2DV(const std::string& vFilePath) = 0;
+			virtual AudioID _playAudio2DV(const std::string& vFilePath) = 0;
 			virtual void _stopAllAudiosV() = 0;
 			virtual void _destroyV() = 0;
+			virtual void* _getAudioSampleDataV(AudioID vAudioID) const = 0;
 		};
 	}
 }
